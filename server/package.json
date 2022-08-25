@@ -1,0 +1,23 @@
+{
+  "name": "dynamodb-dashboard-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon --exec npm run babel-node -- src",
+    "babel-node": "babel-node --presets='@babel/preset-env'",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kritish Dhaubanjar",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.18.13",
+    "@babel/node": "^7.18.10",
+    "@babel/preset-env": "^7.18.10",
+    "nodemon": "^2.0.19",
+    "rimraf": "^3.0.2"
+  },
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}
