@@ -39,7 +39,6 @@ export const create = Joi.object({
 
 // https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_UpdateTable.html#DDB-UpdateTable-request-AttributeDefinitions
 export const update = Joi.object({
-  TableName: Joi.string().required(),
   AttributeDefinitions: Joi.array().items({
     AttributeName: Joi.string(),
     AttributeType: Joi.string()
@@ -51,7 +50,6 @@ export const update = Joi.object({
       Create: Joi.object({
         IndexName: Joi.string().required(),
         Projection: Joi.object({
-          // NonKeyAttributes: Joi.string(),
           ProjectionType: Joi.string()
             .valid("ALL", "KEYS_ONLY", "INCLUDE")
             .required(),
