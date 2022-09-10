@@ -150,15 +150,4 @@ watch(
 );
 </script>
 
-<style scoped>
-.json-view {
-  top: 16px;
-  max-height: 96vh;
-  min-height: 96vh;
-  overflow: scroll;
-  position: sticky;
-  font-family: "Fira Code", monospace;
-  font-weight: bold;
-  font-size: 14px;
-}
-</style>
+<style scoped></style>
