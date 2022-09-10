@@ -13,6 +13,7 @@ const router = Router();
 router.post("/:tableName/items", [validateCreate], ItemController.create);
 router.put("/:tableName/items", [validateUpdate], ItemController.update);
 
+router.post("/:tableName/items/get", [validateCreate], ItemController.get);
 router.post("/:tableName/items/scan", [validateScan], ItemController.scan);
 router.post("/:tableName/items/query", [validateQuery], ItemController.query);
 

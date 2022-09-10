@@ -2,6 +2,21 @@ import { OPERATIONS } from "../constants/dynamodb";
 import { isPartialMatchWith } from "../utils/object";
 import * as ItemService from "../services/item.service";
 
+export async function get(req, res, next) {
+  try {
+    const tableName = req.params.tableName;
+    const data = await ItemService.get(tableName, req.body);
+
+    if (!data.Item) {
+      res.status(404);
+    }
+
+    return res.json(data);
+  } catch (error) {
+    next(error);
+  }
+}
+
 export async function scan(req, res, next) {
   try {
     const tableName = req.params.tableName;

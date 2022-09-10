@@ -40,6 +40,23 @@ export async function fetch(operation, tableName, conditions) {
 /**
  *
  * @param {*} tableName
+ * @param {*} keys
+ * @returns
+ */
+export async function get(tableName, keys) {
+  const params = {
+    TableName: tableName,
+    Key: keys,
+  };
+
+  const response = await document.get(params);
+
+  return response;
+}
+
+/**
+ *
+ * @param {*} tableName
  * @param {*} items
  * @returns
  */
