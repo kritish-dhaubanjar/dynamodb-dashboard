@@ -1,10 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@500&display=swap');
 
 * {
-  font-size: 13px;
+  font-size: 14px;
   font-family: 'Roboto', sans-serif;
 }
 
 input, button, select, a{
   box-shadow: none !important;
+}
+
+#edit-item .cm-editor, 
+#edit-item .cm-scroller {
+  min-height: 60vh;
+  max-height: 60vh;
 }

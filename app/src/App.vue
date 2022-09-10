@@ -9,7 +9,6 @@
 <script async setup lang="ts">
 import store from "@/store";
 import { provide } from "vue";
-
 import BreadCrumb from "./components/common/bread-crumb.vue";
 
 provide("store", store);

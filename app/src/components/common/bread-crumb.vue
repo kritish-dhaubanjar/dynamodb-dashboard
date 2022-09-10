@@ -4,7 +4,9 @@
       <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="#">DynamoDB</a></li>
-          <li class="breadcrumb-item"><a href="#">Items</a></li>
+          <li class="breadcrumb-item">
+            <a href="#" @click.prevent="cancel">Items</a>
+          </li>
           <li class="breadcrumb-item active" aria-current="page">
             {{ store.table.state.Table.TableName }}
           </li>
@@ -16,6 +18,16 @@
 
 <script setup lang="ts">
 import { inject } from "vue";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const store: any = inject("store");
+
+const cancel = () => {
+  if (window.history.length > 1) {
+    router.back();
+  } else {
+    router.push({ name: "home" });
+  }
+};
 </script>

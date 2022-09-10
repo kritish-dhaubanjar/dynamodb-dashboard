@@ -9,6 +9,7 @@ const routes = {
   },
   ITEM: {
     CREATE: "/tables/:tableName/items",
+    GET: "/tables/:tableName/items/get",
     UPDATE: "/tables/:tableName/items",
     DELETE: "/tables/:tableName/items",
     SCAN: "/tables/:tableName/items/scan",

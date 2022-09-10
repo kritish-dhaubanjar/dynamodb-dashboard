@@ -15,10 +15,16 @@ axios.interceptors.request.use((config) => {
   return config;
 });
 
-axios.interceptors.response.use((response) => {
-  store.ui.setters.setIsLoading(false);
-  return response;
-});
+axios.interceptors.response.use(
+  (response) => {
+    store.ui.setters.setIsLoading(false);
+    return response;
+  },
+  (error) => {
+    store.ui.setters.setIsLoading(false);
+    return Promise.reject(error);
+  }
+);
 
 axios.defaults.baseURL = "http://127.0.0.1:8080/dynamodb/api";
 // axios.defaults.baseURL = "/dynamodb/api";

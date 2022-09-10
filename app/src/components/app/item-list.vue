@@ -17,7 +17,10 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="item in items" :key="item[headers[0]]">
+        <tr
+          v-for="item in items"
+          :key="item[pk.AttributeName] + (sk ? item[sk.AttributeName] : '')"
+        >
           <td>
             <input
               class="form-check-input mt-1"
@@ -35,7 +38,7 @@
                 {{ item[key] }}
               </RouterLink>
             </div>
-            <div v-else>{{ item[key] }}</div>
+            <div v-else @click="emit('set', [item])">{{ item[key] }}</div>
           </td>
         </tr>
       </tbody>
@@ -45,10 +48,9 @@
 
 <script setup lang="ts">
 import { computed, inject } from "vue";
-import { useRouter } from "vue-router";
 
-const router = useRouter();
 const store: any = inject("store");
+const emit = defineEmits(["set"]);
 
 const headers = computed(() => store.ui.state.table.headers ?? []);
 const items = computed(() => {
@@ -58,19 +60,27 @@ const items = computed(() => {
   return rows.slice((page - 1) * Limit, page * Limit);
 });
 
+const pk = computed(() =>
+  store.table.state.Table.KeySchema.find(({ KeyType }) => KeyType === "HASH")
+);
+const sk = computed(() =>
+  store.table.state.Table.KeySchema.find(({ KeyType }) => KeyType === "RANGE")
+);
+
 const handleItem = (item: object) => {
   const table = store.table.state.Table;
   const tableName = table.TableName;
-
-  const pk = table.KeySchema.find(({ KeyType }) => KeyType === "HASH");
-  const sk = table.KeySchema.find(({ KeyType }) => KeyType === "RANGE");
 
   return {
     name: "edit-item",
     params: { tableName },
     query: {
-      ...(pk && { pk: item[pk.AttributeName] }),
-      ...(sk && { sk: item[sk.AttributeName] }),
+      ...(pk.value && {
+        [pk.value.AttributeName]: item[pk.value.AttributeName],
+      }),
+      ...(sk.value && {
+        [sk.value.AttributeName]: item[sk.value.AttributeName],
+      }),
     },
   };
 };

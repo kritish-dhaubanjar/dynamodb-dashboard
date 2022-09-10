@@ -24,7 +24,7 @@
       <RouterLink
         :to="{
           name: 'home',
-          query: { limit: store.dynamodb.state.Limit, tableName },
+          query: { limit: store.dynamodb.state.Limit, tableName, page: 1 },
         }"
       >
         <div class="form-check">
@@ -38,7 +38,7 @@
               (activeTableName ?? store.table.state.Table.TableName)
             "
           />
-          <label class="form-check-label ms-3" :for="tableName">{{
+          <label class="form-check-label ms-3 text-break" :for="tableName">{{
             tableName
           }}</label>
         </div>

@@ -11,8 +11,8 @@
     <div>
       <button
         type="button"
-        class="btn btn-outline-secondary btn-sm rounded-0"
-        @click="nextHandler"
+        class="btn btn-outline-secondary btn-sm rounded-0 ms-3"
+        @click.prevent="emit('next')"
       >
         Retrieve next page
       </button>
@@ -21,21 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import { scanItems } from "@/services/item";
 import { inject } from "vue";
 
-const store: any = inject("store");
-
-const nextHandler = async () => {
-  const dynamodb = store.dynamodb.state;
-  const table = store.table.state.Table;
-  const rows = store.ui.state.table.rows;
-
-  const tableName = table.TableName;
-
-  const data = await scanItems(tableName, dynamodb);
-
-  store.dynamodb.setters.init(data);
-  store.ui.setters.setTable(table, [...rows, ...data.Items]);
-};
+const emit = defineEmits(["next"]);
 </script>

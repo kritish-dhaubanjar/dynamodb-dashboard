@@ -12,6 +12,7 @@
   "dependencies": {
     "@codemirror/lang-javascript": "^6.0.2",
     "@codemirror/lang-json": "^6.0.0",
+    "@codemirror/lint": "^6.0.0",
     "@codemirror/theme-one-dark": "^6.0.0",
     "@popperjs/core": "^2.11.6",
     "axios": "^0.27.2",
