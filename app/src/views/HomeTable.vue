@@ -95,10 +95,12 @@ onBeforeMount(async () => {
 
 watch(
   () => [route.query.tableName, route.query.limit, route.query.page],
-  async ([tableName, _limit, _page], [old_tableName] = [undefined]) => {
+  async ([tableName, _limit, _page], oldValues) => {
     if (!tableName) return;
 
     // @TABLE
+    const [old_tableName] = oldValues ?? [];
+
     {
       if (tableName !== old_tableName) {
         console.log("@watch #route.query.tableName", { tableName });
