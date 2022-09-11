@@ -83,7 +83,7 @@ import { oneDark } from "@codemirror/theme-one-dark";
 import { json, jsonParseLinter } from "@codemirror/lang-json";
 
 import { useRoute, useRouter } from "vue-router";
-import { inject, onMounted, reactive, ref, watch } from "vue";
+import { computed, inject, onMounted, reactive, ref, watch } from "vue";
 
 import { getTable } from "@/services/table";
 import { getItem, updateItem } from "@/services/item";
@@ -121,7 +121,7 @@ export default {
       const tableName = table.TableName;
 
       try {
-        await updateItem(
+        const { ref, body } = await updateItem(
           tableName,
           JSON.parse(item.value),
           JSON.parse(editItem.value),
@@ -130,6 +130,14 @@ export default {
 
         toast.className = "text-bg-success";
         toast.message = "The item has been saved successfully.";
+
+        if (hasKeyChanged.value) {
+          item.value = JSON.stringify(body, null, 2);
+          router.replace({
+            name: "edit-item",
+            query: { ...route.query, ...ref },
+          });
+        }
       } catch (error) {
         toast.className = "text-bg-danger";
         toast.message = error.message;

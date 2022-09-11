@@ -8,6 +8,7 @@ import router from "@/router";
 
 import "bootstrap";
 import "@/assets/main.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
 import "../node_modules/bootstrap/scss/bootstrap.scss";
 
 axios.interceptors.request.use((config) => {

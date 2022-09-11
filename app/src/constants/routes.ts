@@ -11,9 +11,9 @@ const routes = {
     CREATE: "/tables/:tableName/items",
     GET: "/tables/:tableName/items/get",
     UPDATE: "/tables/:tableName/items",
-    DELETE: "/tables/:tableName/items",
     SCAN: "/tables/:tableName/items/scan",
     QUERY: "/tables/:tableName/items/query",
+    DELETE: "/tables/:tableName/items/delete",
   },
 };
 

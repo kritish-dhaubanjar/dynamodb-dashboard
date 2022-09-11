@@ -20,9 +20,11 @@
           @next="fetchHandler"
         />
 
+        <TableActions @action="(type) => (action = type)" />
+
         <TablePaginate @next="fetchHandler" />
 
-        <ItemList />
+        <ItemList :action="action" @reset="action = ''" />
       </div>
     </div>
   </div>
@@ -38,6 +40,7 @@ import { getTable, getTables } from "@/services/table";
 import ItemList from "../components/app/item-list.vue";
 import TableList from "../components/app/table-list.vue";
 import RetrieveNext from "../components/app/retrieve-next.vue";
+import TableActions from "../components/app/table-actions.vue";
 import TablePaginate from "../components/app/table-paginate.vue";
 
 const route = useRoute();
@@ -148,6 +151,9 @@ watch(
 
   { immediate: true }
 );
+
+//
+const action = ref("");
 </script>
 
 <style scoped></style>

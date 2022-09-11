@@ -46,19 +46,76 @@
                 {{ item[key] }}
               </RouterLink>
             </div>
-            <div v-else @click="emit('set', [item])">{{ item[key] }}</div>
+            <div v-else>{{ item[key] }}</div>
           </td>
         </tr>
       </tbody>
     </table>
+
+    <!--  -->
+    <div class="modal" tabindex="-1" ref="modalRef">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Delete {{ selectedItems.length }} items</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p>
+              Delete <b>{{ selectedItems.length }}</b> item from the
+              <b>{{ store.table.state.Table.TableName }}</b>
+              table? This action cannot be reversed.
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary rounded-0"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+
+            <button
+              class="btn btn-danger rounded-0"
+              type="button"
+              :disabled="store.ui.state.isLoading"
+              @click="destroy"
+            >
+              <span
+                v-if="store.ui.state.isLoading"
+                class="spinner-grow spinner-grow-sm"
+                role="status"
+                aria-hidden="true"
+              ></span>
+              <span class="visually-hidden">Loading...</span>
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, inject, ref } from "vue";
+import * as bootstrap from "bootstrap";
+import { useRouter } from "vue-router";
+import { destroyItems } from "@/services/item";
+import { computed, inject, onMounted, ref, watchEffect } from "vue";
 
+const props = defineProps({
+  action: String,
+});
+
+const router = useRouter();
 const store: any = inject("store");
-const emit = defineEmits(["set"]);
+const emit = defineEmits(["reset"]);
 
 const selectedItems = ref([]);
 
@@ -78,6 +135,13 @@ const pk = computed(() =>
 const sk = computed(() =>
   store.table.state.Table.KeySchema.find(({ KeyType }) => KeyType === "RANGE")
 );
+
+const modal = ref(null);
+const modalRef = ref(null);
+
+onMounted(() => {
+  modal.value = new bootstrap.Modal(modalRef.value, {});
+});
 
 const handleItem = (item: object) => {
   const table = store.table.state.Table;
@@ -126,6 +190,46 @@ const select = (item: any) => {
 const toggle = () => {
   if (selectedItems.value.length) selectedItems.value = [];
   else selectedItems.value = [...items.value];
+};
+
+watchEffect(() => {
+  if (props.action && selectedItems.value.length) {
+    if (props.action === "EDIT") {
+      selectedItems.value.forEach((item) => {
+        const route = router.resolve(handleItem(item));
+        window.open(route.href, "_blank");
+      });
+    }
+
+    if (props.action === "DELETE") {
+      modal.value.show();
+    }
+  }
+
+  emit("reset", "");
+});
+
+const destroy = async () => {
+  const table = store.table.state.Table;
+  const tableName = table.TableName;
+
+  const payload = [];
+
+  selectedItems.value.forEach((item) => {
+    const { query } = handleItem(item);
+    payload.push(query);
+  });
+
+  await destroyItems(tableName, payload);
+
+  const filteredRows = store.ui.state.table.rows.filter((item) => {
+    const index = find(item);
+    return index === -1;
+  });
+
+  store.ui.setters.setTable(table, [...filteredRows]);
+
+  modal.value.hide();
 };
 </script>
 

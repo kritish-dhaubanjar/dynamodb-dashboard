@@ -24,9 +24,11 @@ export async function updateItem(
   const url = interpolate(ROUTES.ITEM.UPDATE, { tableName });
 
   const ref: any = {};
+  const newRef: any = {};
 
   KeySchema.forEach(({ AttributeName }) => {
     ref[AttributeName] = original[AttributeName];
+    newRef[AttributeName] = body[AttributeName];
   });
 
   const { data } = await axios.put(url, {
@@ -34,7 +36,7 @@ export async function updateItem(
     body,
   });
 
-  return data;
+  return { data, ref: newRef, body };
 }
 
 export async function getItem(
@@ -62,6 +64,25 @@ export async function getItem(
   });
 
   const { data } = await axios.post(url, formattedParams);
+
+  return data;
+}
+
+export async function destroyItems(tableName: string, keys: []) {
+  const url = interpolate(ROUTES.ITEM.DELETE, { tableName });
+
+  const params: any[] = [];
+
+  keys.forEach((key) => {
+    const param = {
+      DeleteRequest: {
+        Key: key,
+      },
+    };
+    params.push(param);
+  });
+
+  const { data } = await axios.post(url, params);
 
   return data;
 }

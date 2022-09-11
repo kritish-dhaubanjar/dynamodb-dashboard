@@ -1,18 +1,5 @@
 <template>
-  <div class="px-4 py-3 d-flex align-items-center justify-content-between">
-    <h5>
-      Items returned
-      <span class="text-muted">({{ rows.length }})</span>
-
-      <div
-        class="spinner-border spinner-border-sm ms-3"
-        role="status"
-        v-if="store.ui.state.isLoading"
-      >
-        <span class="visually-hidden">Loading...</span>
-      </div>
-    </h5>
-
+  <div class="px-4 py-3 d-flex align-items-center justify-content-end">
     <div class="d-flex">
       <nav aria-label="Page navigation example">
         <ul class="pagination pagination-sm">
@@ -51,7 +38,7 @@
         >
           {{ limit }} items
         </button>
-        <ul class="dropdown-menu">
+        <ul class="dropdown-menu rounded-0">
           <li v-for="limit in [10, 25, 50, 100, 200, 300]" :key="limit">
             <RouterLink
               class="dropdown-item"
