@@ -16,7 +16,6 @@ router.put("/:tableName/items", [validateUpdate], ItemController.update);
 router.post("/:tableName/items/get", [validateCreate], ItemController.get);
 router.post("/:tableName/items/scan", [validateScan], ItemController.scan);
 router.post("/:tableName/items/query", [validateQuery], ItemController.query);
-
-router.delete("/:tableName/items", [validateDelete], ItemController.destroy);
+router.post("/:tableName/items/delete", [validateDelete], ItemController.destroy);
 
 export default router;
