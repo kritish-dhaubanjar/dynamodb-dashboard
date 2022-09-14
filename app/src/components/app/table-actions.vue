@@ -51,23 +51,37 @@
         </ul>
       </div>
 
-      <button
-        type="button"
-        class="ms-2 btn btn-outline-primary btn-sm rounded-0"
+      <RouterLink
+        v-if="tableName"
+        :to="{
+          name: 'create-item',
+          params: { tableName },
+        }"
       >
-        Create Item
-      </button>
+        <button
+          type="button"
+          class="ms-2 btn btn-outline-primary btn-sm rounded-0"
+        >
+          Create Item
+        </button>
+      </RouterLink>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { computed, inject } from "vue";
+import { useRoute } from "vue-router";
 
 const store: any = inject("store");
 const emit = defineEmits(["action"]);
+const route = useRoute();
 
 const rows = computed(() => store.ui.state.table.rows);
 
 const reload = () => window.location.reload();
+
+const tableName = computed(() => {
+  return store.table?.Table?.TableName || route.query.tableName?.toString();
+});
 </script>

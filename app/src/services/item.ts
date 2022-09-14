@@ -99,3 +99,11 @@ export async function destroyItems(tableName: string, keys: []) {
 
   return data;
 }
+
+export async function createItem(tableName: string, body: any) {
+  const url = interpolate(ROUTES.ITEM.CREATE, { tableName });
+
+  const { data } = await axios.post(url, body);
+
+  return { data, body };
+}

@@ -1,5 +1,6 @@
 import EditItem from "../views/EditItem.vue";
 import HomeTable from "../views/HomeTable.vue";
+import CreateItem from "../views/CreateItem.vue";
 import { createRouter, createWebHistory } from "vue-router";
 
 const router = createRouter({
@@ -14,6 +15,11 @@ const router = createRouter({
       path: "/:tableName/edit-item",
       name: "edit-item",
       component: EditItem,
+    },
+    {
+      path: "/:tableName/create-item",
+      name: "create-item",
+      component: CreateItem,
     },
     // {
     //   path: "/about",

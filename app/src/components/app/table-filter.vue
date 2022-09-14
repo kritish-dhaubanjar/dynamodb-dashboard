@@ -164,6 +164,7 @@
               </h2>
               <div
                 id="flush-collapseOne"
+                ref="collapseRef"
                 class="accordion-collapse collapse"
                 aria-labelledby="flush-headingOne"
                 data-bs-parent="#filters"
@@ -361,10 +362,13 @@ const sk = computed(() =>
 );
 
 onMounted(() => {
-  const collapse = new boostrap.Collapse("#flush-collapseOne");
-  collapse.show();
+  if (collapseRef.value) {
+    const collapse = new boostrap.Collapse(collapseRef.value);
+    collapse.show();
+  }
 });
 
+const collapseRef = ref(null);
 const operation = ref("");
 const indexName = ref("");
 const parameters = reactive({
@@ -453,6 +457,8 @@ const queryKeySchema = computed(() => {
 const setOperation = (op) => (operation.value = op);
 
 const resetParameters = () => {
+  operation.value = "SCAN";
+
   parameters.keys.pk = {
     value: "",
     condition: "=",
