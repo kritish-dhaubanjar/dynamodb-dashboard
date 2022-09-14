@@ -5,7 +5,7 @@
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="/">DynamoDB</a></li>
           <li class="breadcrumb-item">
-            <a href="#" @click.prevent="cancel">Items</a>
+            <a href="#" @click.prevent="cancel">{{ route.meta.name }}</a>
           </li>
           <li class="breadcrumb-item active" aria-current="page">
             {{ store.table.state.Table.TableName }}
@@ -18,8 +18,9 @@
 
 <script setup lang="ts">
 import { inject } from "vue";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
+const route = useRoute();
 const router = useRouter();
 const store: any = inject("store");
 

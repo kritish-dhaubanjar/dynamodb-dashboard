@@ -37,8 +37,17 @@
               :checked="find(item) > -1"
             />
           </td>
+
           <td v-for="(key, index) in headers" :key="key">
             <div v-if="index === 0">
+              <i
+                class="bi bi-clipboard2 me-2"
+                data-bs-toggle="tooltip"
+                data-bs-placement="top"
+                data-bs-title="Copy to clipboard"
+                @click="copy(item[key])"
+              ></i>
+              <!--  -->
               <RouterLink
                 :to="handleItem(item)"
                 class="card-link text-decoration-none"
@@ -107,7 +116,7 @@
 import * as bootstrap from "bootstrap";
 import { useRouter } from "vue-router";
 import { destroyItems } from "@/services/item";
-import { computed, inject, onMounted, ref, watchEffect } from "vue";
+import { computed, inject, onMounted, ref, watch, watchEffect } from "vue";
 
 const props = defineProps({
   action: String,
@@ -128,6 +137,21 @@ const items = computed(() => {
 
   return rows.slice((page - 1) * Limit, page * Limit);
 });
+
+// Tooltip
+watch(
+  () => items.value,
+  () => {
+    setTimeout(() => {
+      const tooltipTriggerList = [].slice.call(
+        document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      );
+      tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+      });
+    }, 0);
+  }
+);
 
 const pk = computed(() =>
   store.table.state.Table.KeySchema.find(({ KeyType }) => KeyType === "HASH")
@@ -231,6 +255,10 @@ const destroy = async () => {
 
   modal.value.hide();
 };
+
+const copy = (partitionKey) => {
+  navigator.clipboard.writeText(partitionKey);
+};
 </script>
 
 <style scoped lang="scss">
@@ -240,5 +268,9 @@ td div {
   white-space: nowrap;
   text-overflow: ellipsis;
   max-height: 25px !important;
+}
+
+i:hover {
+  cursor: pointer;
 }
 </style>

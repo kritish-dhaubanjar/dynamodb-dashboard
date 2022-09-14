@@ -1,6 +1,6 @@
-import EditItem from "../views/EditItem.vue";
-import HomeTable from "../views/HomeTable.vue";
-import CreateItem from "../views/CreateItem.vue";
+import EditItem from "@/views/items/EditItem.vue";
+import HomeTable from "@/views/items/HomeTable.vue";
+import CreateItem from "@/views/items/CreateItem.vue";
 import { createRouter, createWebHistory } from "vue-router";
 
 const router = createRouter({
@@ -10,16 +10,33 @@ const router = createRouter({
       path: "/",
       name: "home",
       component: HomeTable,
+      meta: {
+        name: "Item",
+      },
     },
     {
       path: "/:tableName/edit-item",
       name: "edit-item",
       component: EditItem,
+      meta: {
+        name: "Item",
+      },
     },
     {
       path: "/:tableName/create-item",
       name: "create-item",
       component: CreateItem,
+      meta: {
+        name: "Item",
+      },
+    },
+    {
+      path: "/table/create-table",
+      name: "create-table",
+      component: CreateItem,
+      meta: {
+        name: "Table",
+      },
     },
     // {
     //   path: "/about",

@@ -5,9 +5,23 @@
     </div>
 
     <div class="col-xl-10 col-lg-9 col-8">
-      <h3 class="mb-4">
-        {{ store.table.state.Table.TableName }}
-      </h3>
+      <div class="d-flex justify-content-between">
+        <h3 class="mb-4">
+          {{ store.table.state.Table.TableName }}
+        </h3>
+
+        <div>
+          <button class="btn btn-outline-secondary btn-sm rounded-0">
+            Actions
+          </button>
+
+          <RouterLink to="/table/create-table">
+            <button class="btn btn-outline-primary btn-sm rounded-0 ms-2">
+              Create Table
+            </button>
+          </RouterLink>
+        </div>
+      </div>
 
       <br />
 
@@ -67,12 +81,12 @@ import { getTable, getTables } from "@/services/table";
 import { scanItems, queryItems } from "@/services/item";
 import { generateDynamodbParameters } from "@/utils/table";
 
-import ItemList from "../components/app/item-list.vue";
-import TableList from "../components/app/table-list.vue";
-import TableFilter from "../components/app/table-filter.vue";
-import RetrieveNext from "../components/app/retrieve-next.vue";
-import TableActions from "../components/app/table-actions.vue";
-import TablePaginate from "../components/app/table-paginate.vue";
+import ItemList from "@/components/app/item-list.vue";
+import TableList from "@/components/app/table-list.vue";
+import TableFilter from "@/components/app/table-filter.vue";
+import RetrieveNext from "@/components/app/retrieve-next.vue";
+import TableActions from "@/components/app/table-actions.vue";
+import TablePaginate from "@/components/app/table-paginate.vue";
 
 const route = useRoute();
 const router = useRouter();
