@@ -386,7 +386,7 @@ const parameters = reactive({
   scan: [
     {
       name: "",
-      type: "",
+      type: "S",
       value: "",
       value2: "",
       condition: "=",
