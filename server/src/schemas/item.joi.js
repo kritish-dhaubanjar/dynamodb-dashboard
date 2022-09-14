@@ -11,18 +11,14 @@ export const scan = Joi.object({
     then: Joi.required(),
     otherwise: Joi.forbidden(),
   }),
-  ExpressionAttributeValues: Joi.object().when("FilterExpression", {
-    is: Joi.exist(),
-    then: Joi.required(),
-    otherwise: Joi.forbidden(),
-  }),
+  ExpressionAttributeValues: Joi.object().optional(), // attribute_exists(#tag)
 });
 
 export const query = Joi.object({
   Limit: Joi.number().greater(0).required(),
   KeyConditionExpression: Joi.string().required(),
   ExpressionAttributeNames: Joi.object().required(),
-  ExpressionAttributeValues: Joi.object().required(),
+  ExpressionAttributeValues: Joi.object().optional(), // attribute_exists(#tag)
   //
   IndexName: Joi.string().optional(),
   ExclusiveStartKey: Joi.any().optional(),
