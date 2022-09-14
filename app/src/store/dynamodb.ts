@@ -1,5 +1,4 @@
 import { reactive } from "vue";
-import { useRoute, useRouter } from "vue-router";
 
 const state = reactive({
   Limit: 50,
@@ -14,13 +13,20 @@ const state = reactive({
 });
 
 const setters = {
-  init: ({ LastEvaluatedKey = null }) => {
-    state.IndexName = null;
-    state.FilterExpression = null;
-    state.KeyConditionExpression = null;
-    state.ExpressionAttributeNames = null;
-    state.ExpressionAttributeValues = null;
+  init: ({
+    IndexName = null,
+    FilterExpression = null,
+    LastEvaluatedKey = null,
+    KeyConditionExpression = null,
+    ExpressionAttributeNames = null,
+    ExpressionAttributeValues = null,
+  }) => {
+    state.IndexName = IndexName;
+    state.FilterExpression = FilterExpression;
     state.ExclusiveStartKey = LastEvaluatedKey;
+    state.KeyConditionExpression = KeyConditionExpression;
+    state.ExpressionAttributeNames = ExpressionAttributeNames;
+    state.ExpressionAttributeValues = ExpressionAttributeValues;
   },
   setLimit: (limit: number) => {
     state.Limit = limit;
@@ -30,6 +36,15 @@ const setters = {
   },
   setExclusiveStartKey: (exclusiveStartKey: object) => {
     state.ExclusiveStartKey = exclusiveStartKey;
+  },
+
+  reset: () => {
+    // state.IndexName = null;
+    state.FilterExpression = null;
+    // state.ExclusiveStartKey = null;
+    state.KeyConditionExpression = null;
+    state.ExpressionAttributeNames = null;
+    state.ExpressionAttributeValues = null;
   },
 };
 

@@ -24,7 +24,13 @@
       <RouterLink
         :to="{
           name: 'home',
-          query: { limit: store.dynamodb.state.Limit, tableName, page: 1 },
+          query: {
+            limit: store.dynamodb.state.Limit,
+            tableName,
+            page: 1,
+            operation: 'SCAN',
+            indexName: tableName,
+          },
         }"
       >
         <div class="form-check">

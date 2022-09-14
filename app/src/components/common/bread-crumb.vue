@@ -3,7 +3,7 @@
     <div class="col-12">
       <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="#">DynamoDB</a></li>
+          <li class="breadcrumb-item"><a href="/">DynamoDB</a></li>
           <li class="breadcrumb-item">
             <a href="#" @click.prevent="cancel">Items</a>
           </li>
