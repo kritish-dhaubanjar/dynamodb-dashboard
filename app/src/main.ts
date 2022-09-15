@@ -27,8 +27,7 @@ axios.interceptors.response.use(
   }
 );
 
-axios.defaults.baseURL = "http://127.0.0.1:8080/dynamodb/api";
-// axios.defaults.baseURL = "/dynamodb/api";
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
 
 const app = createApp(App);
 app.use(router);
