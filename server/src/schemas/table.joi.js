@@ -1,77 +1,46 @@
 import Joi from "joi";
+import {
+  KeySchemaSchema,
+  ProjectionSchema,
+  AttributeDefinitionsSchema,
+  ProvisionedThroughputSchema,
+} from "./common/table.common.joi";
 
 // https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/SQLtoNoSQL.CreateTable.html
 // https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBMapper.DataTypes.html
 
 export const create = Joi.object({
   TableName: Joi.string().required(),
-  KeySchema: Joi.array()
-    .items(
-      Joi.object({
-        AttributeName: Joi.string().required(),
-        KeyType: Joi.string().valid("HASH", "RANGE").required(),
-      })
-    )
-    .has(
-      Joi.object({
-        AttributeName: Joi.string(),
-        KeyType: Joi.string().valid("HASH"),
-      })
-    )
-    .required()
-    .min(1),
-  AttributeDefinitions: Joi.array()
-    .items(
-      Joi.object({
-        AttributeName: Joi.string().required(),
-        AttributeType: Joi.string()
-          .valid("N", "S", "BOOL", "B", "SS", "NS", "BS")
-          .required(),
-      })
-    )
-    .required()
-    .min(1),
-  ProvisionedThroughput: Joi.object({
-    ReadCapacityUnits: Joi.number().min(1),
-    WriteCapacityUnits: Joi.number().min(1),
-  }).required(),
+  KeySchema: KeySchemaSchema,
+  AttributeDefinitions: AttributeDefinitionsSchema,
+  ProvisionedThroughput: ProvisionedThroughputSchema,
+  GlobalSecondaryIndexes: Joi.array().items(
+    Joi.object({
+      IndexName: Joi.string().required(),
+      KeySchema: KeySchemaSchema,
+      Projection: ProjectionSchema,
+      ProvisionedThroughput: ProvisionedThroughputSchema,
+    })
+  ),
+  LocalSecondaryIndexes: Joi.array().items(
+    Joi.object({
+      IndexName: Joi.string().required(),
+      KeySchema: KeySchemaSchema,
+      Projection: ProjectionSchema,
+    })
+  ),
 });
 
 // https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_UpdateTable.html#DDB-UpdateTable-request-AttributeDefinitions
 export const update = Joi.object({
-  AttributeDefinitions: Joi.array().items({
-    AttributeName: Joi.string(),
-    AttributeType: Joi.string()
-      .valid("N", "S", "BOOL", "B", "SS", "NS", "BS")
-      .required(),
-  }),
+  AttributeDefinitions: AttributeDefinitionsSchema.optional(),
   GlobalSecondaryIndexUpdates: Joi.array().items(
     Joi.object({
       Create: Joi.object({
         IndexName: Joi.string().required(),
-        Projection: Joi.object({
-          ProjectionType: Joi.string()
-            .valid("ALL", "KEYS_ONLY", "INCLUDE")
-            .required(),
-        }).required(),
-        KeySchema: Joi.array()
-          .items(
-            Joi.object({
-              AttributeName: Joi.string().required(),
-              KeyType: Joi.string().valid("HASH", "RANGE").required(),
-            })
-          )
-          .has(
-            Joi.object({
-              AttributeName: Joi.string(),
-              KeyType: Joi.string().valid("HASH"),
-            })
-          )
-          .required(),
-        ProvisionedThroughput: Joi.object({
-          ReadCapacityUnits: Joi.number().min(1),
-          WriteCapacityUnits: Joi.number().min(1),
-        }).required(),
+        Projection: ProjectionSchema,
+        KeySchema: KeySchemaSchema,
+        ProvisionedThroughput: ProvisionedThroughputSchema,
       }),
       Delete: Joi.object({ IndexName: Joi.string().required() }),
     })
