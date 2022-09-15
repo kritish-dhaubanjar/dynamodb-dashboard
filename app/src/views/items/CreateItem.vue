@@ -143,7 +143,7 @@ export default {
             params: { tableName },
             query: getQuery(item.value, editItem.value),
           });
-        }, 500);
+        }, 250);
       } catch (error) {
         toast.className = "text-bg-danger";
         toast.message = error.response.data.message ?? error.message;

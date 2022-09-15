@@ -1,6 +1,9 @@
 import EditItem from "@/views/items/EditItem.vue";
 import HomeTable from "@/views/items/HomeTable.vue";
 import CreateItem from "@/views/items/CreateItem.vue";
+
+import EditTable from "@/views/table/EditTable.vue";
+import CreateTable from "@/views/table/CreateTable.vue";
 import { createRouter, createWebHistory } from "vue-router";
 
 const router = createRouter({
@@ -33,19 +36,34 @@ const router = createRouter({
     {
       path: "/table/create-table",
       name: "create-table",
-      component: CreateItem,
+      component: CreateTable,
       meta: {
-        name: "Table",
+        name: "Tables",
       },
     },
-    // {
-    //   path: "/about",
-    //   name: "about",
-    //   // route level code-splitting
-    //   // this generates a separate chunk (About.[hash].js) for this route
-    //   // which is lazy-loaded when the route is visited.
-    //   component: () => import("../views/AboutView.vue"),
-    // },
+    {
+      path: "/table/:tableName/edit-table",
+      name: "edit-table",
+      component: EditTable,
+      meta: {
+        name: "Tables",
+      },
+    },
+    {
+      path: "/:catchAll(.*)",
+      component: HomeTable,
+      meta: {
+        name: "Items",
+      },
+    },
+    /*{
+      path: "/about",
+      name: "about",
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import("../views/AboutView.vue"),
+    },*/
   ],
 });
 

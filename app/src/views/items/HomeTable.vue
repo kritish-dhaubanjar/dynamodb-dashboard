@@ -11,9 +11,36 @@
         </h3>
 
         <div>
-          <button class="btn btn-outline-secondary btn-sm rounded-0">
+          <button
+            class="ms-3 btn btn-outline-primary dropdown-toggle btn-sm rounded-0"
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
             Actions
           </button>
+          <ul class="dropdown-menu rounded-0">
+            <li>
+              <a
+                href="#"
+                class="dropdown-item"
+                @click.prevent
+                data-bs-toggle="modal"
+                data-bs-target="#delete-table-modal"
+                >Delete Table</a
+              >
+              <RouterLink
+                v-if="activeTableName"
+                class="dropdown-item"
+                :to="{
+                  name: 'edit-table',
+                  params: { tableName: activeTableName },
+                }"
+              >
+                Create/Delete Index
+              </RouterLink>
+            </li>
+          </ul>
 
           <RouterLink to="/table/create-table">
             <button class="btn btn-outline-primary btn-sm rounded-0 ms-2">
@@ -46,6 +73,53 @@
       </div>
     </div>
 
+    <!--  -->
+    <div id="delete-table-modal" class="modal" tabindex="-1" ref="modalRef">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Delete table</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p class="mb-0">
+              You are about to delete <b>{{ activeTableName }}</b> table.
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary rounded-0"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+
+            <button
+              class="btn btn-danger rounded-0"
+              type="button"
+              :disabled="store.ui.state.isLoading"
+              @click="destroy"
+            >
+              <span
+                v-if="store.ui.state.isLoading"
+                class="spinner-grow spinner-grow-sm"
+                role="status"
+                aria-hidden="true"
+              ></span>
+              <span class="visually-hidden">Loading...</span>
+              Delete Table
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Toast -->
     <div
       class="toast-container position-fixed top-0 start-50 translate-middle-x p-3"
@@ -75,11 +149,21 @@
 <script setup lang="ts">
 import * as bootstrap from "bootstrap";
 import { useRoute, useRouter } from "vue-router";
-import { computed, inject, onBeforeMount, reactive, ref, watch } from "vue";
+import {
+  computed,
+  inject,
+  onBeforeMount,
+  onMounted,
+  reactive,
+  ref,
+  watch,
+} from "vue";
 
-import { getTable, getTables } from "@/services/table";
+import { deleteTable, getTable, getTables } from "@/services/table";
 import { scanItems, queryItems } from "@/services/item";
 import { generateDynamodbParameters } from "@/utils/table";
+
+import type table from "@/store/table";
 
 import ItemList from "@/components/app/item-list.vue";
 import TableList from "@/components/app/table-list.vue";
@@ -216,8 +300,12 @@ watch(
         activeTableName.value = tableName?.toString();
 
         // @INIT
-        const table = await getTable(tableName.toString());
-        store.table.setters.setTable(table);
+        try {
+          const table = await getTable(tableName.toString());
+          store.table.setters.setTable(table);
+        } catch (error) {
+          window.location.href = "/";
+        }
       }
     }
 
@@ -285,6 +373,26 @@ watch(
 
 //
 const action = ref("");
+
+const modal = ref(null);
+const modalRef = ref(null);
+
+const destroy = async () => {
+  try {
+    await deleteTable(activeTableName.value);
+    modal.value?.hide();
+    window.location.href = "/";
+  } catch (error) {
+    toast.className = "text-bg-danger";
+    toast.message = error.response.data.message ?? error.message;
+    const toastEl = new bootstrap.Toast(toastRef.value, { delay: 5000 });
+    setTimeout(() => toastEl.show(), 0);
+  }
+};
+
+onMounted(() => {
+  modal.value = new bootstrap.Modal(modalRef.value, {});
+});
 </script>
 
 <style scoped></style>

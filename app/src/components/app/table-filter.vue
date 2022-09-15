@@ -51,13 +51,21 @@
               <option :value="table.TableName">
                 &nbsp;&nbsp;&nbsp;&nbsp;{{ TableName }}
               </option>
-              <option disabled>Index</option>
+              <option disabled>Global Secondary Index</option>
               <option
                 :value="gsi.IndexName"
                 v-for="gsi of GlobalSecondaryIndexes"
                 :key="gsi.IndexName"
               >
                 &nbsp;&nbsp;&nbsp;&nbsp;{{ gsi.IndexName }}
+              </option>
+              <option disabled>Local Secondary Index</option>
+              <option
+                :value="lsi.IndexName"
+                v-for="lsi of LocalSecondaryIndexes"
+                :key="lsi.IndexName"
+              >
+                &nbsp;&nbsp;&nbsp;&nbsp;{{ lsi.IndexName }}
               </option>
             </select>
           </div>
@@ -352,6 +360,9 @@ const AttributeDefinitions = computed(
 const GlobalSecondaryIndexes = computed(
   () => table.value.GlobalSecondaryIndexes ?? []
 );
+const LocalSecondaryIndexes = computed(
+  () => table.value.LocalSecondaryIndexes ?? []
+);
 
 const pk = computed(() =>
   queryKeySchema.value.find(({ KeyType = "" }) => KeyType === "HASH")
@@ -400,7 +411,7 @@ watchEffect(() => {
 });
 
 watch(
-  () => [route.query.tableName, route.query.operation],
+  () => [route.query.tableName],
   ([tableName], [oldTableName]) => {
     if (tableName !== oldTableName) {
       resetParameters();
@@ -432,10 +443,13 @@ const queryKeySchema = computed(() => {
   if (indexName.value === TableName.value) {
     keySchema = KeySchema.value ?? [];
   } else {
-    const gsi = GlobalSecondaryIndexes.value.find(
+    const secondaryIndex = [
+      ...GlobalSecondaryIndexes.value,
+      ...LocalSecondaryIndexes.value,
+    ].find(
       ({ IndexName }: { IndexName: string }) => IndexName === indexName.value
     );
-    keySchema = gsi?.KeySchema ?? [];
+    keySchema = secondaryIndex?.KeySchema ?? [];
   }
 
   const keySchemaWithAttributeType = keySchema.map((key) => {
@@ -456,8 +470,8 @@ const queryKeySchema = computed(() => {
 //
 const setOperation = (op) => (operation.value = op);
 
-const resetParameters = () => {
-  operation.value = "SCAN";
+const resetParameters = (resetOperation = true) => {
+  if (resetOperation) operation.value = "SCAN";
 
   parameters.keys.pk = {
     value: "",
@@ -482,7 +496,8 @@ const resetParameters = () => {
 };
 
 const updateIndexName = (e: any) => {
-  resetParameters();
+  const resetOperation = false;
+  resetParameters(resetOperation);
   indexName.value = e.target.value;
 };
 

@@ -13,3 +13,24 @@ export async function getTable(tableName: string) {
 
   return data.Table;
 }
+
+export async function createTable(body: object) {
+  const url = ROUTES.TABLE.CREATE;
+  const { data } = await axios.post(url, body);
+
+  return data;
+}
+
+export async function deleteTable(tableName: string) {
+  const url = interpolate(ROUTES.TABLE.DELETE, { tableName });
+  const { data } = await axios.delete(url);
+
+  return data;
+}
+
+export async function updateTable(tableName: string, body: object) {
+  const url = interpolate(ROUTES.TABLE.UPDATE, { tableName });
+  const { data } = await axios.put(url, body);
+
+  return data;
+}

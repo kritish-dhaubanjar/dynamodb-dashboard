@@ -31,10 +31,11 @@ function getKeySchemaWithAttributeType({ indexName, table }) {
   if (indexName === table.TableName) {
     keySchema = table.KeySchema ?? [];
   } else {
-    const gsi = table.GlobalSecondaryIndexes?.find(
-      ({ IndexName }: { IndexName: string }) => IndexName === indexName
-    );
-    keySchema = gsi?.KeySchema ?? [];
+    const secondaryIndex = [
+      ...(table.GlobalSecondaryIndexes ?? []),
+      ...(table.LocalSecondaryIndexes ?? []),
+    ]?.find(({ IndexName }: { IndexName: string }) => IndexName === indexName);
+    keySchema = secondaryIndex?.KeySchema ?? [];
   }
 
   const keySchemaWithAttributeType = keySchema.map((key) => {
@@ -200,4 +201,275 @@ export function generateDynamodbParameters({ table, indexName, parameters }) {
       ExpressionAttributeValues: attributeValues,
     }),
   };
+}
+
+export function generateDynamodbIndexParameters({
+  indices = [],
+  deleteIndices = [],
+}) {
+  const parameters = {};
+
+  const gsis = indices.filter(({ readOnly }) => !readOnly);
+
+  if (gsis.length || deleteIndices.length) {
+    parameters.GlobalSecondaryIndexUpdates = [];
+  }
+
+  if (deleteIndices.length) {
+    const deletes = deleteIndices.map((indexName) => ({
+      Delete: { IndexName: indexName },
+    }));
+
+    parameters.GlobalSecondaryIndexUpdates.push(...deletes);
+  }
+
+  if (gsis.length) {
+    parameters.AttributeDefinitions = [];
+
+    const creates = gsis.map(
+      ({ name, pk = { name: "", type: "" }, sk = { name: "", type: "" } }) => {
+        const index = {
+          IndexName: name,
+          Projection: {
+            ProjectionType: "ALL",
+          },
+          KeySchema: [
+            {
+              AttributeName: pk.name,
+              KeyType: "HASH",
+            },
+            ...(sk.name.trim()
+              ? [
+                  {
+                    AttributeName: sk.name,
+                    KeyType: "RANGE",
+                  },
+                ]
+              : []),
+          ],
+          ProvisionedThroughput: {
+            ReadCapacityUnits: 5,
+            WriteCapacityUnits: 5,
+          },
+        };
+
+        const pkExists = parameters.AttributeDefinitions.find(
+          ({ AttributeName }) => AttributeName === pk.name
+        );
+
+        const skExists = parameters.AttributeDefinitions.find(
+          ({ AttributeName }) => AttributeName === sk.name
+        );
+
+        if (!pkExists) {
+          parameters.AttributeDefinitions.push({
+            AttributeName: pk.name,
+            AttributeType: pk.type,
+          });
+        }
+
+        if (!skExists && sk.name.trim()) {
+          parameters.AttributeDefinitions.push({
+            AttributeName: sk.name,
+            AttributeType: sk.type,
+          });
+        }
+
+        return index;
+      }
+    );
+
+    parameters.GlobalSecondaryIndexUpdates.push(
+      ...creates.map((index) => ({
+        Create: index,
+      }))
+    );
+  }
+
+  return parameters;
+}
+
+export function generateDynamodbTableParameters({
+  name = "",
+  throughput: { read = 5, write = 5 },
+  keySchema: { pk = { name: "", type: "" }, sk = { name: "", type: "" } },
+  indices = [],
+}) {
+  const parameters = {
+    TableName: name,
+    ProvisionedThroughput: {
+      ReadCapacityUnits: read,
+      WriteCapacityUnits: write,
+    },
+    KeySchema: [
+      {
+        AttributeName: pk.name,
+        KeyType: "HASH",
+      },
+      ...(sk.name.trim()
+        ? [
+            {
+              AttributeName: sk.name,
+              KeyType: "RANGE",
+            },
+          ]
+        : []),
+    ],
+    AttributeDefinitions: [
+      {
+        AttributeName: pk.name,
+        AttributeType: pk.type,
+      },
+      ...(sk.name.trim()
+        ? [
+            {
+              AttributeName: sk.name,
+              AttributeType: sk.type,
+            },
+          ]
+        : []),
+    ],
+    /*
+    GlobalSecondaryIndexes: [
+      {
+        IndexName: "",
+        Projection: {
+          ProjectionType: "ALL",
+        },
+        KeySchema: [
+          {
+            AttributeName: "",
+            KeyType: "HASH",
+          },
+          {
+            AttributeName: "",
+            KeyType: "RANGE",
+          },
+        ],
+        ProvisionedThroughput: {
+          ReadCapacityUnits: 5,
+          WriteCapacityUnits: 5,
+        },
+      },
+    ],
+    LocalSecondaryIndexes: [
+      {
+        IndexName: "",
+        KeySchema: [
+          {
+            AttributeName: "",
+            KeyType: "HASH",
+          },
+          {
+            AttributeName: "",
+            KeyType: "RANGE",
+          },
+        ],
+        Projection: {
+          ProjectionType: "ALL",
+        },
+      },
+    ], 
+    */
+  };
+
+  const gsis = indices.filter(({ type }) => type === "GSI");
+  const lsis = indices.filter(({ type }) => type === "LSI");
+
+  if (gsis.length) {
+    parameters["GlobalSecondaryIndexes"] = gsis.map(
+      ({ name, pk = { name: "", type: "" }, sk = { name: "", type: "" } }) => {
+        const index = {
+          IndexName: name,
+          Projection: {
+            ProjectionType: "ALL",
+          },
+          KeySchema: [
+            {
+              AttributeName: pk.name,
+              KeyType: "HASH",
+            },
+            ...(sk.name.trim()
+              ? [
+                  {
+                    AttributeName: sk.name,
+                    KeyType: "RANGE",
+                  },
+                ]
+              : []),
+          ],
+          ProvisionedThroughput: {
+            ReadCapacityUnits: read,
+            WriteCapacityUnits: write,
+          },
+        };
+
+        const pkExists = parameters.AttributeDefinitions.find(
+          ({ AttributeName }) => AttributeName === pk.name
+        );
+
+        const skExists = parameters.AttributeDefinitions.find(
+          ({ AttributeName }) => AttributeName === sk.name
+        );
+
+        if (!pkExists) {
+          parameters.AttributeDefinitions.push({
+            AttributeName: pk.name,
+            AttributeType: pk.type,
+          });
+        }
+
+        if (!skExists && sk.name.trim()) {
+          parameters.AttributeDefinitions.push({
+            AttributeName: sk.name,
+            AttributeType: sk.type,
+          });
+        }
+
+        return index;
+      }
+    );
+  }
+
+  if (lsis.length) {
+    parameters["LocalSecondaryIndexes"] = lsis.map(
+      ({ name, sk = { name: "", type: "" } }) => {
+        const index = {
+          IndexName: name,
+          Projection: {
+            ProjectionType: "ALL",
+          },
+          KeySchema: [
+            {
+              AttributeName: pk.name,
+              KeyType: "HASH",
+            },
+            ...(sk.name.trim()
+              ? [
+                  {
+                    AttributeName: sk.name,
+                    KeyType: "RANGE",
+                  },
+                ]
+              : []),
+          ],
+        };
+
+        const skExists = parameters.AttributeDefinitions.find(
+          ({ AttributeName }) => AttributeName === sk.name
+        );
+
+        if (!skExists) {
+          parameters.AttributeDefinitions.push({
+            AttributeName: sk.name,
+            AttributeType: sk.type,
+          });
+        }
+
+        return index;
+      }
+    );
+  }
+
+  return parameters;
 }
