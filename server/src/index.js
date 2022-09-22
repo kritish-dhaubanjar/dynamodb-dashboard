@@ -4,7 +4,10 @@ import path from "path";
 import morgan from "morgan";
 import express from "express";
 import routes from "./routes";
+import AWS from "./config/aws";
 import errorHandler from "./errors/handler";
+
+AWS.initialize();
 
 const app = express();
 app.use(cors({ origin: "*" }));
@@ -23,8 +26,14 @@ app.get("/dynamodb/*", (req, res) => {
   res.sendFile(path.resolve(__dirname, "..", "public", "index.html"));
 });
 
+app.get("*", function (req, res) {
+  res.redirect("/dynamodb");
+});
+
 app.use(errorHandler);
 
-app.listen(8080, () => {
-  console.log(`Server started at http://localhost:8080`);
+app.listen(4567, () => {
+  console.info(
+    `dynamodb-dashboard started at: http://127.0.0.1:4567/dynamodb\n`
+  );
 });

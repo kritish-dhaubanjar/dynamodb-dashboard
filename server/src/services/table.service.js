@@ -1,11 +1,11 @@
-import { dynamodb } from "../config/aws";
+import AWS from "../config/aws";
 
 export async function all() {
   const tables = [];
   const params = {};
 
   do {
-    const response = await dynamodb.listTables(params);
+    const response = await AWS.dynamodb.listTables(params);
     tables.push(...response.TableNames);
     params.LastEvaluatedTableName = response.ExclusiveStartTableName;
   } while (params.LastEvaluatedTableName);
@@ -14,13 +14,13 @@ export async function all() {
 }
 
 export async function create(params) {
-  const response = await dynamodb.createTable(params);
+  const response = await AWS.dynamodb.createTable(params);
 
   return response;
 }
 
 export async function describe(tableName) {
-  const response = await dynamodb.describeTable({
+  const response = await AWS.dynamodb.describeTable({
     TableName: tableName,
   });
 
@@ -28,7 +28,7 @@ export async function describe(tableName) {
 }
 
 export async function destroy(tableName) {
-  const response = await dynamodb.deleteTable({
+  const response = await AWS.dynamodb.deleteTable({
     TableName: tableName,
   });
 
@@ -36,7 +36,7 @@ export async function destroy(tableName) {
 }
 
 export async function update(tableName, params) {
-  const response = await dynamodb.updateTable({
+  const response = await AWS.dynamodb.updateTable({
     TableName: tableName,
     ...params,
   });

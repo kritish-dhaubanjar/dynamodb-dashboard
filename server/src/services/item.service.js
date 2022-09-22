@@ -1,5 +1,5 @@
+import AWS from "../config/aws";
 import { pick } from "../utils/object";
-import { document } from "../config/aws";
 
 // https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Scan.html
 // https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Query.html
@@ -20,7 +20,7 @@ export async function fetch(operation, tableName, conditions) {
   let scannedCount = 0;
 
   do {
-    const response = await document[operation](params); // document.scan(...), document.query(...)
+    const response = await AWS.document[operation](params); // AWS.document.scan(...), AWS.document.query(...)
     scannedCount += response.ScannedCount;
 
     items.push(...response.Items);
@@ -49,7 +49,7 @@ export async function get(tableName, keys) {
     Key: keys,
   };
 
-  const response = await document.get(params);
+  const response = await AWS.document.get(params);
 
   return response;
 }
@@ -61,7 +61,7 @@ export async function get(tableName, keys) {
  * @returns
  */
 export async function destroy(tableName, items) {
-  const response = await document.batchWrite({
+  const response = await AWS.document.batchWrite({
     RequestItems: {
       [tableName]: items,
     },
@@ -86,7 +86,7 @@ export async function create(tableName, schema, body) {
       .join(" AND "),
   };
 
-  const response = await document.put(params);
+  const response = await AWS.document.put(params);
 
   return response;
 }
@@ -108,7 +108,7 @@ export async function update(tableName, schema, { ref, body }) {
       .join(" AND "),
   };
 
-  const response = await document.put(params);
+  const response = await AWS.document.put(params);
   return response;
 }
 
@@ -119,7 +119,7 @@ export async function update(tableName, schema, { ref, body }) {
  * @returns
  */
 export async function transactUpdate(tableName, schema, { ref, body }) {
-  const response = document.transactWrite({
+  const response = AWS.document.transactWrite({
     TransactItems: [
       {
         Delete: {
