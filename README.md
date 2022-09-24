@@ -31,14 +31,13 @@ Currently, following environment variables are supported, with default values:
 
 To configure, set the AWS environment variables in the terminal session before launching `dynamodb-dashboard`, example in `.bashrc` file.
 
-#### Demo:
+### Development Setup
+1. [Setup Vue.js App](https://github.com/kritish-dhaubanjar/dynamodb-dashboard/tree/main/app)
+2. [Setup Node Express Server](https://github.com/kritish-dhaubanjar/dynamodb-dashboard/tree/main/server)
+
+### Demo:
 
 https://user-images.githubusercontent.com/25634165/192109458-a621bc06-788d-4d54-9dc2-9064380ee837.mp4
-
-
-#### Development Setup
-1. Setup Vue.js App
-2. Setup Node Express Server
 
 # License
 
