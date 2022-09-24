@@ -30,3 +30,7 @@ Currently, following environment variables are supported, with default values:
 - `AWS_SECRET_ACCESS_KEY` (default: fakeSecretAccessKey)
 
 To configure, set the AWS environment variables in the terminal session before launching `dynamodb-dashboard`, example in `.bashrc` file.
+
+#### Demo:
+
+https://user-images.githubusercontent.com/25634165/192109458-a621bc06-788d-4d54-9dc2-9064380ee837.mp4
