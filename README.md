@@ -36,6 +36,10 @@ To configure, set the AWS environment variables in the terminal session before l
 https://user-images.githubusercontent.com/25634165/192109458-a621bc06-788d-4d54-9dc2-9064380ee837.mp4
 
 
+#### Development Setup
+1. Setup Vue.js App
+2. Setup Node Express Server
+
 # License
 
 The MIT License (MIT)
