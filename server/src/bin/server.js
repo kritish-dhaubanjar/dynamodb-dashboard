@@ -32,7 +32,7 @@ export default ({ port, host, debug, open: _open }) => {
   });
 
   app.get("*", function (req, res) {
-    res.redirect(URL);
+    res.redirect("/dynamodb");
   });
 
   app.use(errorHandler);
