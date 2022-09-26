@@ -26,8 +26,8 @@ class AWS {
       endpoint: AWS_ENDPOINT,
       credentials: {
         accessKeyId: AWS_ACCESS_KEY_ID,
-        sessionToken: AWS_SESSION_TOKEN,
         secretAccessKey: AWS_SECRET_ACCESS_KEY,
+        ...(AWS_SESSION_TOKEN && { sessionToken: AWS_SESSION_TOKEN }),
       },
     });
 
