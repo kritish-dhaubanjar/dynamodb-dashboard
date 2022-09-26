@@ -34,5 +34,9 @@
     "joi": "^17.6.0",
     "morgan": "^1.10.0",
     "open": "^8.4.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kritish-dhaubanjar/dynamodb-dashboard.git"
   }
 }
