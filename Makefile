@@ -1,3 +1,4 @@
+NPM=npm
 YARN=yarn
 NODE=node
 
@@ -16,3 +17,9 @@ clean:
 
 start: all
 	$(NODE) ./server/build/bin/cli.js start -o
+
+publish: all
+	rm ./server/README.md
+	cp ./README.md ./server/README.md
+	cd ./server && $(NPM) publish --dry-run	
+
