@@ -16,40 +16,41 @@
       </div>
     </li>
 
-    <li
-      class="list-group-item py-2"
+    <router-link
+      custom
+      v-slot="{ navigate }"
       v-for="tableName in tableNames"
       :key="tableName"
+      :to="{
+        name: 'home',
+        query: {
+          limit: store.dynamodb.state.Limit,
+          tableName,
+          page: 1,
+          operation: 'SCAN',
+          indexName: tableName,
+        },
+      }"
     >
-      <RouterLink
-        :to="{
-          name: 'home',
-          query: {
-            limit: store.dynamodb.state.Limit,
-            tableName,
-            page: 1,
-            operation: 'SCAN',
-            indexName: tableName,
-          },
-        }"
-      >
+      <li class="list-group-item py-2" @click="navigate">
         <div class="form-check">
           <input
             class="form-check-input"
             name="table"
             type="radio"
+            :value="tableName"
             :id="tableName"
             :checked="
               tableName ===
               (activeTableName ?? store.table.state.Table.TableName)
             "
           />
-          <label class="form-check-label ms-3 text-break" :for="tableName">{{
+          <label class="form-check-label ps-3 text-break" :for="tableName">{{
             tableName
           }}</label>
         </div>
-      </RouterLink>
-    </li>
+      </li>
+    </router-link>
   </ul>
 </template>
 
@@ -76,3 +77,11 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+label,
+li {
+  cursor: pointer;
+  color: var(--bs-link-hover-color);
+}
+</style>

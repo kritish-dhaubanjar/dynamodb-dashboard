@@ -74,7 +74,7 @@ export function generateDynamodbParameters({ table, indexName, parameters }) {
 
   if (!pk || !parameters?.keys) return;
 
-  let filterExpression = "";
+  const filterExpression = "";
   let skConditionExpression = "";
   let pkConditionExpression = "";
   const attributeNames: any = {};

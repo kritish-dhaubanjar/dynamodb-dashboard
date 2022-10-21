@@ -2,7 +2,7 @@
   <div class="table-responsive mx-3">
     <table class="table table-hover table-bordered">
       <thead>
-        <tr>
+        <tr class="shadow-sm">
           <th scope="col">
             <input
               class="form-check-input mt-1"
@@ -272,5 +272,16 @@ td div {
 
 i:hover {
   cursor: pointer;
+}
+
+.table-responsive {
+  max-height: 700px;
+  thead {
+    tr {
+      top: 0;
+      position: sticky;
+      background: #fff;
+    }
+  }
 }
 </style>

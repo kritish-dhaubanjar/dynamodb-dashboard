@@ -56,7 +56,7 @@
 
       <br />
 
-      <div class="bg-white shadow-sm">
+      <div class="table-container bg-white shadow-sm">
         <br />
         <RetrieveNext
           v-if="
@@ -281,16 +281,33 @@ watch(
     route.query.page,
     route.query.parameters,
     route.query.indexName,
+    route.query.requestId, // diff requests
   ],
 
-  async ([tableName, _limit, _page, _parameters, _indexName], oldValues) => {
-    console.log({ tableName, _limit, _page, _parameters, _indexName });
+  async (
+    [tableName, _limit, _page, _parameters, _indexName, requestId],
+    oldValues
+  ) => {
+    console.log({
+      tableName,
+      _limit,
+      _page,
+      _parameters,
+      _indexName,
+      requestId,
+    });
 
     if (!tableName) return;
 
     // @TABLE
-    const [old_tableName, old_limit, old_page, old_parameters, old_indexName] =
-      oldValues ?? [];
+    const [
+      old_tableName,
+      old_limit,
+      old_page,
+      old_parameters,
+      old_indexName,
+      old_requestId,
+    ] = oldValues ?? [];
 
     {
       if (tableName !== old_tableName) {
@@ -313,7 +330,11 @@ watch(
       store.dynamodb.setters.reset();
     }
 
-    if (old_parameters !== _parameters || old_indexName !== _indexName) {
+    if (
+      old_parameters !== _parameters ||
+      old_indexName !== _indexName ||
+      old_requestId !== requestId
+    ) {
       const parameters = JSON.parse(
         decodeURIComponent(_parameters?.toString() ?? "{}")
       );
@@ -395,4 +416,9 @@ onMounted(() => {
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.table-container {
+  top: 0;
+  position: sticky;
+}
+</style>

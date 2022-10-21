@@ -523,7 +523,7 @@ const run = async () => {
     params: route.params,
     query: {
       ...route.query,
-      page: 1,
+      requestId: Date.now(),
       operation: operation.value,
       indexName: indexName.value,
       parameters: dynamodbParameters.value
