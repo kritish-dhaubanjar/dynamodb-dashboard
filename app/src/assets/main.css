@@ -15,3 +15,11 @@ input, button, select, a{
   min-height: 60vh;
   max-height: 60vh;
 }
+
+.modal-backdrop.show{
+  display: none;
+}
+
+.modal{
+  background-color: rgba(0,0,0,0.5);
+}
