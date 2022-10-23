@@ -1,6 +1,6 @@
 import * as TableService from "../services/table.service";
 
-export async function index(req, res, next) {
+export async function index(_req, res, next) {
   try {
     const tables = await TableService.all();
     return res.json(tables);

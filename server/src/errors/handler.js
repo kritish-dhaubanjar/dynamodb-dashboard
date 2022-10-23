@@ -1,4 +1,4 @@
-export default function (error, req, res, next) {
+export default function(error, _req, res, _next) {
   if (error.isJoi) {
     return res.status(422).json(error);
   }

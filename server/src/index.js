@@ -22,11 +22,11 @@ app.use("/dynamodb/api", routes);
 app.use("/dynamodb", express.static(path.join(__dirname, "..", "public")));
 
 // spa
-app.get("/dynamodb/*", (req, res) => {
+app.get("/dynamodb/*", (_req, res) => {
   res.sendFile(path.resolve(__dirname, "..", "public", "index.html"));
 });
 
-app.get("*", function (req, res) {
+app.get("*", function(_req, res) {
   res.redirect("/dynamodb");
 });
 

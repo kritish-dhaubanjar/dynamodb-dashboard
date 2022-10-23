@@ -2,25 +2,25 @@ import Joi from "joi";
 import * as TableService from "../services/table.service";
 import { scan, destroy, query } from "../schemas/item.joi";
 
-export function validateScan(req, res, next) {
+export function validateScan(req, _res, next) {
   const { error } = scan.validate(req.body);
   if (error) return next(error);
   next();
 }
 
-export function validateQuery(req, res, next) {
+export function validateQuery(req, _res, next) {
   const { error } = query.validate(req.body);
   if (error) return next(error);
   next();
 }
 
-export function validateDelete(req, res, next) {
+export function validateDelete(req, _res, next) {
   const { error } = destroy.validate(req.body);
   if (error) return next(error);
   next();
 }
 
-export async function validateCreate(req, res, next) {
+export async function validateCreate(req, _res, next) {
   const tableName = req.params.tableName;
 
   try {
@@ -44,7 +44,7 @@ export async function validateCreate(req, res, next) {
   }
 }
 
-export async function validateUpdate(req, res, next) {
+export async function validateUpdate(req, _res, next) {
   const tableName = req.params.tableName;
 
   try {
