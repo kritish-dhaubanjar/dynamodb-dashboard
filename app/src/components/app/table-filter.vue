@@ -204,7 +204,7 @@
                         <option value="BOOL" disabled>
                           Boolean (Unsupported)
                         </option>
-                        <option disabled>Null (Unsupported)</option>
+                        <option value="NULL">Null</option>
                       </select>
                     </div>
                     <div class="col-6 col-xl-2">
@@ -214,24 +214,9 @@
                         v-model="filter.condition"
                         @change="(e) => evaluateValue(e, i)"
                       >
-                        <option value="=">=</option>
-                        <option value="<=">&lt;=</option>
-                        <option value="<">&lt;</option>
-                        <option value=">=">&gt;=</option>
-                        <option value=">">&gt;</option>
-                        <option value="between">Between</option>
-                        <option value="attribute_exists">Exists</option>
-                        <option value="attribute_not_exists">Not exists</option>
-                        <!-- S only -->
-                        <option v-if="filter.type === 'S'" value="contains">
-                          Contains
-                        </option>
-                        <option v-if="filter.type === 'S'" value="not contains">
-                          Not contains
-                        </option>
-                        <option v-if="filter.type === 'S'" value="begins_with">
-                          Begins with
-                        </option>
+                      <option v-for="{label, value} of FILTER_CONDITIONS_BY_TYPE[filter.type]" :key="value" :value="value">
+                        {{label}}
+                      </option>
                       </select>
                     </div>
                     <div class="col-6 col-xl-4">
@@ -335,6 +320,7 @@
 import * as boostrap from "bootstrap";
 import { useRoute, useRouter } from "vue-router";
 import { generateDynamodbParameters } from "@/utils/table";
+import FILTER_CONDITIONS_BY_TYPE from '@/constants/conditions'
 import {
   computed,
   inject,

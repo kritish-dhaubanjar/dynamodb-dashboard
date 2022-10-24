@@ -1,0 +1,53 @@
+const FILTER_CONDITIONS_BY_TYPE = {
+  S: [
+    { label: "=", value: "=" },
+    { label: "<>", value: "<>" },
+    { label: "<=", value: "<=" },
+    { label: "<", value: "<" },
+    { label: ">=", value: ">=" },
+    { label: ">", value: ">" },
+    { label: "Between", value: "between" },
+    { label: "Exists", value: "attribute_exists" },
+    { label: "Not exists", value: "attribute_not_exists" },
+    { label: "Contains", value: "contains" },
+    { label: "Not contains", value: "not contains" },
+    { label: "Begins with", value: "begins_with" },
+  ],
+  N: [
+    { label: "=", value: "=" },
+    { label: "<>", value: "<>" },
+    { label: "<=", value: "<=" },
+    { label: "<", value: "<" },
+    { label: ">=", value: ">=" },
+    { label: ">", value: ">" },
+    { label: "Between", value: "between" },
+    { label: "Exists", value: "attribute_exists" },
+    { label: "Not exists", value: "attribute_not_exists" },
+  ],
+  B: [
+    { label: "=", value: "=" },
+    { label: "<>", value: "<>" },
+    { label: "<=", value: "<=" },
+    { label: "<", value: "<" },
+    { label: ">=", value: ">=" },
+    { label: ">", value: ">" },
+    { label: "Between", value: "between" },
+    { label: "Exists", value: "attribute_exists" },
+    { label: "Not exists", value: "attribute_not_exists" },
+    { label: "Contains", value: "contains" },
+    { label: "Not contains", value: "not contains" },
+    { label: "Begins with", value: "begins_with" },
+  ],
+  BOOL: [
+    { label: "=", value: "=" },
+    { label: "<>", value: "<>" },
+    { label: "Exists", value: "attribute_exists" },
+    { label: "Not exists", value: "attribute_not_exists" },
+  ],
+  NULL: [
+    { label: "Exists", value: "attribute_exists" },
+    { label: "Not exists", value: "attribute_not_exists" },
+  ],
+};
+
+export default FILTER_CONDITIONS_BY_TYPE;
