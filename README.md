@@ -1,9 +1,7 @@
 ## DynamoDB Dashboard
-
 A Web GUI Dashboard for local or remote [DynamoDB](https://aws.amazon.com/blogs/aws/dynamodb-local-for-desktop-development/), inspired from [dynamodb-admin](https://github.com/aaronshaf/dynamodb-admin).
 
 #### Installation:
-
 Install application globally:
 ```shell
 npm install --global dynamodb-dashboard
@@ -35,10 +33,11 @@ To configure, set the AWS environment variables in the terminal session before l
 1. [Setup Vue.js App](https://github.com/kritish-dhaubanjar/dynamodb-dashboard/tree/main/app)
 2. [Setup Node Express Server](https://github.com/kritish-dhaubanjar/dynamodb-dashboard/tree/main/server)
 
-### Demo:
+### Preview:
+![dynamodb-dashboard](https://media.discordapp.net/attachments/896610721754910751/1033278926031691806/unknown.png?width=1362&height=666)
 
+### Demo:
 https://user-images.githubusercontent.com/25634165/192109458-a621bc06-788d-4d54-9dc2-9064380ee837.mp4
 
 # License
-
 Distributed under the MIT License. See `LICENSE` for more information.
