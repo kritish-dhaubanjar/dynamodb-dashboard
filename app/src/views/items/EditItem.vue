@@ -8,6 +8,9 @@
       </p>
       <textarea ref="textAreaRef" />
 
+      <div class="alert alert-danger rounded-0" role="alert" v-if="!!errorMsg">
+        {{ errorMsg }}
+      </div>
       <br />
       <br />
       <br />
@@ -81,9 +84,10 @@ import * as CodeMirror from "codemirror";
 import { linter } from "@codemirror/lint";
 import { oneDark } from "@codemirror/theme-one-dark";
 import { json, jsonParseLinter } from "@codemirror/lang-json";
+import parseJson from "parse-json";
 
 import { useRoute, useRouter } from "vue-router";
-import { computed, inject, onMounted, reactive, ref, watch } from "vue";
+import { inject, onMounted, reactive, ref, watch } from "vue";
 
 import { getTable } from "@/services/table";
 import { getItem, updateItem } from "@/services/item";
@@ -93,6 +97,7 @@ export default {
     let cm;
     const item = ref("");
     const editItem = ref("");
+    const errorMsg = ref("");
 
     const isValid = ref(true);
     const hasKeyChanged = ref(false);
@@ -151,16 +156,17 @@ export default {
       isValid.value = false;
 
       try {
-        const validItem = JSON.parse(edited);
-        const originalItem = JSON.parse(original);
-
+        const validItem = parseJson(edited);
+        const originalItem = parseJson(original);
         isValid.value = true;
+        errorMsg.value = "";
         hasKeyChanged.value = false;
 
         Object.keys(route.query).forEach((key) => {
           hasKeyChanged.value ||= originalItem[key] !== validItem[key];
         });
       } catch (error) {
+        errorMsg.value = error.message;
         isValid.value = false;
       }
     });
@@ -227,6 +233,7 @@ export default {
       toastRef,
       cancel,
       save,
+      errorMsg,
     };
   },
 };
