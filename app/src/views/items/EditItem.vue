@@ -74,7 +74,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import * as bootstrap from "bootstrap";
 
 import * as CodeMirror from "codemirror";
