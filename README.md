@@ -35,6 +35,42 @@ To configure, set the AWS environment variables in the terminal session before l
 1. [Setup Vue.js App](https://github.com/kritish-dhaubanjar/dynamodb-dashboard/tree/main/app)
 2. [Setup Node Express Server](https://github.com/kritish-dhaubanjar/dynamodb-dashboard/tree/main/server)
 
+## Docker
+
+<details>
+  <summary><h4>1. Build Docker image & run a container (from source & Dockerfile)</h4></summary>
+  
+  **a. Clone Repository**
+  ```shell
+  $ git clone https://github.com/kritish-dhaubanjar/dynamodb-dashboard.git
+  $ cd dynamodb-dashboard
+  ```
+  
+  **b. Build Docker Image**
+  ```shell
+  $ docker build . -t dynamodb-dashboard:local
+  ```
+  
+  *Build Arguments:*
+  - `PORT_ARG` (default: `4567`)
+  - `HOST_ARG` (default: `0.0.0.0`)
+  - `PREFIX_ARG` (default: `dynamodb`, prefix of route URIs)
+  
+  **c. Run Docker Container**
+  ```shell
+  $ docker run -p 8080:4567 dynamodb-dashboard:local
+  ```
+  
+  *Environment Variables:*
+  - `AWS_REGION` (default: `us-west-2`)
+  - `AWS_ENDPOINT` (default: `http://127.0.0.1:8000`)
+  - `AWS_ACCESS_KEY_ID` (default: `fakeAccessKeyId`)
+  - `AWS_SECRET_ACCESS_KEY` (default: `fakeSecretAccessKey`)
+  - `AWS_SESSION_TOKEN` (optional)
+  
+  *NOTE: For dynamodb running in the host machine, use flag `--network=host` for running dynamodb-dashboard container.*
+</details>
+
 ### Preview:
 ![dynamodb-dashboard](https://media.discordapp.net/attachments/896610721754910751/1033278926031691806/unknown.png?width=1362&height=666)
 
