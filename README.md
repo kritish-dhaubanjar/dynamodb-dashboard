@@ -70,6 +70,23 @@ To configure, set the AWS environment variables in the terminal session before l
   
   *NOTE: For dynamodb running in the host machine, use flag `--network=host` for running dynamodb-dashboard container.*
 </details>
+<details>
+  <summary><h4>2. Run a container (<a href="https://hub.docker.com/r/kritishdhaubanjar/dynamodb-dashboard">from Docker Hub</a>)</h4></summary>
+  
+  ```shell
+  $ docker pull kritishdhaubanjar/dynamodb-dashboard:latest
+  $ docker run -p 8080:4567 kritishdhaubanjar/dynamodb-dashboard:latest
+  ```
+  
+  *Environment Variables:*
+  - `AWS_REGION` (default: `us-west-2`)
+  - `AWS_ENDPOINT` (default: `http://127.0.0.1:8000`)
+  - `AWS_ACCESS_KEY_ID` (default: `fakeAccessKeyId`)
+  - `AWS_SECRET_ACCESS_KEY` (default: `fakeSecretAccessKey`)
+  - `AWS_SESSION_TOKEN` (optional)
+  
+  *NOTE: For dynamodb running in the host machine, use flag `--network=host` for running dynamodb-dashboard container.*
+</details>
 
 ### Preview:
 ![dynamodb-dashboard](https://media.discordapp.net/attachments/896610721754910751/1033278926031691806/unknown.png?width=1362&height=666)
