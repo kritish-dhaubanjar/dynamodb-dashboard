@@ -1,0 +1,25 @@
+version: "3.7"
+
+services:
+  dynamodb-local:
+    image: amazon/dynamodb-local:latest
+    container_name: dynamodb-local
+    working_dir: /home/dynamodblocal
+    ports:
+      - 8000:8000
+    volumes:
+      - ./:/home/dynamodblocal/data
+    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data"
+
+  dynamodb-dashboard:
+    container_name: dynamodb-dashboard
+    image: kritishdhaubanjar/dynamodb-dashboard:latest
+    ports:
+      - 8080:4567
+    environment:
+      AWS_REGION: us-west-2
+      AWS_ENDPOINT: http://dynamodb-local:8000
+      AWS_ACCESS_KEY_ID: fakeMyKeyId
+      AWS_SESSION_TOKEN: fakeSessionToken
+      AWS_SECRET_ACCESS_KEY: fakeSecretAccessKey
+

@@ -1,0 +1,14 @@
+version: "3.7"
+
+services:
+  dynamodb-dashboard:
+    container_name: dynamodb-dashboard
+    image: kritishdhaubanjar/dynamodb-dashboard:latest
+    network_mode: host
+    environment:
+      AWS_REGION: us-west-2
+      AWS_ENDPOINT: http://0.0.0.0:8000
+      AWS_ACCESS_KEY_ID: fakeMyKeyId
+      AWS_SESSION_TOKEN: fakeSessionToken
+      AWS_SECRET_ACCESS_KEY: fakeSecretAccessKey
+
