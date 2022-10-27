@@ -37,6 +37,8 @@ To configure, set the AWS environment variables in the terminal session before l
 
 ## Docker
 
+### Dockerfile
+
 <details>
   <summary><h4>1. Build Docker image & run a container (from source & Dockerfile)</h4></summary>
   
@@ -86,6 +88,43 @@ To configure, set the AWS environment variables in the terminal session before l
   - `AWS_SESSION_TOKEN` (optional)
   
   *NOTE: For dynamodb running in the host machine, use flag `--network=host` for running dynamodb-dashboard container.*
+</details>
+
+### docker-compose
+
+<details>
+  <summary><h4>1. Build Docker image & run a container (from <a href="https://github.com/kritish-dhaubanjar/dynamodb-dashboard/blob/main/docker-compose.build.yml">docker-compose.build.yml</a>)</h4></summary>
+  
+  *dynamoDB image (from docker hub) + dynamodb-dashboard image (built from source)*
+  
+  **a. Clone Repository**
+  ```shell
+  $ git clone https://github.com/kritish-dhaubanjar/dynamodb-dashboard.git
+  $ cd dynamodb-dashboard
+  ```
+  
+  **b. Build & Run Docker Image**
+  ```shell
+  $ docker-compose -f docker-compose.build.yml up
+  ```
+</details>
+<details>
+  <summary><h4>2. Run a container (from <a href="https://github.com/kritish-dhaubanjar/dynamodb-dashboard/blob/main/docker-compose.yml">docker-compose.yml</a>)</h4></summary>
+  
+  *dynamoDB image (from docker hub) + dynamodb-dashboard image (from docker hub)*
+  
+  ```shell
+  $ docker-compose up
+  ```
+</details>
+<details>
+  <summary><h4>3. Run a container (from <a href="https://github.com/kritish-dhaubanjar/dynamodb-dashboard/blob/main/docker-compose.host.yml">docker-compose.host.yml</a>) using host networking</h4></summary>
+  
+  *dynamoDB (host network) + dynamodb-dashboard image (from docker hub)*
+  
+  ```shell
+  $ docker-compose -f docker-compose.host.yml up
+  ```
 </details>
 
 ### Preview:
