@@ -3,6 +3,8 @@ A Web GUI Dashboard for local or remote [DynamoDB](https://aws.amazon.com/blogs/
 
 ![npm](https://img.shields.io/npm/v/dynamodb-dashboard?label=npm&style=flat-square) ![npm](https://img.shields.io/npm/dw/dynamodb-dashboard?style=flat-square) ![NPM](https://img.shields.io/npm/l/dynamodb-dashboard?style=flat-square)
 
+![Docker Pulls](https://img.shields.io/docker/pulls/kritishdhaubanjar/dynamodb-dashboard?style=flat-square) ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/kritishdhaubanjar/dynamodb-dashboard/latest?style=flat-square)
+
 #### Installation:
 Install application globally:
 ```shell
