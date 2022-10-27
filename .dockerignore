@@ -1,0 +1,8 @@
+# Builds
+./app/dist
+./server/build
+
+# node_modules
+./app/node_modules
+./server/node_modules
+

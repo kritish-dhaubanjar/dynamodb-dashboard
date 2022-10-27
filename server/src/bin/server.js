@@ -9,9 +9,9 @@ import errorHandler from "../errors/handler";
 
 AWS.initialize();
 
-export default ({ port, host, debug, open: _open }) => {
+export default ({ port, host, debug, open: _open, prefix }) => {
   const root = `http://${host}:${port}`;
-  const URL = `${root}/dynamodb`;
+  const URL = `${root}/${prefix}`;
 
   const app = express();
   app.use(express.json());
@@ -20,19 +20,24 @@ export default ({ port, host, debug, open: _open }) => {
     app.use(morgan("dev"));
   }
 
+  // eg: /dynamodb/api
+  const SPA = `/${prefix}/*`;
+  const ASSETS = `/${prefix}`;
+  const API = `/${prefix}/api`;
+
   // api
-  app.use("/dynamodb/api", routes);
+  app.use(API, routes);
 
   // assets
-  app.use("/dynamodb", express.static(path.join(__dirname, "..", "public")));
+  app.use(ASSETS, express.static(path.join(__dirname, "..", "public")));
 
   // spa
-  app.get("/dynamodb/*", (_req, res) => {
+  app.get(SPA, (_req, res) => {
     res.sendFile(path.resolve(__dirname, "..", "public", "index.html"));
   });
 
   app.get("*", function(_req, res) {
-    res.redirect("/dynamodb");
+    res.redirect(ASSETS);
   });
 
   app.use(errorHandler);
