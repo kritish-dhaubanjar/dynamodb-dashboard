@@ -84,7 +84,6 @@ import * as CodeMirror from "codemirror";
 import { linter } from "@codemirror/lint";
 import { oneDark } from "@codemirror/theme-one-dark";
 import { json, jsonParseLinter } from "@codemirror/lang-json";
-import parseJson from "parse-json";
 
 import { useRoute, useRouter } from "vue-router";
 import { inject, onMounted, reactive, ref, watch } from "vue";
@@ -156,8 +155,8 @@ export default {
       isValid.value = false;
 
       try {
-        const validItem = parseJson(edited);
-        const originalItem = parseJson(original);
+        const validItem = JSON.parse(edited);
+        const originalItem = JSON.parse(original);
         isValid.value = true;
         errorMsg.value = "";
         hasKeyChanged.value = false;
