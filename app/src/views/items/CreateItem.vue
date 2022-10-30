@@ -74,19 +74,17 @@
 import * as bootstrap from "bootstrap";
 
 import * as CodeMirror from "codemirror";
-import { linter, lintGutter } from "@codemirror/lint";
-import { oneDark } from "@codemirror/theme-one-dark";
-import { json, jsonParseLinter } from "@codemirror/lang-json";
 
 import { useRoute, useRouter } from "vue-router";
-import { computed, inject, onMounted, reactive, ref, watch } from "vue";
+import { inject, onMounted, reactive, ref, watch } from "vue";
 
 import { getTable } from "@/services/table";
 import { createItem } from "@/services/item";
+import codeMirrorConfig from "./codeMirrorConfig";
 
 export default {
   setup() {
-    let cm;
+    let codeMirror;
     const item = ref("");
     const editItem = ref("");
 
@@ -122,7 +120,9 @@ export default {
         const keys = Object.keys(original);
 
         keys.forEach((key) => (q[key] = validItem[key]));
-      } catch (error) {}
+      } catch (error) {
+        void 0;
+      }
 
       return q;
     };
@@ -173,35 +173,13 @@ export default {
 
     // https://codemirror.net/
     onMounted(async () => {
-      const Theme = CodeMirror.EditorView.theme({
-        ".cm-line, .cm-line span": {
-          "font-size": "13px",
-          "font-weight": "bold",
-          "font-family": "'Fira Code', monospace !important",
-        },
-        ".cm-tooltip": {
-          "background-color": "#fafafa",
-        },
-      });
-
-      cm = editorFromTextArea(textAreaRef.value, [
-        CodeMirror.basicSetup,
-        json(),
-        linter(jsonParseLinter()),
-        lintGutter(),
-        Theme,
-        oneDark,
-        CodeMirror.EditorView.updateListener.of((update) => {
-          editItem.value = update.state.doc.toString();
-        }),
-      ]);
-
       await initItem();
+      codeMirror = codeMirrorConfig(textAreaRef, editItem);
 
-      cm.dispatch({
+      codeMirror.dispatch({
         changes: {
           from: 0,
-          to: cm.state.doc.length,
+          to: codeMirror.state.doc.length,
           insert: item.value + "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
         },
       });
@@ -225,17 +203,6 @@ export default {
 
       item.value = JSON.stringify(emptyItem, null, 2);
       store.table.setters.setTable(table);
-    };
-
-    const editorFromTextArea = (textarea, extensions) => {
-      const view = new CodeMirror.EditorView({
-        doc: JSON.stringify("", null, "\t"),
-        extensions,
-      });
-      textarea.parentNode.insertBefore(view.dom, textarea);
-      textarea.style.display = "none";
-
-      return view;
     };
 
     return {
