@@ -37,6 +37,14 @@ To configure, set the AWS environment variables in the terminal session before l
 1. [Setup Vue.js App](https://github.com/kritish-dhaubanjar/dynamodb-dashboard/tree/main/app)
 2. [Setup Node Express Server](https://github.com/kritish-dhaubanjar/dynamodb-dashboard/tree/main/server)
 
+**OR**
+
+```shell
+$ git clone https://github.com/kritish-dhaubanjar/dynamodb-dashboard.git
+$ cd dynamodb-dashboard
+$ make watch
+```
+
 ## Docker
 
 ### Dockerfile
