@@ -21,5 +21,15 @@ start: all
 publish: all
 	rm ./server/README.md
 	cp ./README.md ./server/README.md
-	cd ./server && $(NPM) publish --dry-run	
+	cd ./server && $(NPM) publish --dry-run
+
+# development
+.server:
+	cd ./server && $(YARN) dev
+
+.app:
+	cd ./app && $(YARN) dev
+
+watch: install
+	make -j 2 .server .app
 
