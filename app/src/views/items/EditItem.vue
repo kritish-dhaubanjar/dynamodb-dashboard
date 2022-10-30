@@ -78,7 +78,7 @@
 import * as bootstrap from "bootstrap";
 
 import * as CodeMirror from "codemirror";
-import { linter } from "@codemirror/lint";
+import { linter, lintGutter } from "@codemirror/lint";
 import { oneDark } from "@codemirror/theme-one-dark";
 import { json, jsonParseLinter } from "@codemirror/lang-json";
 
@@ -179,6 +179,7 @@ export default {
         CodeMirror.basicSetup,
         json(),
         linter(jsonParseLinter()),
+        lintGutter(),
         Theme,
         oneDark,
         CodeMirror.EditorView.updateListener.of((update) => {
