@@ -78,7 +78,7 @@
 import * as bootstrap from "bootstrap";
 
 import * as CodeMirror from "codemirror";
-import { linter } from "@codemirror/lint";
+import { linter, lintGutter } from "@codemirror/lint";
 import { oneDark } from "@codemirror/theme-one-dark";
 import { json, jsonParseLinter } from "@codemirror/lang-json";
 
@@ -173,14 +173,19 @@ export default {
           "font-weight": "bold",
           "font-family": "'Fira Code', monospace !important",
         },
+        ".cm-tooltip": {
+          "background-color": "#fafafa",
+        },
       });
 
       cm = editorFromTextArea(textAreaRef.value, [
         CodeMirror.basicSetup,
         json(),
         linter(jsonParseLinter()),
+        lintGutter(),
         Theme,
         oneDark,
+        // oneDarkHighlightStyle,
         CodeMirror.EditorView.updateListener.of((update) => {
           editItem.value = update.state.doc.toString();
         }),
