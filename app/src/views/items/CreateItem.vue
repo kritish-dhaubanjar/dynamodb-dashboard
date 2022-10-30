@@ -120,7 +120,9 @@ export default {
         const keys = Object.keys(original);
 
         keys.forEach((key) => (q[key] = validItem[key]));
-      } catch (error) {}
+      } catch (error) {
+        void 0;
+      }
 
       return q;
     };
