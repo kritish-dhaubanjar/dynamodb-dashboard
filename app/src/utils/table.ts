@@ -67,6 +67,7 @@ function getKeySchemaWithAttributeType({ indexName, table }) {
 function valueOf(value, AttributeType) {
   if (AttributeType === "S") return String(value);
   if (AttributeType === "N") return parseInt(value);
+  if (AttributeType === "BOOL") return String(value) === "true";
 }
 
 export function generateDynamodbParameters({ table, indexName, parameters }) {

@@ -201,9 +201,7 @@
                         <option value="S">String</option>
                         <option value="N">Number</option>
                         <option value="B" disabled>Binary (Unsupported)</option>
-                        <option value="BOOL" disabled>
-                          Boolean (Unsupported)
-                        </option>
+                        <option value="BOOL">Boolean</option>
                         <option value="NULL">Null</option>
                       </select>
                     </div>
@@ -214,9 +212,15 @@
                         v-model="filter.condition"
                         @change="(e) => evaluateValue(e, i)"
                       >
-                      <option v-for="{label, value} of FILTER_CONDITIONS_BY_TYPE[filter.type]" :key="value" :value="value">
-                        {{label}}
-                      </option>
+                        <option
+                          v-for="{ label, value } of FILTER_CONDITIONS_BY_TYPE[
+                            filter.type
+                          ]"
+                          :key="value"
+                          :value="value"
+                        >
+                          {{ label }}
+                        </option>
                       </select>
                     </div>
                     <div class="col-6 col-xl-4">
@@ -320,7 +324,7 @@
 import * as boostrap from "bootstrap";
 import { useRoute, useRouter } from "vue-router";
 import { generateDynamodbParameters } from "@/utils/table";
-import FILTER_CONDITIONS_BY_TYPE from '@/constants/conditions'
+import FILTER_CONDITIONS_BY_TYPE from "@/constants/conditions";
 import {
   computed,
   inject,
