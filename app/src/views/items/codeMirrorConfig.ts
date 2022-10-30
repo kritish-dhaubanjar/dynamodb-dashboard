@@ -1,8 +1,12 @@
 import * as CodeMirror from "codemirror";
 
-import { linter, lintGutter } from "@codemirror/lint";
+import { keymap } from "@codemirror/view";
+import { search } from "@codemirror/search";
 import { oneDark } from "@codemirror/theme-one-dark";
+import { linter, lintGutter } from "@codemirror/lint";
 import { json, jsonParseLinter } from "@codemirror/lang-json";
+import { indentWithTab, defaultKeymap } from "@codemirror/commands";
+
 import type { Extension } from "@codemirror/state";
 
 const Theme = CodeMirror.EditorView.theme({
@@ -14,12 +18,16 @@ const Theme = CodeMirror.EditorView.theme({
   ".cm-tooltip": {
     "background-color": "#fafafa",
   },
+  // https://discuss.codemirror.net/t/code-editor-with-automatic-height-that-has-a-minimum-and-maximum-height/4015/5
+  '&': { maxHeight: '60vh' },
+  '.cm-gutter,.cm-content': { minHeight: '60vh' },
+  '.cm-scroller': { overflow: 'auto' },
 });
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const editorFromTextArea = (textarea: any, extensions: Extension[]) => {
   const view = new CodeMirror.EditorView({
-    doc: JSON.stringify("", null, "\t"),
+    doc: JSON.stringify({}, null, "\t"),
     extensions,
   });
   textarea.parentNode.insertBefore(view.dom, textarea);
@@ -35,11 +43,13 @@ const codeMirrorConfig = (textAreaRef: any, editItem: any) => {
     json(),
     linter(jsonParseLinter()),
     lintGutter(),
+    search({ top: true }),
     Theme,
     oneDark,
     CodeMirror.EditorView.updateListener.of((update) => {
       editItem.value = update.state.doc.toString();
     }),
+    keymap.of([...defaultKeymap, indentWithTab])
   ]);
   return instance;
 };

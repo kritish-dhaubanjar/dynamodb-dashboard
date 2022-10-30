@@ -10,12 +10,6 @@ input, button, select, a{
   box-shadow: none !important;
 }
 
-#edit-item .cm-editor, 
-#edit-item .cm-scroller {
-  min-height: 60vh;
-  max-height: 60vh;
-}
-
 .modal-backdrop.show{
   display: none;
 }
