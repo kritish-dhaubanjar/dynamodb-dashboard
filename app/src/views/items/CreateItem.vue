@@ -173,8 +173,9 @@ export default {
 
     // https://codemirror.net/
     onMounted(async () => {
-      await initItem();
       codeMirror = codeMirrorConfig(textAreaRef, editItem);
+
+      await initItem();
 
       codeMirror.dispatch({
         changes: {
