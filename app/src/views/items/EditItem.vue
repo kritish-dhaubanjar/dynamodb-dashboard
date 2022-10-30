@@ -79,7 +79,7 @@ import * as bootstrap from "bootstrap";
 
 import * as CodeMirror from "codemirror";
 import { linter, lintGutter } from "@codemirror/lint";
-import { oneDark } from "@codemirror/theme-one-dark";
+import { oneDark, oneDarkHighlightStyle } from "@codemirror/theme-one-dark";
 import { json, jsonParseLinter } from "@codemirror/lang-json";
 
 import { useRoute, useRouter } from "vue-router";
@@ -173,6 +173,9 @@ export default {
           "font-weight": "bold",
           "font-family": "'Fira Code', monospace !important",
         },
+        ".cm-tooltip": {
+          "background-color": "#fafafa",
+        },
       });
 
       cm = editorFromTextArea(textAreaRef.value, [
@@ -182,6 +185,7 @@ export default {
         lintGutter(),
         Theme,
         oneDark,
+        // oneDarkHighlightStyle,
         CodeMirror.EditorView.updateListener.of((update) => {
           editItem.value = update.state.doc.toString();
         }),
