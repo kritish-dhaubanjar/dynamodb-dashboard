@@ -19,9 +19,9 @@ const Theme = CodeMirror.EditorView.theme({
     "background-color": "#fafafa",
   },
   // https://discuss.codemirror.net/t/code-editor-with-automatic-height-that-has-a-minimum-and-maximum-height/4015/5
-  '&': { maxHeight: '60vh' },
-  '.cm-gutter,.cm-content': { minHeight: '60vh' },
-  '.cm-scroller': { overflow: 'auto' },
+  "&": { maxHeight: "60vh" },
+  ".cm-gutter,.cm-content": { minHeight: "60vh" },
+  ".cm-scroller": { overflow: "auto" },
 });
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -49,7 +49,7 @@ const codeMirrorConfig = (textAreaRef: any, editItem: any) => {
     CodeMirror.EditorView.updateListener.of((update) => {
       editItem.value = update.state.doc.toString();
     }),
-    keymap.of([...defaultKeymap, indentWithTab])
+    keymap.of([...defaultKeymap, indentWithTab]),
   ]);
   return instance;
 };

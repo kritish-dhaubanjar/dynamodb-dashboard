@@ -8,14 +8,17 @@
       </p>
       <textarea ref="textAreaRef" />
 
-      <br />
-      <br />
-      <br />
+      <div class="alert alert-danger rounded-0" role="alert" v-if="!!errorMsg">
+        {{ errorMsg }}
+      </div>
 
       <div class="alert alert-primary rounded-0" role="alert" v-if="!hasKeys">
-        You must provide the partition key attribute metricId with a non-empty
-        value.
+        You must provide the partition key attribute with a non-empty value.
       </div>
+
+      <br />
+      <br />
+      <br />
 
       <div class="d-flex justify-content-end">
         <button
@@ -85,8 +88,9 @@ import codeMirrorConfig from "./codeMirrorConfig";
 export default {
   setup() {
     let codeMirror;
-    const item = ref("");
-    const editItem = ref("");
+    const item = ref("{}");
+    const editItem = ref("{}");
+    const errorMsg = ref("");
 
     const hasKeys = ref(true);
     const isValid = ref(true);
@@ -155,6 +159,7 @@ export default {
 
     watch([item, editItem], ([original, edited]) => {
       isValid.value = false;
+      errorMsg.value = "";
 
       try {
         const validItem = JSON.parse(edited);
@@ -168,6 +173,7 @@ export default {
         );
       } catch (error) {
         isValid.value = false;
+        errorMsg.value = error.message;
       }
     });
 
@@ -215,6 +221,7 @@ export default {
       toastRef,
       cancel,
       create,
+      errorMsg,
     };
   },
 };

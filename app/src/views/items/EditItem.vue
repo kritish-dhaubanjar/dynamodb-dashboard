@@ -11,6 +11,7 @@
       <div class="alert alert-danger rounded-0" role="alert" v-if="!!errorMsg">
         {{ errorMsg }}
       </div>
+
       <br />
       <br />
       <br />
@@ -89,8 +90,8 @@ import { getItem, updateItem } from "@/services/item";
 export default {
   setup() {
     let codeMirror;
-    const item = ref("");
-    const editItem = ref("");
+    const item = ref("{}");
+    const editItem = ref("{}");
     const errorMsg = ref("");
 
     const isValid = ref(true);
@@ -148,12 +149,12 @@ export default {
 
     watch([item, editItem], ([original, edited]) => {
       isValid.value = false;
+      errorMsg.value = "";
 
       try {
         const validItem = JSON.parse(edited);
         const originalItem = JSON.parse(original);
         isValid.value = true;
-        errorMsg.value = "";
         hasKeyChanged.value = false;
 
         Object.keys(route.query).forEach((key) => {
