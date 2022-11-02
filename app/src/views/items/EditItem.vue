@@ -8,6 +8,9 @@
       </p>
       <textarea ref="textAreaRef" />
 
+      <div class="alert alert-danger rounded-0" role="alert" v-if="!!errorMsg">
+        {{ errorMsg }}
+      </div>
       <br />
       <br />
       <br />
@@ -88,6 +91,7 @@ export default {
     let codeMirror;
     const item = ref("");
     const editItem = ref("");
+    const errorMsg = ref("");
 
     const isValid = ref(true);
     const hasKeyChanged = ref(false);
@@ -148,14 +152,15 @@ export default {
       try {
         const validItem = JSON.parse(edited);
         const originalItem = JSON.parse(original);
-
         isValid.value = true;
+        errorMsg.value = "";
         hasKeyChanged.value = false;
 
         Object.keys(route.query).forEach((key) => {
           hasKeyChanged.value ||= originalItem[key] !== validItem[key];
         });
       } catch (error) {
+        errorMsg.value = error.message;
         isValid.value = false;
       }
     });
@@ -198,6 +203,7 @@ export default {
       toastRef,
       cancel,
       save,
+      errorMsg,
     };
   },
 };
