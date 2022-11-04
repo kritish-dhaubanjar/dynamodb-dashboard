@@ -39,7 +39,7 @@
           {{ limit }} items
         </button>
         <ul class="dropdown-menu rounded-0">
-          <li v-for="limit in [10, 25, 50, 100, 200, 300]" :key="limit">
+          <li v-for="limit in [10, 25, 50, 100, 200, 300, 500]" :key="limit">
             <RouterLink
               class="dropdown-item"
               :to="{ name: 'home', query: { ...route.query, limit } }"
