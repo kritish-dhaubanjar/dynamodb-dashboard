@@ -12,10 +12,6 @@
         {{ errorMsg }}
       </div>
 
-      <br />
-      <br />
-      <br />
-
       <div
         class="alert alert-primary rounded-0"
         role="alert"
@@ -24,6 +20,10 @@
         You are changing the values of the item keys. A transaction will be used
         to delete and recreate the item with the new keys.
       </div>
+
+      <br />
+      <br />
+      <br />
 
       <div class="d-flex justify-content-end">
         <button
