@@ -16,8 +16,25 @@
               "
             />
           </th>
-          <th v-for="key in headers" scope="col" :key="key">
-            {{ key }}
+          <th
+            v-for="key in headers"
+            scope="col"
+            :key="key"
+            @click="setSort(key)"
+          >
+            <span class="text-nowrap">
+              {{ key }}
+              <span v-if="sort.key === key">
+                <i
+                  v-show="sort.order === SORT_ORDER.DESC"
+                  class="bi bi-arrow-down"
+                ></i>
+                <i
+                  v-show="sort.order === SORT_ORDER.ASC"
+                  class="bi bi-arrow-up"
+                ></i>
+              </span>
+            </span>
           </th>
         </tr>
       </thead>
@@ -116,7 +133,17 @@
 import * as bootstrap from "bootstrap";
 import { useRouter } from "vue-router";
 import { destroyItems } from "@/services/item";
-import { computed, inject, onMounted, ref, watch, watchEffect } from "vue";
+import {
+  computed,
+  inject,
+  onMounted,
+  ref,
+  watch,
+  watchEffect,
+  reactive,
+} from "vue";
+
+import { SORT_ORDER, SORTS } from "../../constants/sort";
 
 const props = defineProps({
   action: String,
@@ -125,6 +152,11 @@ const props = defineProps({
 const router = useRouter();
 const store: any = inject("store");
 const emit = defineEmits(["reset"]);
+
+const sort = reactive({
+  key: null,
+  order: null,
+});
 
 const selectedItems = ref([]);
 
@@ -135,8 +167,35 @@ const items = computed(() => {
   const { Limit } = store.dynamodb.state;
   const { rows, page } = store.ui.state.table;
 
-  return rows.slice((page - 1) * Limit, page * Limit);
+  const sortedRows = sortItems(rows);
+
+  return sortedRows.slice((page - 1) * Limit, page * Limit);
 });
+
+/* SORT */
+const sortItems = (items) => {
+  if (!sort.key || !sort.order) return items;
+
+  return [...items].sort((a, b) => {
+    const v1 = a[sort.key] ?? Number.NEGATIVE_INFINITY;
+    const v2 = b[sort.key] ?? Number.NEGATIVE_INFINITY;
+
+    if (sort.order === SORT_ORDER.ASC) return v1 > v2;
+    if (sort.order === SORT_ORDER.DESC) return v1 < v2;
+  });
+};
+
+const setSort = (key) => {
+  const index = SORTS.findIndex((order) => order === sort.order);
+
+  if (sort.key === key) {
+    sort.order = SORTS[(index + 1) % SORTS.length];
+  } else {
+    sort.key = key;
+    sort.order = SORTS[1];
+  }
+};
+/* SORT */
 
 // Tooltip
 watch(
@@ -271,6 +330,10 @@ td div {
 }
 
 i:hover {
+  cursor: pointer;
+}
+
+th {
   cursor: pointer;
 }
 
