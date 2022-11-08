@@ -173,15 +173,26 @@ const items = computed(() => {
 });
 
 /* SORT */
-const sortItems = (items) => {
+const sortItems = (items = []) => {
   if (!sort.key || !sort.order) return items;
 
   return [...items].sort((a, b) => {
-    const v1 = a[sort.key] ?? Number.NEGATIVE_INFINITY;
-    const v2 = b[sort.key] ?? Number.NEGATIVE_INFINITY;
+    const v1 = a[sort.key] ?? "";
+    const v2 = b[sort.key] ?? "";
 
-    if (sort.order === SORT_ORDER.ASC) return v1 > v2;
-    if (sort.order === SORT_ORDER.DESC) return v1 < v2;
+    if (sort.order === SORT_ORDER.ASC) {
+      if (v1 > v2) return 1;
+      if (v1 < v2) return -1;
+      return 0;
+    }
+
+    if (sort.order === SORT_ORDER.DESC) {
+      if (v1 > v2) return -1;
+      if (v1 < v2) return 1;
+      return 0;
+    }
+
+    return 0;
   });
 };
 
