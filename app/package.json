@@ -20,6 +20,7 @@
     "bootstrap": "5.2.0",
     "bootstrap-icons": "^1.9.1",
     "codemirror": "^6.0.1",
+    "darkreader": "^4.9.58",
     "vue": "^3.2.37",
     "vue-router": "^4.1.3"
   },
