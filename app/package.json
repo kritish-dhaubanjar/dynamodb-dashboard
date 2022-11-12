@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@codemirror/commands": "^6.1.2",
-    "@codemirror/lang-javascript": "^6.0.2",
+    "@codemirror/lang-javascript": "^6.1.1",
     "@codemirror/lang-json": "^6.0.0",
     "@codemirror/lint": "^6.0.0",
     "@codemirror/theme-one-dark": "^6.0.0",
