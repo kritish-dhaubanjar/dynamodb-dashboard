@@ -13,7 +13,7 @@ const Theme = CodeMirror.EditorView.theme({
   ".cm-line, .cm-line span": {
     "font-size": "13px",
     "font-weight": "bold",
-    "font-family": "'Fira Code', monospace !important",
+    "font-family": "'JetBrains Mono', monospace !important",
   },
   ".cm-tooltip": {
     "background-color": "#fafafa",
