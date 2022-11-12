@@ -37,6 +37,7 @@
 import { inject, onBeforeMount, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import {
+  setFetchMethod,
   enable as enableDarkReader,
   disable as disableDarkMode,
 } from "darkreader";
@@ -55,6 +56,7 @@ const cancel = () => {
 };
 
 onBeforeMount(() => {
+  setFetchMethod(window.fetch);
   initIsDarkReaderEnabled.value = !!localStorage.getItem("darkreader");
   toggleDarkReader(initIsDarkReaderEnabled.value);
 });
