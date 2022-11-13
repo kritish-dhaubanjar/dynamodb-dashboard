@@ -371,8 +371,11 @@ watch(
       if (prefetchedPageCount.value >= page) return;
 
       // @RESET
-      store.ui.setters.setTable({}, []);
       let pageCount = 0;
+
+      if (!store.dynamodb.state.ExclusiveStartKey) {
+        store.ui.setters.setTable({}, []);
+      }
 
       // @INIT
       do {
