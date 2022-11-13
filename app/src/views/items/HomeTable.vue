@@ -8,6 +8,9 @@
       <div class="d-flex justify-content-between">
         <h3 class="mb-4">
           {{ store.table.state.Table.TableName }}
+          <small class="fs-6"
+            >({{ store.table.state.Table.ItemCount ?? 0 }})</small
+          >
         </h3>
 
         <div>
