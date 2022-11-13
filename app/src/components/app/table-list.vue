@@ -5,14 +5,16 @@
         Tables
         <span class="text-muted">({{ tableNames.length }})</span>
       </h5>
-      <div class="input-group mb-3">
-        <span class="input-group-text bg-white rounded-0">@</span>
+      <div class="input-group mb-3 flex-row-reverse">
         <input
           type="text"
           v-model="search"
           class="form-control rounded-0 border-start-0"
           placeholder="Find tables by table name"
         />
+        <span class="input-group-text bg-white rounded-0 border-end-0 pe-0"
+          ><i class="bi bi-search"></i
+        ></span>
       </div>
     </li>
 
@@ -83,5 +85,9 @@ label,
 li {
   cursor: pointer;
   color: var(--bs-link-hover-color);
+}
+
+input:focus + span {
+  border-color: #86b7fe;
 }
 </style>
