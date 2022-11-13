@@ -5,6 +5,7 @@ import morgan from "morgan";
 import express from "express";
 import routes from "../routes";
 import AWS from "../config/aws";
+import compression from "compression";
 import errorHandler from "../errors/handler";
 
 AWS.initialize();
@@ -14,6 +15,7 @@ export default ({ port, host, debug, open: _open, prefix }) => {
   const URL = `${root}/${prefix}`;
 
   const app = express();
+  app.use(compression());
   app.use(express.json());
 
   if (debug) {

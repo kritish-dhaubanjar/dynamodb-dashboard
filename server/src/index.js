@@ -5,11 +5,13 @@ import morgan from "morgan";
 import express from "express";
 import routes from "./routes";
 import AWS from "./config/aws";
+import compression from "compression";
 import errorHandler from "./errors/handler";
 
 AWS.initialize();
 
 const app = express();
+app.use(compression());
 app.use(cors({ origin: "*" }));
 
 app.use(morgan("dev"));
