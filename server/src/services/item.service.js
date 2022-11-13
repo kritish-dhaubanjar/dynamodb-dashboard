@@ -19,6 +19,9 @@ export async function fetch(operation, tableName, conditions) {
   const items = [];
   let scannedCount = 0;
 
+  // Slice
+  let intermediateExclusiveStartKey = params.ExclusiveStartKey;
+
   do {
     const response = await AWS.document[operation](params); // AWS.document.scan(...), AWS.document.query(...)
     scannedCount += response.ScannedCount;
@@ -26,12 +29,32 @@ export async function fetch(operation, tableName, conditions) {
     items.push(...response.Items);
     params.ExclusiveStartKey = response.LastEvaluatedKey;
 
+    // Slice
+    intermediateExclusiveStartKey ||= response.LastEvaluatedKey;
+
     if (items.length >= params.Limit) break;
   } while (params.ExclusiveStartKey);
 
+  /* Slice
+   * eg:
+   * Limit = 10
+   * intermediateExclusiveStartKey = g
+   * items = [...[a,b,c,d,e,f,g], ...[h,i,j,k,l]]
+   * slice = [a,b,c,d,e,f,g,h,i,j]
+   * ExclusiveStartKey = pick(j, Object.keys(g))
+  */
+  const slice = items.slice(0, params.Limit);
+
+  if (items.length > slice.length) {
+    const item = slice.at(-1);
+    const indices = Object.keys(intermediateExclusiveStartKey);
+
+    params.ExclusiveStartKey = pick(item, indices);
+  }
+
   return {
-    Items: items,
-    Count: items.length,
+    Items: slice,
+    Count: slice.length,
     ScannedCount: scannedCount,
     LastEvaluatedKey: params.ExclusiveStartKey,
   };
