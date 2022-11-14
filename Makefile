@@ -1,6 +1,10 @@
 NPM=npm
 YARN=yarn
 NODE=node
+APP=dynamodb-dashboard
+# registry
+VERDACCIO_REGISTRY=http://localhost:4873
+VERDACCIO_STORAGE=~/.local/share/verdaccio/storage/$(APP)
 
 all: install clean
 	cd ./app && $(YARN) build-only
@@ -33,3 +37,9 @@ publish: all
 watch: install
 	make -j 2 .server .app
 
+# registry (experimental)
+verdaccio: publish
+	rm -rf $(VERDACCIO_STORAGE)
+	$(NPM) --global uninstall $(APP)
+	cd ./server && $(NPM) publish --registry $(VERDACCIO_REGISTRY)
+	$(NPM) --global install $(APP) --registry $(VERDACCIO_REGISTRY)
