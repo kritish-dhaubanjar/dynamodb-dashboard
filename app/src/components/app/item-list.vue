@@ -2,7 +2,7 @@
   <div class="table-responsive mx-3">
     <table class="table table-hover table-bordered">
       <thead>
-        <tr class="shadow-sm">
+        <tr class="shadow-sm border-top-0">
           <th scope="col">
             <input
               class="form-check-input mt-1"
@@ -349,6 +349,7 @@ th {
 }
 
 .table-responsive {
+  border-top: 1px solid #e3e3e3;
   max-height: 700px;
   thead {
     tr {
