@@ -220,7 +220,6 @@ const fetchHandler = async () => {
 };
 
 onBeforeMount(async () => {
-  console.info(`@onBeforeMount`);
   const query = {
     ...route.query,
   };
@@ -291,15 +290,6 @@ watch(
     [tableName, _limit, _page, _parameters, _indexName, requestId],
     oldValues
   ) => {
-    console.log({
-      tableName,
-      _limit,
-      _page,
-      _parameters,
-      _indexName,
-      requestId,
-    });
-
     if (!tableName) return;
 
     // @TABLE
