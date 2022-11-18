@@ -22,7 +22,7 @@
     "codemirror": "^6.0.1",
     "darkreader": "^4.9.58",
     "vue": "^3.2.45",
-    "vue-router": "^4.1.3"
+    "vue-router": "^4.1.6"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.2.0",
