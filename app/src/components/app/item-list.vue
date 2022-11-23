@@ -43,11 +43,7 @@
           :class="{ 'table-primary': find(item) > -1 }"
           v-for="item in items"
           :key="item[pk.AttributeName] + (sk ? item[sk.AttributeName] : '')"
-          @click="
-            (e) => {
-              e.detail === 3 && select(item);
-            }
-          "
+          @click="(e) => handleItemSelect(e, item)"
         >
           <td>
             <input
@@ -333,6 +329,14 @@ const destroy = async () => {
 
 const copy = (partitionKey) => {
   navigator.clipboard.writeText(partitionKey);
+};
+
+const handleItemSelect = (event, item) => {
+  if (event.detail === 3) {
+    select(item);
+    // clear selection
+    window.getSelection()?.empty() && window.getSelection()?.removeAllRanges();
+  }
 };
 </script>
 
