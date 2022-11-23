@@ -43,6 +43,11 @@
           :class="{ 'table-primary': find(item) > -1 }"
           v-for="item in items"
           :key="item[pk.AttributeName] + (sk ? item[sk.AttributeName] : '')"
+          @click="
+            (e) => {
+              e.detail === 3 && select(item);
+            }
+          "
         >
           <td>
             <input
