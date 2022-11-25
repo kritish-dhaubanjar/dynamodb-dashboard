@@ -1,136 +1,156 @@
 <template>
-  <div class="table-responsive mx-3">
-    <table class="table table-hover table-bordered">
-      <thead>
-        <tr class="shadow-sm border-top-0">
-          <th scope="col">
-            <input
-              class="form-check-input mt-1"
-              type="checkbox"
-              value=""
-              aria-label="Checkbox for following text input"
-              :checked="selectedItems.length > 0"
-              @change="toggle"
-              :indeterminate="
-                selectedItems.length > 0 && selectedItems.length < items.length
-              "
-            />
-          </th>
-          <th
-            v-for="key in headers"
-            scope="col"
-            :key="key"
-            @click="setSort(key)"
-          >
-            <span class="text-nowrap">
-              {{ key }}
-              <span v-if="sort.key === key">
-                <i
-                  v-show="sort.order === SORT_ORDER.DESC"
-                  class="bi bi-arrow-down"
-                ></i>
-                <i
-                  v-show="sort.order === SORT_ORDER.ASC"
-                  class="bi bi-arrow-up"
-                ></i>
+  <section class="position-relative">
+    <div
+      class="table-responsive mx-3"
+      ref="tableContainer"
+      @scroll="handleScrollbarPosition"
+    >
+      <table
+        ref="table"
+        class="position-relative table table-hover table-bordered"
+      >
+        <thead>
+          <tr class="shadow-sm border-top-0">
+            <th scope="col">
+              <input
+                class="form-check-input mt-1"
+                type="checkbox"
+                value=""
+                aria-label="Checkbox for following text input"
+                :checked="selectedItems.length > 0"
+                @change="toggle"
+                :indeterminate="
+                  selectedItems.length > 0 &&
+                  selectedItems.length < items.length
+                "
+              />
+            </th>
+            <th
+              v-for="key in headers"
+              scope="col"
+              :key="key"
+              @click="setSort(key)"
+            >
+              <span class="text-nowrap">
+                {{ key }}
+                <span v-if="sort.key === key">
+                  <i
+                    v-show="sort.order === SORT_ORDER.DESC"
+                    class="bi bi-arrow-down"
+                  ></i>
+                  <i
+                    v-show="sort.order === SORT_ORDER.ASC"
+                    class="bi bi-arrow-up"
+                  ></i>
+                </span>
               </span>
-            </span>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          :class="{ 'table-primary': find(item) > -1 }"
-          v-for="item in items"
-          :key="item[pk.AttributeName] + (sk ? item[sk.AttributeName] : '')"
-          @click="(e) => handleItemSelect(e, item)"
-        >
-          <td>
-            <input
-              class="form-check-input mt-1"
-              type="checkbox"
-              value=""
-              aria-label="Checkbox for following text input"
-              @change="select(item)"
-              :checked="find(item) > -1"
-            />
-          </td>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            :class="{ 'table-primary': find(item) > -1 }"
+            v-for="item in items"
+            :key="item[pk.AttributeName] + (sk ? item[sk.AttributeName] : '')"
+            @click="(e) => handleItemSelect(e, item)"
+          >
+            <td>
+              <input
+                class="form-check-input mt-1"
+                type="checkbox"
+                value=""
+                aria-label="Checkbox for following text input"
+                @change="select(item)"
+                :checked="find(item) > -1"
+              />
+            </td>
 
-          <td v-for="(key, index) in headers" :key="key">
-            <div v-if="index === 0">
-              <i
-                class="bi bi-clipboard2 me-2"
-                data-bs-toggle="tooltip"
-                data-bs-placement="top"
-                data-bs-title="Copy to clipboard"
-                @click="copy(item[key])"
-              ></i>
-              <!--  -->
-              <RouterLink
-                :to="handleItem(item)"
-                class="card-link text-decoration-none"
-              >
-                {{ item[key] }}
-              </RouterLink>
+            <td v-for="(key, index) in headers" :key="key">
+              <div v-if="index === 0">
+                <i
+                  class="bi bi-clipboard2 me-2"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="top"
+                  data-bs-title="Copy to clipboard"
+                  @click="copy(item[key])"
+                ></i>
+                <!--  -->
+                <RouterLink
+                  :to="handleItem(item)"
+                  class="card-link text-decoration-none"
+                >
+                  {{ item[key] }}
+                </RouterLink>
+              </div>
+              <div v-else>{{ item[key] }}</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!--  -->
+      <div class="modal" tabindex="-1" ref="modalRef">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">
+                Delete {{ selectedItems.length }} items
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
             </div>
-            <div v-else>{{ item[key] }}</div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+            <div class="modal-body">
+              <p>
+                Delete <b>{{ selectedItems.length }}</b> item from the
+                <b>{{ store.table.state.Table.TableName }}</b>
+                table? This action cannot be reversed.
+              </p>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary rounded-0"
+                data-bs-dismiss="modal"
+              >
+                Cancel
+              </button>
 
-    <!--  -->
-    <div class="modal" tabindex="-1" ref="modalRef">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Delete {{ selectedItems.length }} items</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <p>
-              Delete <b>{{ selectedItems.length }}</b> item from the
-              <b>{{ store.table.state.Table.TableName }}</b>
-              table? This action cannot be reversed.
-            </p>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary rounded-0"
-              data-bs-dismiss="modal"
-            >
-              Cancel
-            </button>
-
-            <button
-              class="btn btn-danger rounded-0"
-              type="button"
-              :disabled="store.ui.state.isLoading"
-              @click="destroy"
-            >
-              <span
-                v-if="store.ui.state.isLoading"
-                class="spinner-grow spinner-grow-sm"
-                role="status"
-                aria-hidden="true"
-              ></span>
-              <span class="visually-hidden">Loading...</span>
-              Delete
-            </button>
+              <button
+                class="btn btn-danger rounded-0"
+                type="button"
+                :disabled="store.ui.state.isLoading"
+                @click="destroy"
+              >
+                <span
+                  v-if="store.ui.state.isLoading"
+                  class="spinner-grow spinner-grow-sm"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
+                <span class="visually-hidden">Loading...</span>
+                Delete
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+    <div
+      class="mx-3 scrollbar-container overflow-scroll position-absolute"
+      @scroll="handleScroll"
+      ref="scrollcontainer"
+    >
+      <hr ref="scrollbar" class="m-0" />
+    </div>
+  </section>
 </template>
 
 <script setup lang="ts">
+import { throttle } from "lodash";
 import * as bootstrap from "bootstrap";
 import { useRouter } from "vue-router";
 import { destroyItems } from "@/services/item";
@@ -142,6 +162,8 @@ import {
   watch,
   watchEffect,
   reactive,
+  nextTick,
+  onBeforeUnmount,
 } from "vue";
 
 import { SORT_ORDER, SORTS } from "../../constants/sort";
@@ -208,6 +230,51 @@ const setSort = (key) => {
   }
 };
 /* SORT */
+
+/* SCROLL */
+const table = ref(null);
+const scrollbar = ref(null);
+const tableContainer = ref(null);
+const scrollcontainer = ref(null);
+
+watch(
+  () => items.value,
+  async () => {
+    await nextTick(() => {
+      scrollbar.value.style.width = `${+table.value.scrollWidth}px`;
+    });
+
+    await nextTick(() => {
+      handleScrollbarVisibility();
+    });
+  }
+);
+
+const handleScrollbarPosition = throttle((event) => {
+  scrollcontainer.value.scroll({ left: event.target.scrollLeft });
+}, 0.5);
+
+const handleScroll = throttle((event) => {
+  tableContainer.value.scroll({ left: event.target.scrollLeft });
+}, 0.5);
+
+const handleScrollbarVisibility = throttle((event) => {
+  const intersectionObserver = new IntersectionObserver((elements) => {
+    const tableContainer = elements[0];
+    const { height } = tableContainer?.intersectionRect;
+    scrollcontainer.value.style.top = `${+height - 15}px`;
+  });
+
+  intersectionObserver.observe(tableContainer.value);
+}, 0.5);
+
+window.addEventListener("scroll", handleScrollbarVisibility);
+window.addEventListener("resize", handleScrollbarVisibility);
+
+onBeforeUnmount(() => {
+  window.removeEventListener("scroll");
+  window.removeEventListener("resize");
+});
 
 // Tooltip
 watch(
@@ -366,6 +433,17 @@ th {
       position: sticky;
       background: #fff;
     }
+  }
+}
+
+.scrollbar-container {
+  height: 16px;
+
+  top: 0;
+  left: 0;
+  right: 0;
+  hr {
+    border-color: transparent;
   }
 }
 </style>
