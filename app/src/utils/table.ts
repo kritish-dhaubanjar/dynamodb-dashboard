@@ -139,14 +139,18 @@ export function generateDynamodbParameters({ table, indexName, parameters }) {
     }));
 
   for (const filter of scan) {
-    const { name, value, type, condition, value2, salt } = filter;
+    let { name } = filter;
+    const { value, type, condition, value2, salt } = filter;
+
+    const attributes = name.split(".");
+    name = name.replaceAll(".", ".#");
 
     let expression = "";
     if (!condition) continue;
 
     if (["attribute_exists", "attribute_not_exists"].includes(condition)) {
       expression = `${condition}(#${name})`;
-      attributeNames[`#${name}`] = name;
+      attributes.map((name) => (attributeNames[`#${name}`] = name));
       filters.push(expression);
     }
 
@@ -156,16 +160,16 @@ export function generateDynamodbParameters({ table, indexName, parameters }) {
 
     if (["begins_with", "contains", "not contains"].includes(condition)) {
       expression = `${condition}(#${name}, :${salt})`;
-      attributeNames[`#${name}`] = name;
+      attributes.map((name) => (attributeNames[`#${name}`] = name));
       attributeValues[`:${salt}`] = valueOf(value, type);
     } else if ("between" === condition) {
       expression = `#${name} between :${salt}1 and :${salt}2`;
-      attributeNames[`#${name}`] = name;
+      attributes.map((name) => (attributeNames[`#${name}`] = name));
       attributeValues[`:${salt}1`] = valueOf(value, type);
       attributeValues[`:${salt}2`] = valueOf(value2, type);
     } else {
       expression = `#${name} ${condition} :${salt}`;
-      attributeNames[`#${name}`] = name;
+      attributes.map((name) => (attributeNames[`#${name}`] = name));
       attributeValues[`:${salt}`] = valueOf(value, type);
     }
 
