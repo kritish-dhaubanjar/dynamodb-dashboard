@@ -244,9 +244,10 @@ watch(
       scrollbar.value.style.width = `${+table.value.scrollWidth}px`;
     });
 
-    await nextTick(() => {
-      handleScrollbarVisibility();
-    });
+    await nextTick(handleScrollbarVisibility);
+
+    const resizeObserver = new ResizeObserver(handleScrollbarVisibility);
+    resizeObserver.observe(document.querySelector("#scan-query"));
   }
 );
 
@@ -272,8 +273,8 @@ window.addEventListener("scroll", handleScrollbarVisibility);
 window.addEventListener("resize", handleScrollbarVisibility);
 
 onBeforeUnmount(() => {
-  window.removeEventListener("scroll");
-  window.removeEventListener("resize");
+  window.removeEventListener("scroll", handleScrollbarVisibility);
+  window.removeEventListener("resize", handleScrollbarVisibility);
 });
 
 // Tooltip
