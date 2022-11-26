@@ -62,9 +62,8 @@
       <div class="table-container bg-white shadow-sm">
         <br />
         <RetrieveNext
-          v-if="
-            store.dynamodb.state.ExclusiveStartKey && !store.ui.state.isLoading
-          "
+          :disabled="store.ui.state.isLoading"
+          v-if="store.dynamodb.state.ExclusiveStartKey"
           @next="fetchHandler"
         />
 

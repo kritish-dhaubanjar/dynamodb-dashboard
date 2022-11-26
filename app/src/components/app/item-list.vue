@@ -245,24 +245,34 @@ watch(
     });
 
     await nextTick(handleScrollbarVisibility);
-
-    const resizeObserver = new ResizeObserver(handleScrollbarVisibility);
-    resizeObserver.observe(document.querySelector("#scan-query"));
   }
 );
 
+onMounted(async () => {
+  await nextTick(() => {
+    new ResizeObserver(handleScrollbarVisibility).observe(
+      document.querySelector("#scan-query")
+    );
+  });
+});
+
 const handleScrollbarPosition = throttle((event) => {
-  scrollcontainer.value.scroll({ left: event.target.scrollLeft });
+  scrollcontainer.value?.scroll({ left: event.target.scrollLeft });
 }, 0.5);
 
 const handleScroll = throttle((event) => {
-  tableContainer.value.scroll({ left: event.target.scrollLeft });
+  tableContainer.value?.scroll({ left: event.target.scrollLeft });
 }, 0.5);
 
 const handleScrollbarVisibility = throttle((event) => {
+  if (!tableContainer.value || !scrollcontainer.value) return;
+
   const intersectionObserver = new IntersectionObserver((elements) => {
     const tableContainer = elements[0];
-    const { height } = tableContainer?.intersectionRect;
+
+    if (!tableContainer || !scrollcontainer.value) return;
+
+    const { height = 0 } = tableContainer?.intersectionRect;
     scrollcontainer.value.style.top = `${+height - 15}px`;
   });
 

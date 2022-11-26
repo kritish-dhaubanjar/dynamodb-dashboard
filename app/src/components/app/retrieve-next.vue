@@ -11,6 +11,7 @@
     <div>
       <button
         type="button"
+        :disabled="props.disabled"
         class="btn btn-outline-secondary btn-sm rounded-0 ms-3"
         @click.prevent="emit('next')"
       >
@@ -24,4 +25,8 @@
 import { inject } from "vue";
 
 const emit = defineEmits(["next"]);
+
+const props = defineProps({
+  disabled: Boolean,
+});
 </script>
