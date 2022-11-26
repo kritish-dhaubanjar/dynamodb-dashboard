@@ -1,4 +1,7 @@
+![icons8-database-administrator-96](https://user-images.githubusercontent.com/25634165/204095372-d6d8362f-3a33-4ab7-8b97-330fe712c404.png)
+
 ## DynamoDB Dashboard
+
 A Web GUI Dashboard for local or remote [DynamoDB](https://aws.amazon.com/blogs/aws/dynamodb-local-for-desktop-development/), inspired from [dynamodb-admin](https://github.com/aaronshaf/dynamodb-admin).
 
 ![npm](https://img.shields.io/npm/v/dynamodb-dashboard?label=npm&style=flat-square) ![npm](https://img.shields.io/npm/dw/dynamodb-dashboard?style=flat-square) ![NPM](https://img.shields.io/npm/l/dynamodb-dashboard?style=flat-square)
