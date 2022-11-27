@@ -140,7 +140,7 @@
       </div>
     </div>
     <div
-      class="mx-3 scrollbar-container overflow-scroll position-absolute"
+      class="mx-3 scrollbar-container overflow-scroll sticky-bottom"
       @scroll="handleScroll"
       ref="scrollcontainer"
     >
@@ -243,18 +243,8 @@ watch(
     await nextTick(() => {
       scrollbar.value.style.width = `${+table.value.scrollWidth}px`;
     });
-
-    await nextTick(handleScrollbarVisibility);
   }
 );
-
-onMounted(async () => {
-  await nextTick(() => {
-    new ResizeObserver(handleScrollbarVisibility).observe(
-      document.querySelector("#scan-query")
-    );
-  });
-});
 
 const handleScrollbarPosition = throttle((event) => {
   scrollcontainer.value?.scroll({ left: event.target.scrollLeft });
@@ -263,29 +253,6 @@ const handleScrollbarPosition = throttle((event) => {
 const handleScroll = throttle((event) => {
   tableContainer.value?.scroll({ left: event.target.scrollLeft });
 }, 0.5);
-
-const handleScrollbarVisibility = throttle((event) => {
-  if (!tableContainer.value || !scrollcontainer.value) return;
-
-  const intersectionObserver = new IntersectionObserver((elements) => {
-    const tableContainer = elements[0];
-
-    if (!tableContainer || !scrollcontainer.value) return;
-
-    const { height = 0 } = tableContainer?.intersectionRect;
-    scrollcontainer.value.style.top = `${+height - 15}px`;
-  });
-
-  intersectionObserver.observe(tableContainer.value);
-}, 0.5);
-
-window.addEventListener("scroll", handleScrollbarVisibility);
-window.addEventListener("resize", handleScrollbarVisibility);
-
-onBeforeUnmount(() => {
-  window.removeEventListener("scroll", handleScrollbarVisibility);
-  window.removeEventListener("resize", handleScrollbarVisibility);
-});
 
 // Tooltip
 watch(
@@ -438,6 +405,22 @@ th {
 .table-responsive {
   border-top: 1px solid #e3e3e3;
   max-height: 700px;
+
+  &::-webkit-scrollbar {
+    height: 0;
+    width: 14px;
+  }
+
+  &::-webkit-scrollbar-track {
+    border-radius: 0;
+    background: #eeeeee;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 0;
+    background: #b0b0b0;
+  }
+
   thead {
     tr {
       top: 0;
@@ -450,7 +433,6 @@ th {
 .scrollbar-container {
   height: 16px;
 
-  top: 0;
   left: 0;
   right: 0;
   hr {
