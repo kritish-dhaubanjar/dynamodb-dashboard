@@ -237,7 +237,7 @@ onBeforeMount(async () => {
           readOnly: true,
           pk: {
             name: pkAttributeType?.AttributeName ?? "",
-            type: skAttributeType?.AttributeType ?? "",
+            type: pkAttributeType?.AttributeType ?? "",
           },
           sk: {
             name: skAttributeType?.AttributeName ?? "",
