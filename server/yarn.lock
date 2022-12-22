@@ -73,16 +73,16 @@
     "@aws-sdk/types" "3.226.0"
     tslib "^2.3.1"
 
-"@aws-sdk/client-cognito-identity@3.235.0":
-  version "3.235.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-cognito-identity/-/client-cognito-identity-3.235.0.tgz#e44c1dd58a02acc32d7bf09abd95ac2e4ce9ea5d"
-  integrity sha512-Qjvo10SYkfswYT0D2Xn5AxVP07eH4p+NPhtGnXXVoSI0GJyRlPz8MfyoHYWEPKZ929TzYXyvrz4MaTqOjLqenA==
+"@aws-sdk/client-cognito-identity@3.236.0":
+  version "3.236.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-cognito-identity/-/client-cognito-identity-3.236.0.tgz#bec1a6625d1b34b0014a8ded15d70557643ee7e9"
+  integrity sha512-lWGuTVA+q3h1KS3nxTWeRGOfsuQ+GNwq5IxFJ8ko441mpwo5A2t6u25Z+G6t5Eh+q4EcoxMX64HYA+cu91lr7g==
   dependencies:
     "@aws-crypto/sha256-browser" "2.0.0"
     "@aws-crypto/sha256-js" "2.0.0"
-    "@aws-sdk/client-sts" "3.235.0"
+    "@aws-sdk/client-sts" "3.236.0"
     "@aws-sdk/config-resolver" "3.234.0"
-    "@aws-sdk/credential-provider-node" "3.235.0"
+    "@aws-sdk/credential-provider-node" "3.236.0"
     "@aws-sdk/fetch-http-handler" "3.226.0"
     "@aws-sdk/hash-node" "3.226.0"
     "@aws-sdk/invalid-dependency" "3.226.0"
@@ -413,12 +413,12 @@
     "@aws-sdk/util-middleware" "3.226.0"
     tslib "^2.3.1"
 
-"@aws-sdk/credential-provider-cognito-identity@3.235.0":
-  version "3.235.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/credential-provider-cognito-identity/-/credential-provider-cognito-identity-3.235.0.tgz#589edb12231b7d8a005697fb46acaa532deb4422"
-  integrity sha512-OlnqSYJtaGlAMG+8bLjVIkK53eNd22VN5Rk2WwKNKd3qShMSvTz9RDnTv3RHBsYiaZOU7P409ph583pBluOsFA==
+"@aws-sdk/credential-provider-cognito-identity@3.236.0":
+  version "3.236.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/credential-provider-cognito-identity/-/credential-provider-cognito-identity-3.236.0.tgz#7936ce9a7ceaeff9045d85b3e69af9865c467bfc"
+  integrity sha512-PDsUZ7gmSCwraDDYnmoSkmrA1tpmvDBDjNPUVe6E+/8tDw3SWiL2efGR6r8ajFh9m+6jF6B8Wy+YB3u3yjAjWQ==
   dependencies:
-    "@aws-sdk/client-cognito-identity" "3.235.0"
+    "@aws-sdk/client-cognito-identity" "3.236.0"
     "@aws-sdk/property-provider" "3.226.0"
     "@aws-sdk/types" "3.226.0"
     tslib "^2.3.1"
@@ -549,20 +549,20 @@
     tslib "^2.3.1"
 
 "@aws-sdk/credential-providers@^3.171.0":
-  version "3.235.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/credential-providers/-/credential-providers-3.235.0.tgz#44e48bc0dc7c67e1cc4c4d8646ebb3fdf514dd5d"
-  integrity sha512-HCrXbXAnd4dywv1WW3/P8bJp3FEJuG+Gul0pC+b5wh90Ppy50ay/01KcLpvqS1SgKdk7toucWnpExgEJZHUcOQ==
+  version "3.236.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/credential-providers/-/credential-providers-3.236.0.tgz#52c6f0e5baa1f0eab1f39171b47102806809d504"
+  integrity sha512-z7RU5E9xlk6KX16jJxByn8xa8mv8pPZoqAPkavCsFJS6pOYTtQJYYdjrUK/2EmOmbPpc62P6mqVP7qTVQKgafw==
   dependencies:
-    "@aws-sdk/client-cognito-identity" "3.235.0"
-    "@aws-sdk/client-sso" "3.235.0"
-    "@aws-sdk/client-sts" "3.235.0"
-    "@aws-sdk/credential-provider-cognito-identity" "3.235.0"
+    "@aws-sdk/client-cognito-identity" "3.236.0"
+    "@aws-sdk/client-sso" "3.236.0"
+    "@aws-sdk/client-sts" "3.236.0"
+    "@aws-sdk/credential-provider-cognito-identity" "3.236.0"
     "@aws-sdk/credential-provider-env" "3.226.0"
     "@aws-sdk/credential-provider-imds" "3.226.0"
-    "@aws-sdk/credential-provider-ini" "3.235.0"
-    "@aws-sdk/credential-provider-node" "3.235.0"
+    "@aws-sdk/credential-provider-ini" "3.236.0"
+    "@aws-sdk/credential-provider-node" "3.236.0"
     "@aws-sdk/credential-provider-process" "3.226.0"
-    "@aws-sdk/credential-provider-sso" "3.235.0"
+    "@aws-sdk/credential-provider-sso" "3.236.0"
     "@aws-sdk/credential-provider-web-identity" "3.226.0"
     "@aws-sdk/property-provider" "3.226.0"
     "@aws-sdk/shared-ini-file-loader" "3.226.0"
