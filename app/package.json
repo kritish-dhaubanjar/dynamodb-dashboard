@@ -18,7 +18,7 @@
     "@popperjs/core": "^2.11.6",
     "axios": "^1.2.1",
     "bootstrap": "5.2.3",
-    "bootstrap-icons": "^1.10.2",
+    "bootstrap-icons": "^1.10.3",
     "codemirror": "^6.0.1",
     "darkreader": "^4.9.58",
     "lodash": "^4.17.21",
