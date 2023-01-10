@@ -8,6 +8,8 @@ A Web GUI Dashboard for local or remote [DynamoDB](https://aws.amazon.com/blogs/
 
 ![Docker Pulls](https://img.shields.io/docker/pulls/kritishdhaubanjar/dynamodb-dashboard?style=flat-square) ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/kritishdhaubanjar/dynamodb-dashboard/latest?style=flat-square)
 
+[![dynamodb-dashboard Builder](https://img.shields.io/github/actions/workflow/status/kritish-dhaubanjar/dynamodb-dashboard/build.yml?branch=main&label=dynamodb-dashboard%20Builder&style=flat-square)](https://github.com/kritish-dhaubanjar/dynamodb-dashboard/actions/workflows/build.yml)
+
 #### Installation:
 Install application globally:
 ```shell
