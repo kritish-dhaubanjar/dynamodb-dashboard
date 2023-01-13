@@ -3,8 +3,6 @@ name: dynamodb-dashboard Builder
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
 
 jobs:
   build:
