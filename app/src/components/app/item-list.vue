@@ -1,4 +1,54 @@
 <template>
+  <div
+    class="table-responsive mx-3 overflow-hidden position-sticky bg-white shadow-sm"
+    ref="tableHeaderContainer"
+    :class="hasMoreItems ? 'top-198' : 'top-141'"
+  >
+    <table
+      ref="table"
+      class="mb-0 position-relative table table-hover table-bordered"
+    >
+      <thead ref="thead">
+        <tr class="shadow-sm border-top-0 border-bottom-0">
+          <th scope="col" :style="`min-width: ${widths[0]}px`">
+            <input
+              class="form-check-input mt-1"
+              type="checkbox"
+              value=""
+              aria-label="Checkbox for following text input"
+              :checked="selectedItems.length > 0"
+              @change="toggle"
+              :indeterminate="
+                selectedItems.length > 0 && selectedItems.length < items.length
+              "
+            />
+          </th>
+          <th
+            v-for="(key, index) in headers"
+            scope="col"
+            :key="key"
+            @click="setSort(key)"
+            :style="`min-width: ${widths[index + 1]}px`"
+          >
+            <span class="text-nowrap">
+              {{ key }}
+              <span v-if="sort.key === key">
+                <i
+                  v-show="sort.order === SORT_ORDER.DESC"
+                  class="bi bi-arrow-down"
+                ></i>
+                <i
+                  v-show="sort.order === SORT_ORDER.ASC"
+                  class="bi bi-arrow-up"
+                ></i>
+              </span>
+            </span>
+          </th>
+        </tr>
+      </thead>
+    </table>
+  </div>
+
   <section class="position-relative">
     <div
       class="table-responsive mx-3"
@@ -9,8 +59,8 @@
         ref="table"
         class="mb-0 position-relative table table-hover table-bordered"
       >
-        <thead>
-          <tr class="shadow-sm border-top-0">
+        <thead ref="thead">
+          <tr class="shadow-sm border-top-0 border-bottom-0">
             <th scope="col">
               <input
                 class="form-check-input mt-1"
@@ -47,7 +97,7 @@
             </th>
           </tr>
         </thead>
-        <tbody>
+        <tbody ref="tbody">
           <tr
             :class="{ 'table-primary': find(item) > -1 }"
             v-for="item in items"
@@ -142,7 +192,7 @@
       </div>
     </div>
     <div
-      class="mx-3 scrollbar-container overflow-scroll sticky-bottom"
+      class="ms-3 scrollbar-container overflow-scroll sticky-bottom"
       @scroll="handleScroll"
       ref="scrollcontainer"
     >
@@ -165,7 +215,6 @@ import {
   watchEffect,
   reactive,
   nextTick,
-  onBeforeUnmount,
 } from "vue";
 
 import { SORT_ORDER, SORTS } from "../../constants/sort";
@@ -186,6 +235,10 @@ const sort = reactive({
 const selectedItems = ref([]);
 
 const headers = computed(() => store.ui.state.table.headers ?? []);
+const hasMoreItems = computed(
+  () => store.dynamodb.state.ExclusiveStartKey ?? false
+);
+
 const items = computed(() => {
   selectedItems.value = [];
 
@@ -234,10 +287,14 @@ const setSort = (key) => {
 /* SORT */
 
 /* SCROLL */
+const row = ref(null);
 const table = ref(null);
+const thead = ref(null);
+const tbody = ref(null);
 const scrollbar = ref(null);
 const tableContainer = ref(null);
 const scrollcontainer = ref(null);
+const tableHeaderContainer = ref(null);
 
 watch(
   () => items.value,
@@ -248,12 +305,34 @@ watch(
   }
 );
 
+/* RESIZE */
+const widths = ref([]);
+
+watch(
+  () => items.value,
+  async () => {
+    await nextTick(() => {
+      const rows = tbody.value?.getElementsByTagName("tr")?.[0];
+      const cells = rows?.getElementsByTagName("td");
+
+      if (cells) {
+        widths.value = [...cells].map(
+          (td) => td.getBoundingClientRect()?.width
+        );
+      }
+    });
+  }
+);
+/* RESIZE */
+
 const handleScrollbarPosition = throttle((event) => {
   scrollcontainer.value?.scroll({ left: event.target.scrollLeft });
+  tableHeaderContainer.value?.scroll({ left: event.target.scrollLeft });
 }, 0.5);
 
 const handleScroll = throttle((event) => {
   tableContainer.value?.scroll({ left: event.target.scrollLeft });
+  tableHeaderContainer.value?.scroll({ left: event.target.scrollLeft });
 }, 0.5);
 
 // Tooltip
@@ -388,6 +467,10 @@ const handleItemSelect = (event, item) => {
 </script>
 
 <style scoped lang="scss">
+section {
+  top: -38px;
+}
+
 td div {
   overflow: hidden;
   max-width: 428px;
@@ -419,6 +502,7 @@ th {
 .scrollbar-container {
   height: 16px;
 
+  z-index: 1;
   top: 0;
   left: 0;
   right: 0;
@@ -430,6 +514,17 @@ th {
 
 .hide-double-scrollbar {
   height: 15px;
-  z-index: 10000;
+  z-index: 2;
+  margin-left: -14px;
+}
+
+.top-198 {
+  top: 198px;
+  z-index: 3;
+}
+
+.top-141 {
+  top: 141px;
+  z-index: 3;
 }
 </style>

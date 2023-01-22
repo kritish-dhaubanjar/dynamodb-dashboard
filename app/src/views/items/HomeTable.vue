@@ -415,6 +415,6 @@ onMounted(() => {
 
 <style scoped>
 .table-actions {
-  z-index: 1;
+  z-index: 1026;
 }
 </style>
