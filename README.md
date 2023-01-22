@@ -143,7 +143,7 @@ $ make watch
 </details>
 
 ### Preview:
-![dynamodb-dashboard](https://media.discordapp.net/attachments/896610721754910751/1033278926031691806/unknown.png?width=1362&height=666)
+![dynamodb-dashboard](https://user-images.githubusercontent.com/25634165/213922274-d70cde00-4d70-47ac-ab84-68b6f0933d58.png)
 
 ### Demo:
 https://user-images.githubusercontent.com/25634165/192109458-a621bc06-788d-4d54-9dc2-9064380ee837.mp4
