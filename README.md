@@ -148,5 +148,16 @@ $ make watch
 ### Demo:
 https://user-images.githubusercontent.com/25634165/192109458-a621bc06-788d-4d54-9dc2-9064380ee837.mp4
 
+## Contributors ✨
+
+Thanks goes to these wonderful people:
+
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/sbimochan"><img src="https://avatars.githubusercontent.com/u/11685953?v=4" width="100px;" alt=""/><br /><sub><b>Bimochan Shrestha</b></sub></a><br /><a href="https://github.com/kritish-dhaubanjar/dynamodb-dashboard/commits?author=sbimochan" title="Commits">📖</a></td>
+    <td align="center"><a href="https://github.com/bipinmdr07"><img src="https://avatars.githubusercontent.com/u/16375412?v=4" width="100px;" alt=""/><br /><sub><b>Bipin Manandhar</b></sub></a><br /></td>
+  </tr>
+</table>
+
 # License
 Distributed under the MIT License. See `LICENSE` for more information.
