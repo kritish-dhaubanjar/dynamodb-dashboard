@@ -60,16 +60,18 @@
       <br />
 
       <div class="table-container bg-white shadow-sm">
-        <br />
-        <RetrieveNext
-          :disabled="store.ui.state.isLoading"
-          v-if="store.dynamodb.state.ExclusiveStartKey"
-          @next="fetchHandler"
-        />
+        <div class="sticky-top table-actions bg-white">
+          <br />
+          <RetrieveNext
+            :disabled="store.ui.state.isLoading"
+            v-if="store.dynamodb.state.ExclusiveStartKey"
+            @next="fetchHandler"
+          />
 
-        <TableActions @action="(type) => (action = type)" />
+          <TableActions @action="(type) => (action = type)" />
 
-        <TablePaginate @next="fetchHandler" />
+          <TablePaginate @next="fetchHandler" />
+        </div>
 
         <ItemList :action="action" @reset="action = ''" />
       </div>
@@ -412,8 +414,7 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.table-container {
-  top: 0;
-  position: sticky;
+.table-actions {
+  z-index: 1;
 }
 </style>

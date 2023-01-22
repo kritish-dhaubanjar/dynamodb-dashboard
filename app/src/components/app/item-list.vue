@@ -7,7 +7,7 @@
     >
       <table
         ref="table"
-        class="position-relative table table-hover table-bordered"
+        class="mb-0 position-relative table table-hover table-bordered"
       >
         <thead>
           <tr class="shadow-sm border-top-0">
@@ -88,6 +88,8 @@
         </tbody>
       </table>
 
+      <div class="hide-double-scrollbar position-absolute bg-white w-100"></div>
+
       <!--  -->
       <div class="modal" tabindex="-1" ref="modalRef">
         <div class="modal-dialog modal-dialog-centered">
@@ -140,7 +142,7 @@
       </div>
     </div>
     <div
-      class="mx-3 scrollbar-container overflow-scroll position-absolute"
+      class="mx-3 scrollbar-container overflow-scroll sticky-bottom"
       @scroll="handleScroll"
       ref="scrollcontainer"
     >
@@ -243,18 +245,8 @@ watch(
     await nextTick(() => {
       scrollbar.value.style.width = `${+table.value.scrollWidth}px`;
     });
-
-    await nextTick(handleScrollbarVisibility);
   }
 );
-
-onMounted(async () => {
-  await nextTick(() => {
-    new ResizeObserver(handleScrollbarVisibility).observe(
-      document.querySelector("#scan-query")
-    );
-  });
-});
 
 const handleScrollbarPosition = throttle((event) => {
   scrollcontainer.value?.scroll({ left: event.target.scrollLeft });
@@ -263,29 +255,6 @@ const handleScrollbarPosition = throttle((event) => {
 const handleScroll = throttle((event) => {
   tableContainer.value?.scroll({ left: event.target.scrollLeft });
 }, 0.5);
-
-const handleScrollbarVisibility = throttle((event) => {
-  if (!tableContainer.value || !scrollcontainer.value) return;
-
-  const intersectionObserver = new IntersectionObserver((elements) => {
-    const tableContainer = elements[0];
-
-    if (!tableContainer || !scrollcontainer.value) return;
-
-    const { height = 0 } = tableContainer?.intersectionRect;
-    scrollcontainer.value.style.top = `${+height - 15}px`;
-  });
-
-  intersectionObserver.observe(tableContainer.value);
-}, 0.5);
-
-window.addEventListener("scroll", handleScrollbarVisibility);
-window.addEventListener("resize", handleScrollbarVisibility);
-
-onBeforeUnmount(() => {
-  window.removeEventListener("scroll", handleScrollbarVisibility);
-  window.removeEventListener("resize", handleScrollbarVisibility);
-});
 
 // Tooltip
 watch(
@@ -437,7 +406,7 @@ th {
 
 .table-responsive {
   border-top: 1px solid #e3e3e3;
-  max-height: 700px;
+
   thead {
     tr {
       top: 0;
@@ -453,8 +422,14 @@ th {
   top: 0;
   left: 0;
   right: 0;
+
   hr {
     border-color: transparent;
   }
+}
+
+.hide-double-scrollbar {
+  height: 15px;
+  z-index: 10000;
 }
 </style>

@@ -295,9 +295,9 @@
 
           <br />
 
-          <!-- <code>
+          <code>
             <pre>{{ dynamodbParameters }}</pre>
-          </code> -->
+          </code>
 
           <button
             type="button"
