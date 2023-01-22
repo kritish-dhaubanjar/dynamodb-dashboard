@@ -1,52 +1,55 @@
 <template>
-  <div
-    class="table-responsive mx-3 overflow-hidden position-sticky bg-white shadow-sm"
-    ref="tableHeaderContainer"
-    :class="hasMoreItems ? 'top-198' : 'top-141'"
-  >
-    <table
-      ref="table"
-      class="mb-0 position-relative table table-hover table-bordered"
+  <div class="sticky-top table-actions bg-white">
+    <slot></slot>
+    <div
+      class="table-responsive mx-3 overflow-hidden position-sticky bg-white shadow-sm"
+      ref="tableHeaderContainer"
     >
-      <thead ref="thead">
-        <tr class="shadow-sm border-top-0 border-bottom-0">
-          <th scope="col" :style="`min-width: ${widths[0]}px`">
-            <input
-              class="form-check-input mt-1"
-              type="checkbox"
-              value=""
-              aria-label="Checkbox for following text input"
-              :checked="selectedItems.length > 0"
-              @change="toggle"
-              :indeterminate="
-                selectedItems.length > 0 && selectedItems.length < items.length
-              "
-            />
-          </th>
-          <th
-            v-for="(key, index) in headers"
-            scope="col"
-            :key="key"
-            @click="setSort(key)"
-            :style="`min-width: ${widths[index + 1]}px`"
-          >
-            <span class="text-nowrap">
-              {{ key }}
-              <span v-if="sort.key === key">
-                <i
-                  v-show="sort.order === SORT_ORDER.DESC"
-                  class="bi bi-arrow-down"
-                ></i>
-                <i
-                  v-show="sort.order === SORT_ORDER.ASC"
-                  class="bi bi-arrow-up"
-                ></i>
+      <table
+        ref="table"
+        class="mb-0 position-relative table table-hover table-bordered"
+      >
+        <thead ref="thead">
+          <tr class="shadow-sm border-top-0 border-bottom-0">
+            <th scope="col" :style="`min-width: ${widths[0]}px`">
+              <input
+                class="form-check-input mt-1"
+                type="checkbox"
+                value=""
+                aria-label="Checkbox for following text input"
+                :checked="selectedItems.length > 0"
+                @change="toggle"
+                :indeterminate="
+                  selectedItems.length > 0 &&
+                  selectedItems.length < items.length
+                "
+              />
+            </th>
+            <th
+              v-for="(key, index) in headers"
+              scope="col"
+              :key="key"
+              @click="setSort(key)"
+              :style="`min-width: ${widths[index + 1]}px`"
+            >
+              <span class="text-nowrap">
+                {{ key }}
+                <span v-if="sort.key === key">
+                  <i
+                    v-show="sort.order === SORT_ORDER.DESC"
+                    class="bi bi-arrow-down"
+                  ></i>
+                  <i
+                    v-show="sort.order === SORT_ORDER.ASC"
+                    class="bi bi-arrow-up"
+                  ></i>
+                </span>
               </span>
-            </span>
-          </th>
-        </tr>
-      </thead>
-    </table>
+            </th>
+          </tr>
+        </thead>
+      </table>
+    </div>
   </div>
 
   <section class="position-relative">
@@ -518,13 +521,7 @@ th {
   margin-left: -14px;
 }
 
-.top-198 {
-  top: 198px;
-  z-index: 3;
-}
-
-.top-141 {
-  top: 141px;
-  z-index: 3;
+.table-actions {
+  z-index: 1026;
 }
 </style>

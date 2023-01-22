@@ -60,7 +60,7 @@
       <br />
 
       <div class="table-container bg-white shadow-sm">
-        <div class="sticky-top table-actions bg-white">
+        <ItemList :action="action" @reset="action = ''">
           <br />
           <RetrieveNext
             :disabled="store.ui.state.isLoading"
@@ -71,9 +71,7 @@
           <TableActions @action="(type) => (action = type)" />
 
           <TablePaginate @next="fetchHandler" />
-        </div>
-
-        <ItemList :action="action" @reset="action = ''" />
+        </ItemList>
       </div>
     </div>
 
@@ -412,9 +410,3 @@ onMounted(() => {
   modal.value = new bootstrap.Modal(modalRef.value, {});
 });
 </script>
-
-<style scoped>
-.table-actions {
-  z-index: 1026;
-}
-</style>
