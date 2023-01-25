@@ -1,45 +1,51 @@
 import AWS from "../config/aws";
 
-export async function all() {
-  const tables = [];
-  const params = {};
+export default class TableServiceProvider {
+  constructor(_AWS_ = AWS) {
+    this.AWS = _AWS_;
+  }
 
-  do {
-    const response = await AWS.dynamodb.listTables(params);
-    tables.push(...response.TableNames);
-    params.LastEvaluatedTableName = response.ExclusiveStartTableName;
-  } while (params.LastEvaluatedTableName);
+  async all() {
+    const tables = [];
+    const params = {};
 
-  return tables;
-}
+    do {
+      const response = await this.AWS.dynamodb.listTables(params);
+      tables.push(...response.TableNames);
+      params.LastEvaluatedTableName = response.ExclusiveStartTableName;
+    } while (params.LastEvaluatedTableName);
 
-export async function create(params) {
-  const response = await AWS.dynamodb.createTable(params);
+    return tables;
+  }
 
-  return response;
-}
+  async create(params) {
+    const response = await this.AWS.dynamodb.createTable(params);
 
-export async function describe(tableName) {
-  const response = await AWS.dynamodb.describeTable({
-    TableName: tableName,
-  });
+    return response;
+  }
 
-  return response;
-}
+  async describe(tableName) {
+    const response = await this.AWS.dynamodb.describeTable({
+      TableName: tableName,
+    });
 
-export async function destroy(tableName) {
-  const response = await AWS.dynamodb.deleteTable({
-    TableName: tableName,
-  });
+    return response;
+  }
 
-  return response;
-}
+  async destroy(tableName) {
+    const response = await this.AWS.dynamodb.deleteTable({
+      TableName: tableName,
+    });
 
-export async function update(tableName, params) {
-  const response = await AWS.dynamodb.updateTable({
-    TableName: tableName,
-    ...params,
-  });
+    return response;
+  }
 
-  return response;
+  async update(tableName, params) {
+    const response = await this.AWS.dynamodb.updateTable({
+      TableName: tableName,
+      ...params,
+    });
+
+    return response;
+  }
 }

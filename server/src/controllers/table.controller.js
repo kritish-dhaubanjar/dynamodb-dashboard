@@ -1,4 +1,6 @@
-import * as TableService from "../services/table.service";
+import TableServiceProvider from "../services/table.service";
+
+const TableService = new TableServiceProvider();
 
 export async function index(_req, res, next) {
   try {

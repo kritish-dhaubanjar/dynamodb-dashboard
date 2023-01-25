@@ -1,6 +1,8 @@
 import Joi from "joi";
-import * as TableService from "../services/table.service";
 import { scan, destroy, query } from "../schemas/item.joi";
+import TableServiceProvider from "../services/table.service";
+
+const TableService = new TableServiceProvider();
 
 export function validateScan(req, _res, next) {
   const { error } = scan.validate(req.body);
