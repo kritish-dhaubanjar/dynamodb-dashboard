@@ -1,6 +1,8 @@
 import { OPERATIONS } from "../constants/dynamodb";
 import { isPartialMatchWith } from "../utils/object";
-import * as ItemService from "../services/item.service";
+import ItemServiceProvider from "../services/item.service";
+
+const ItemService = new ItemServiceProvider();
 
 export async function get(req, res, next) {
   try {
