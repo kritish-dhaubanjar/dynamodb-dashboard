@@ -3,6 +3,8 @@ export function pick(object = {}, keys = []) {
   const filteredKeys = Object.keys(object).filter((key) => keys.includes(key));
 
   filteredKeys.forEach((key) => {
+    if(!Boolean(object[key])) return;
+
     result[key] = object[key];
   });
 
