@@ -2,13 +2,13 @@ import config from "../constants/config";
 import { DynamoDB } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocument } from "@aws-sdk/lib-dynamodb";
 
-class AWS {
-  static initializeFromDynamoDB({ dynamodb }) {
+export class AWS {
+  initializeFromDynamoDB({ dynamodb }) {
     this.dynamodb = dynamodb;
     this.document = DynamoDBDocument.from(this.dynamodb);
   }
 
-  static initialize({
+  initialize({
     AWS_REGION = config.aws.region,
     AWS_ENDPOINT = config.aws.endpoint,
     AWS_ACCESS_KEY_ID = config.aws.credentials.accessKeyId,
@@ -36,4 +36,4 @@ class AWS {
   }
 }
 
-export default AWS;
+export default new AWS();
