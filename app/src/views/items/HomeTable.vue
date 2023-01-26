@@ -50,6 +50,12 @@
               Create Table
             </button>
           </RouterLink>
+
+          <RouterLink to="/table/restore-tables">
+            <button class="btn btn-outline-primary btn-sm rounded-0 ms-2">
+              Restore Tables
+            </button>
+          </RouterLink>
         </div>
       </div>
 
