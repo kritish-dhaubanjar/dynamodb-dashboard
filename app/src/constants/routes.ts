@@ -7,6 +7,10 @@ const routes = {
     UPDATE: "/tables/:tableName",
     DESCRIBE: "/tables/:tableName/describe",
   },
+  DATABASE: {
+    ALL: "/database/tables",
+    RESTORE: "/database/restore",
+  },
   ITEM: {
     CREATE: "/tables/:tableName/items",
     GET: "/tables/:tableName/items/get",

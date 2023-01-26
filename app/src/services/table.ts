@@ -34,3 +34,15 @@ export async function updateTable(tableName: string, body: object) {
 
   return data;
 }
+
+export async function getRemoteTables(body: object) {
+  const { data } = await axios.post(ROUTES.DATABASE.ALL, body);
+
+  return data;
+}
+
+export async function restoreTables(body: object) {
+  const { data } = await axios.post(ROUTES.DATABASE.RESTORE, body);
+
+  return data;
+}

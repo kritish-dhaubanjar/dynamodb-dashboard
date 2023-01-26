@@ -4,6 +4,8 @@ import CreateItem from "@/views/items/CreateItem.vue";
 
 import EditTable from "@/views/table/EditTable.vue";
 import CreateTable from "@/views/table/CreateTable.vue";
+import RestoreTables from "@/views/table/RestoreTables.vue";
+
 import { createRouter, createWebHistory } from "vue-router";
 
 const router = createRouter({
@@ -45,6 +47,14 @@ const router = createRouter({
       path: "/table/:tableName/edit-table",
       name: "edit-table",
       component: EditTable,
+      meta: {
+        name: "Tables",
+      },
+    },
+    {
+      path: "/table/restore-tables",
+      name: "restore-tables",
+      component: RestoreTables,
       meta: {
         name: "Tables",
       },
