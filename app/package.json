@@ -22,7 +22,7 @@
     "codemirror": "^6.0.1",
     "darkreader": "^4.9.58",
     "lodash": "^4.17.21",
-    "vue": "^3.2.45",
+    "vue": "^3.2.47",
     "vue-router": "^4.1.6"
   },
   "devDependencies": {
