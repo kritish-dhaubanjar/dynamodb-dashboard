@@ -1,12 +1,16 @@
 import { AWS } from "../config/aws";
+import { EVENTS } from "../constants/event";
 import { OPERATIONS } from "../constants/dynamodb";
 import { constructSchema } from "../utils/dynamodb";
 
+import SocketService from "./socket.service";
 import ItemServiceProvider from "./item.service";
 import TableServiceProvider from "./table.service";
 
 export default class DatabaseServiceProvider {
   constructor(_AWS_, credentials) {
+    this.io = SocketService.io;
+
     // TARGET
     this.TARGET = {
       AWS: _AWS_,
@@ -29,23 +33,32 @@ export default class DatabaseServiceProvider {
   }
 
   async restore(tableNames) {
-    for (const tableName of tableNames) {
-      const { Table } = await this.SOURCE.TableService.describe(tableName);
-      await Promise.allSettled([this.TARGET.TableService.destroy(tableName)]);
-      await this.TARGET.TableService.create(constructSchema(Table));
+    await Promise.all(tableNames.map(async (tableName) => {
+      try {
+        const { Table } = await this.SOURCE.TableService.describe(tableName);
+        await Promise.allSettled([this.TARGET.TableService.destroy(tableName)]);
+        await this.TARGET.TableService.create(constructSchema(Table));
 
-      const params = { Limit: 100 };
-      const schema = Table.KeySchema.map(({ AttributeName }) => AttributeName);
+        const params = { Limit: 100 };
+        const schema = Table.KeySchema.map(({ AttributeName }) => AttributeName);
 
-      do {
-        const response = await this.SOURCE.ItemService.fetch(OPERATIONS.SCAN, tableName, params);
+        do {
+          const response = await this.SOURCE.ItemService.fetch(OPERATIONS.SCAN, tableName, params);
 
-        const { Items = [], LastEvaluatedKey = null } = response;
-        await Promise.all(Items.map(item => this.TARGET.ItemService.create(tableName, schema, item)));
+          const { Items = [], LastEvaluatedKey = null } = response;
+          await Promise.all(Items.map(item => this.TARGET.ItemService.create(tableName, schema, item)));
 
-        params.ExclusiveStartKey = LastEvaluatedKey;
-      } while (params.ExclusiveStartKey);
-    }
+          params.ExclusiveStartKey = LastEvaluatedKey;
+        } while (params.ExclusiveStartKey);
+
+        // SUCCESS
+        this.io.emit(EVENTS.SUCCESS, { tableName });
+      } catch (error) {
+        // ERROR
+        this.io.emit(EVENTS.FAILED, { tableName });
+        console.error(error);
+      }
+    }));
 
     return tableNames;
   }

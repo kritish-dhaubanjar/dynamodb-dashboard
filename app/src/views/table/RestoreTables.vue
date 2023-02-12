@@ -254,7 +254,13 @@
                               <td class="border-end-0">
                                 {{ table }}
                                 <div
-                                  v-if="progress.queue.includes(table)"
+                                  v-if="
+                                    progress.queue.includes(table) &&
+                                    ![
+                                      ...progress.done,
+                                      ...progress.failed,
+                                    ].includes(table)
+                                  "
                                   class="spinner-border spinner-border-sm float-end"
                                   role="status"
                                 >
@@ -341,6 +347,7 @@
 </template>
 
 <script lang="ts" setup>
+import io from "socket.io-client";
 import * as bootstrap from "bootstrap";
 import { useRouter } from "vue-router";
 import { inject, reactive, ref } from "vue";
@@ -376,6 +383,10 @@ const toast = reactive({
 });
 
 const explore = async () => {
+  progress.done = [];
+  progress.queue = [];
+  progress.failed = [];
+
   try {
     remoteTables.value = await getRemoteTables({ credentials });
     localTables.value = [];
@@ -387,24 +398,32 @@ const explore = async () => {
   }
 };
 
+const socket = io(import.meta.env.VITE_API_SOCKET_URL);
+
+socket.on("SUCCESS", ({ tableName }) => {
+  progress.done.push(tableName);
+  progress.queue = progress.queue.filter((e) => e !== tableName);
+});
+
+socket.on("FAILED", ({ tableName }) => {
+  progress.failed.push(tableName);
+  progress.queue = progress.queue.filter((e) => e !== tableName);
+});
+
 const restore = async () => {
   progress.failed = [];
   progress.done = [];
   progress.queue = localTables.value;
 
-  for (const table of progress.queue) {
-    try {
-      await restoreTables({ credentials, tableNames: [table] });
-      progress.done.push(table);
-    } catch (error) {
-      progress.failed.push(table);
-      toast.className = "text-bg-danger";
-      toast.message = error.response?.data?.message ?? error.message;
-      const toastEl = new bootstrap.Toast(toastRef.value, { delay: 1000 });
-      setTimeout(() => toastEl.show(), 0);
-    } finally {
-      progress.queue = progress.queue.filter((e) => e !== table);
-    }
+  try {
+    await restoreTables({ credentials, tableNames: localTables.value });
+  } catch (error) {
+    toast.className = "text-bg-danger";
+    toast.message = error.response?.data?.message ?? error.message;
+    const toastEl = new bootstrap.Toast(toastRef.value, { delay: 1000 });
+    setTimeout(() => toastEl.show(), 0);
+  } finally {
+    progress.queue = [];
   }
 };
 
