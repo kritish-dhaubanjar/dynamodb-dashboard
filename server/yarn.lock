@@ -106,22 +106,22 @@
     tslib "^2.3.1"
 
 "@aws-sdk/client-dynamodb@^3.154.0":
-  version "3.272.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.272.0.tgz#4bddce02bb16240883cb942ad8d33657c9704031"
-  integrity sha512-cCaYu9ecFpybFabZm2qsOERqvjM4w3m78iX8/NPOTOome+G6dCZzGLg6fZExAsDkCGBTm8Kgszba2gsC4+Vijg==
+  version "3.278.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.278.0.tgz#36665756bf6d1ec4e4add12e386f6bde8b515f7b"
+  integrity sha512-ABJS2TQSjTs73jmN2hvBRE1NlxPO8rNC8D17ewSAVvtRBPNadUh/MRI7Xu4zv38ucvkeKKibIEkg60HCST40MA==
   dependencies:
     "@aws-crypto/sha256-browser" "3.0.0"
     "@aws-crypto/sha256-js" "3.0.0"
-    "@aws-sdk/client-sts" "3.272.0"
+    "@aws-sdk/client-sts" "3.278.0"
     "@aws-sdk/config-resolver" "3.272.0"
-    "@aws-sdk/credential-provider-node" "3.272.0"
+    "@aws-sdk/credential-provider-node" "3.278.0"
     "@aws-sdk/fetch-http-handler" "3.272.0"
     "@aws-sdk/hash-node" "3.272.0"
     "@aws-sdk/invalid-dependency" "3.272.0"
     "@aws-sdk/middleware-content-length" "3.272.0"
     "@aws-sdk/middleware-endpoint" "3.272.0"
     "@aws-sdk/middleware-endpoint-discovery" "3.272.0"
-    "@aws-sdk/middleware-host-header" "3.272.0"
+    "@aws-sdk/middleware-host-header" "3.278.0"
     "@aws-sdk/middleware-logger" "3.272.0"
     "@aws-sdk/middleware-recursion-detection" "3.272.0"
     "@aws-sdk/middleware-retry" "3.272.0"
