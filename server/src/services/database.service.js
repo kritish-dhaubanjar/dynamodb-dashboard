@@ -55,7 +55,7 @@ export default class DatabaseServiceProvider {
         this.io.emit(EVENTS.SUCCESS, { tableName });
       } catch (error) {
         // ERROR
-        this.io.emit(EVENTS.FAILED, { tableName });
+        this.io.emit(EVENTS.FAILED, { tableName, error });
         console.error(error);
       }
     }));

@@ -405,9 +405,14 @@ socket.on("SUCCESS", ({ tableName }) => {
   progress.queue = progress.queue.filter((e) => e !== tableName);
 });
 
-socket.on("FAILED", ({ tableName }) => {
+socket.on("FAILED", ({ tableName, error }) => {
   progress.failed.push(tableName);
   progress.queue = progress.queue.filter((e) => e !== tableName);
+
+  toast.className = "text-bg-danger";
+  toast.message = error.response?.data?.message ?? error.message;
+  const toastEl = new bootstrap.Toast(toastRef.value, { delay: 1000 });
+  setTimeout(() => toastEl.show(), 0);
 });
 
 const restore = async () => {
