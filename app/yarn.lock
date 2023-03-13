@@ -334,10 +334,10 @@
     "@codemirror/view" "^6.0.0"
     "@lezer/common" "^1.0.0"
 
-"@codemirror/commands@^6.0.0", "@codemirror/commands@^6.2.1":
-  version "6.2.1"
-  resolved "https://registry.yarnpkg.com/@codemirror/commands/-/commands-6.2.1.tgz#ab5e979ad1458bbe395bf69ac601f461ac73cf08"
-  integrity sha512-FFiNKGuHA5O8uC6IJE5apI5rT9gyjlw4whqy4vlcX0wE/myxL6P1s0upwDhY4HtMWLOwzwsp0ap3bjdQhvfDOA==
+"@codemirror/commands@^6.0.0", "@codemirror/commands@^6.2.2":
+  version "6.2.2"
+  resolved "https://registry.yarnpkg.com/@codemirror/commands/-/commands-6.2.2.tgz#437d9ba275107dbc629f0bfa3b150e0e43f2a218"
+  integrity sha512-s9lPVW7TxXrI/7voZ+HmD/yiAlwAYn9PH5SUVSUhsxXHhv4yl5eZ3KLntSoTynfdgVYM0oIpccQEWRBQgmNZyw==
   dependencies:
     "@codemirror/language" "^6.0.0"
     "@codemirror/state" "^6.2.0"
