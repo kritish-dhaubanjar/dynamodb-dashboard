@@ -106,15 +106,15 @@
     tslib "^2.3.1"
 
 "@aws-sdk/client-dynamodb@^3.154.0":
-  version "3.293.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.293.0.tgz#fa435ddb480782e206890649e593d2ccf1e6494c"
-  integrity sha512-tsZ08zZ76RpuRDPXc5rw9gUy0tNf74lo1UnUYSErOqKOzyr5Gd7BIpVysc12hv4D0sA7R5fD7VamrsRhAxcQ/A==
+  version "3.294.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.294.0.tgz#8f3235b497f75042aac7d6c2b738bc37e98bda6d"
+  integrity sha512-KRZKBBNOOF2j2qE02apR36j/8mVU+yduTMq4eYzJv+JR2Mu77cZAgL4LSGcn19mrHExXNf5M89iMAB+Su99/Dw==
   dependencies:
     "@aws-crypto/sha256-browser" "3.0.0"
     "@aws-crypto/sha256-js" "3.0.0"
-    "@aws-sdk/client-sts" "3.293.0"
+    "@aws-sdk/client-sts" "3.294.0"
     "@aws-sdk/config-resolver" "3.292.0"
-    "@aws-sdk/credential-provider-node" "3.293.0"
+    "@aws-sdk/credential-provider-node" "3.294.0"
     "@aws-sdk/fetch-http-handler" "3.292.0"
     "@aws-sdk/hash-node" "3.292.0"
     "@aws-sdk/invalid-dependency" "3.292.0"
