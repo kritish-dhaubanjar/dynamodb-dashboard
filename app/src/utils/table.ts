@@ -6,13 +6,13 @@ export function generateTableHeaders(items = [], { KeySchema = [] }) {
   const hashKey = KeySchema.find(({ KeyType }) => KeyType === "HASH") ?? {};
   const rangeKey = KeySchema.find(({ KeyType }) => KeyType === "RANGE") ?? {};
 
-  for (const item of items) {
-    if (Object.keys(item).length > Object.keys(max).length) {
-      max = item;
-    }
-  }
+  const allHeaders = new Set();
 
-  const headers = Object.keys(max).filter(
+  items.forEach(item => {
+    Object.keys(item).forEach(allHeaders.add, allHeaders)
+  })
+
+  const headers = Array.from(allHeaders).filter(
     (key) => ![hashKey.AttributeName, rangeKey.AttributeName].includes(key)
   );
 
