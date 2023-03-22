@@ -1,7 +1,10 @@
 NPM=npm
 YARN=yarn
 NODE=node
+VERSION=1.5.4
 APP=dynamodb-dashboard
+# hub.docker.com
+USERNAME=kritishdhaubanjar
 # registry
 VERDACCIO_REGISTRY=http://localhost:4873
 VERDACCIO_STORAGE=~/.local/share/verdaccio/storage/$(APP)
@@ -26,6 +29,10 @@ publish: all
 	rm ./server/README.md
 	cp ./README.md ./server/README.md
 	cd ./server && $(NPM) publish --dry-run
+
+docker:
+	docker build . -t $(USERNAME)/dynamodb-dashboard:$(VERSION)
+	docker build . -t $(USERNAME)/dynamodb-dashboard:latest
 
 # development
 .server:
