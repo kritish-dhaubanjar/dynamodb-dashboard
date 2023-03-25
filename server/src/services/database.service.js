@@ -3,14 +3,11 @@ import { EVENTS } from "../constants/event";
 import { OPERATIONS } from "../constants/dynamodb";
 import { constructSchema } from "../utils/dynamodb";
 
-import SocketService from "./socket.service";
 import ItemServiceProvider from "./item.service";
 import TableServiceProvider from "./table.service";
 
 export default class DatabaseServiceProvider {
   constructor(_AWS_, credentials) {
-    this.io = SocketService.io;
-
     // TARGET
     this.TARGET = {
       AWS: _AWS_,
@@ -32,7 +29,7 @@ export default class DatabaseServiceProvider {
     return tables;
   }
 
-  async restore(tableNames) {
+  async restore(tableNames, uid, eventEmitter) {
     await Promise.all(tableNames.map(async (tableName) => {
       try {
         const { Table } = await this.SOURCE.TableService.describe(tableName);
@@ -52,10 +49,10 @@ export default class DatabaseServiceProvider {
         } while (params.ExclusiveStartKey);
 
         // SUCCESS
-        this.io.emit(EVENTS.SUCCESS, { tableName });
+        eventEmitter.emit(EVENTS.SUCCESS, uid, { tableName });
       } catch (error) {
         // ERROR
-        this.io.emit(EVENTS.FAILED, { tableName, error });
+        eventEmitter.emit(EVENTS.FAILED, uid, { tableName, error });
         console.error(error);
       }
     }));

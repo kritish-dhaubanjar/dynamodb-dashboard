@@ -347,10 +347,12 @@
 </template>
 
 <script lang="ts" setup>
-import io from "socket.io-client";
+import axios from "axios";
 import * as bootstrap from "bootstrap";
 import { useRouter } from "vue-router";
+import ROUTES from "../../constants/routes";
 import { inject, reactive, ref } from "vue";
+import { generateString, interpolate } from "@/utils/string";
 import { getRemoteTables, restoreTables } from "@/services/table";
 
 const store: any = inject("store");
@@ -398,30 +400,40 @@ const explore = async () => {
   }
 };
 
-const socket = io(import.meta.env.VITE_API_SOCKET_URL);
+const sseOnMessageHandler = (sse, { data }) => {
+  const { event, tableName, error } = JSON.parse(data);
 
-socket.on("SUCCESS", ({ tableName }) => {
-  progress.done.push(tableName);
-  progress.queue = progress.queue.filter((e) => e !== tableName);
-});
+  if(event === 'END'){
+    return sse.close();
+  }
 
-socket.on("FAILED", ({ tableName, error }) => {
-  progress.failed.push(tableName);
-  progress.queue = progress.queue.filter((e) => e !== tableName);
+  if (error) {
+    progress.failed.push(tableName);
+    progress.queue = progress.queue.filter((e) => e !== tableName);
 
-  toast.className = "text-bg-danger";
-  toast.message = error.response?.data?.message ?? error.message;
-  const toastEl = new bootstrap.Toast(toastRef.value, { delay: 1000 });
-  setTimeout(() => toastEl.show(), 0);
-});
+    toast.className = "text-bg-danger";
+    toast.message = error.response?.data?.message ?? error.message;
+    const toastEl = new bootstrap.Toast(toastRef.value, { delay: 1000 });
+    setTimeout(() => toastEl.show(), 0);
+  } else {
+    progress.done.push(tableName);
+    progress.queue = progress.queue.filter((e) => e !== tableName);
+  }
+}
 
 const restore = async () => {
   progress.failed = [];
   progress.done = [];
   progress.queue = localTables.value;
 
+  const uid = generateString(32)
+  const eventSourceURL = interpolate(`${axios.defaults.baseURL}${ROUTES.DATABASE.STREAM}`, { uid });
+
+  const sse = new EventSource(eventSourceURL);
+  sse.onmessage = (payload) => sseOnMessageHandler(sse, payload);
+
   try {
-    await restoreTables({ credentials, tableNames: localTables.value });
+    await restoreTables(uid, { credentials, tableNames: localTables.value });
   } catch (error) {
     toast.className = "text-bg-danger";
     toast.message = error.response?.data?.message ?? error.message;

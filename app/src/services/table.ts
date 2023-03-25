@@ -41,8 +41,9 @@ export async function getRemoteTables(body: object) {
   return data;
 }
 
-export async function restoreTables(body: object) {
-  const { data } = await axios.post(ROUTES.DATABASE.RESTORE, body);
+export async function restoreTables(uid:string, body: object) {
+  const url = interpolate(ROUTES.DATABASE.RESTORE, { uid });
+  const { data } = await axios.post(url, body);
 
   return data;
 }

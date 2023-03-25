@@ -7,7 +7,6 @@ import routes from "./routes";
 import AWS from "./config/aws";
 import compression from "compression";
 import errorHandler from "./errors/handler";
-import SocketService from "./services/socket.service";
 
 AWS.initialize();
 
@@ -40,5 +39,3 @@ const server = app.listen(4567, () => {
     `dynamodb-dashboard started at: http://127.0.0.1:4567/dynamodb\n`
   );
 });
-
-SocketService.initialize(server);

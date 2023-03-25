@@ -9,7 +9,8 @@ const routes = {
   },
   DATABASE: {
     ALL: "/database/tables",
-    RESTORE: "/database/restore",
+    RESTORE: "/database/restore/:uid",
+    STREAM: "/database/stream/:uid",
   },
   ITEM: {
     CREATE: "/tables/:tableName/items",

@@ -7,7 +7,6 @@ import routes from "../routes";
 import AWS from "../config/aws";
 import compression from "compression";
 import errorHandler from "../errors/handler";
-import SocketService from "../services/socket.service";
 
 AWS.initialize();
 
@@ -52,6 +51,4 @@ export default ({ port, host, debug, open: _open, prefix }) => {
       open(URL);
     }
   });
-
-  SocketService.initialize(server);
 };
