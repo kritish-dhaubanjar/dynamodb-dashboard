@@ -27,7 +27,7 @@
     "@babel/node": "^7.18.10",
     "@babel/preset-env": "^7.18.10",
     "nodemon": "^2.0.19",
-    "rimraf": "^4.0.4"
+    "rimraf": "^5.0.0"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.154.0",
