@@ -685,11 +685,11 @@
     tslib "^2.5.0"
 
 "@aws-sdk/lib-dynamodb@^3.154.0":
-  version "3.321.1"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.321.1.tgz#93f0e036e124ba847deee33638b089871a9402a2"
-  integrity sha512-C6fSbgP/ppxKpgGwTgzzLEFBtVn5EiyeK+X81DPu11mdt0zfzXGcampDVChj8mFubxwVBSSs1ned95GJfYRtNA==
+  version "3.341.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.341.0.tgz#9dcd2ab8f159b4879b7c14e61eea885da6cf439c"
+  integrity sha512-+qKtY4pZIaJCEr+tck/Vz9Db/lf1RnvNGSh3C2jOAwD+JvmbGiX/eiP4NmLEa87oMXLfHsWZiGdwozsKjwMQWA==
   dependencies:
-    "@aws-sdk/util-dynamodb" "3.321.1"
+    "@aws-sdk/util-dynamodb" "3.341.0"
     tslib "^2.5.0"
 
 "@aws-sdk/middleware-content-length@3.310.0":
@@ -1225,10 +1225,10 @@
     "@aws-sdk/types" "3.338.0"
     tslib "^2.5.0"
 
-"@aws-sdk/util-dynamodb@3.321.1":
-  version "3.321.1"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/util-dynamodb/-/util-dynamodb-3.321.1.tgz#e9f6ad973182687cfaa3c4e1ef711bdb83cdbb0f"
-  integrity sha512-WccdKjsPjxd7ehEw/cPUDYIuHWH0WywDcSh/e6tqHvH40UkA6Z93YxD/ILMQMvwdHGnHb/RdUyVBcDm6AlJj/w==
+"@aws-sdk/util-dynamodb@3.341.0":
+  version "3.341.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/util-dynamodb/-/util-dynamodb-3.341.0.tgz#ce313ea19f38fe3a3e1fc093fb898641b22c6a9a"
+  integrity sha512-UfeQi5sPwRQcuA0jrLlyyOmwCvtqGWiumKOIGnPBx67NTh6d6C9L9YGzIf+4vOHs/RUYwA4bcS3PgZqYjK6zCg==
   dependencies:
     tslib "^2.5.0"
 
@@ -4104,6 +4104,7 @@ statuses@2.0.1:
   integrity sha512-RwNA9Z/7PrK06rYLIzFMlaF+l73iwpzsqRIFgbMLbTcLD6cOao82TaWefPXQvB2fOC4AjuYSEndS7N/mTCbkdQ==
 
 "string-width-cjs@npm:string-width@^4.2.0", string-width@^4.1.0:
+  name string-width-cjs
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/string-width/-/string-width-4.2.3.tgz#269c7117d27b05ad2e536830a8ec895ef9c6d010"
   integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==
@@ -4140,6 +4141,7 @@ string.prototype.trimstart@^1.0.5:
     es-abstract "^1.19.5"
 
 "strip-ansi-cjs@npm:strip-ansi@^6.0.1", strip-ansi@^6.0.0, strip-ansi@^6.0.1:
+  name strip-ansi-cjs
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-6.0.1.tgz#9e26c63d30f53443e9489495b2105d37b67a85d9"
   integrity sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==
