@@ -11,7 +11,7 @@ export async function getTable(tableName: string) {
   const url = interpolate(ROUTES.TABLE.DESCRIBE, { tableName });
   const { data } = await axios.get(url);
 
-  return data.Table;
+  return data;
 }
 
 export async function createTable(body: object) {

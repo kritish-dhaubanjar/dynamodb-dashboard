@@ -216,7 +216,7 @@ const store: any = inject("store");
 
 onBeforeMount(async () => {
   try {
-    const data = await getTable(route.params.tableName.toString());
+    const { Table: data } = await getTable(route.params.tableName.toString());
     store.table.setters.setTable(data);
 
     table.indices = (data.GlobalSecondaryIndexes ?? []).map(

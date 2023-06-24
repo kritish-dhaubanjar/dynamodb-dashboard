@@ -194,7 +194,7 @@ export default {
 
     const initItem = async () => {
       const { tableName } = route.params;
-      const table = await getTable(tableName);
+      const { Table: table } = await getTable(tableName);
       const { KeySchema, AttributeDefinitions } = table;
 
       const emptyItem = {};

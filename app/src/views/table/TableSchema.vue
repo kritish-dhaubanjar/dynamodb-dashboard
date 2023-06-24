@@ -96,8 +96,8 @@ onMounted(async () => {
   try {
     const codeMirror = codeMirrorConfig(textAreaRef, {});
 
-    const data = await getTable(route.params.tableName.toString());
-    schema.value = JSON.stringify({ Table: data }, null, 2)
+    const { Table } = await getTable(route.params.tableName.toString());
+    schema.value = JSON.stringify({ Table }, null, 2);
 
     codeMirror.dispatch({
       changes: {
