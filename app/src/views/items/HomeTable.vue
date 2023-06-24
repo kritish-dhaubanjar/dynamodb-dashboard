@@ -42,6 +42,16 @@
               >
                 Create/Delete Index
               </RouterLink>
+              <RouterLink
+                v-if="activeTableName"
+                class="dropdown-item"
+                :to="{
+                  name: 'table-schema',
+                  params: { tableName: activeTableName },
+                }"
+              >
+                View Table Schema
+              </RouterLink>
             </li>
           </ul>
 

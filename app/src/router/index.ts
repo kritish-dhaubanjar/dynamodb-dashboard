@@ -3,6 +3,7 @@ import HomeTable from "@/views/items/HomeTable.vue";
 import CreateItem from "@/views/items/CreateItem.vue";
 
 import EditTable from "@/views/table/EditTable.vue";
+import TableSchema from "@/views/table/TableSchema.vue";
 import CreateTable from "@/views/table/CreateTable.vue";
 import RestoreTables from "@/views/table/RestoreTables.vue";
 
@@ -47,6 +48,14 @@ const router = createRouter({
       path: "/table/:tableName/edit-table",
       name: "edit-table",
       component: EditTable,
+      meta: {
+        name: "Tables",
+      },
+    },
+    {
+      path: "/table/:tableName/table-schema",
+      name: "table-schema",
+      component: TableSchema,
       meta: {
         name: "Tables",
       },
