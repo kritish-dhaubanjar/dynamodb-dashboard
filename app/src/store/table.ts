@@ -3,6 +3,7 @@ import { reactive } from "vue";
 const state = reactive({
   Table: {},
   TableNames: [] as string[],
+  ForeignKeys: [],
 });
 
 const setters = {
@@ -12,11 +13,17 @@ const setters = {
   setTable: (table: object) => {
     state.Table = table;
   },
+  setForeignKeys: (foreignKeys) => {
+    state.ForeignKeys = foreignKeys;
+  },
 };
 
 const getters = {
   getTable: () => {
     return state.Table;
+  },
+  getForeignKeys: () => {
+    return state.ForeignKeys;
   },
 };
 

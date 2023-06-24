@@ -135,7 +135,12 @@
                   {{ item[key] }}
                 </RouterLink>
               </div>
-              <div v-else>{{ item[key] }}</div>
+              <div v-else-if="foreignKeys.find(({ AttributeName }) => AttributeName === key)">
+                <ItemCell :column="key" :foreignKeys="foreignKeys" :value="item[key]" />
+              </div>
+              <div v-else>
+                {{ item[key] }}
+              </div>
             </td>
           </tr>
         </tbody>
@@ -219,6 +224,7 @@ import {
   reactive,
   nextTick,
 } from "vue";
+import ItemCell from "@/components/app/item-cell.vue";
 
 import { SORT_ORDER, SORTS } from "../../constants/sort";
 
@@ -360,6 +366,9 @@ const sk = computed(() =>
   store.table.state.Table.KeySchema.find(({ KeyType }) => KeyType === "RANGE")
 );
 
+// Foreign Keys
+const foreignKeys = computed(()=> store.table.state.ForeignKeys ?? []);
+
 const modal = ref(null);
 const modalRef = ref(null);
 
@@ -467,6 +476,7 @@ const handleItemSelect = (event, item) => {
     window.getSelection()?.empty() && window.getSelection()?.removeAllRanges();
   }
 };
+
 </script>
 
 <style scoped lang="scss">

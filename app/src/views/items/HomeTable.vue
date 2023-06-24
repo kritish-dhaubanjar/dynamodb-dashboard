@@ -254,7 +254,7 @@ onBeforeMount(async () => {
   const indexName = searchParams.get("indexName");
 
   // FORCE INVALID REQ -> VALID REQ
-  const { Table: table, ForeignKeys } = await getTable(defaultTable);
+  const { Table: table } = await getTable(defaultTable);
   const defaultOperation = ["SCAN", "QUERY"].includes(operation ?? "")
     ? operation
     : "SCAN";
@@ -328,6 +328,7 @@ watch(
         try {
           const { Table: table, ForeignKeys } = await getTable(tableName.toString());
           store.table.setters.setTable(table);
+          store.table.setters.setForeignKeys(ForeignKeys);
         } catch (error) {
           window.location.href = "/";
         }
