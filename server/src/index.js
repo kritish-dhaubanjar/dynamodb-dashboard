@@ -1,6 +1,7 @@
 import "dotenv/config";
 import cors from "cors";
 import path from "path";
+import setup from "./setup";
 import morgan from "morgan";
 import express from "express";
 import routes from "./routes";
@@ -9,6 +10,7 @@ import compression from "compression";
 import errorHandler from "./errors/handler";
 
 AWS.initialize();
+setup();
 
 const app = express();
 app.use(compression());

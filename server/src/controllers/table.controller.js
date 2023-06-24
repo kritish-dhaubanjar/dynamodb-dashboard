@@ -1,6 +1,8 @@
 import TableServiceProvider from "../services/table.service";
+import ForeignKeyServiceProvider from "../services/foreign-key.service";
 
 const TableService = new TableServiceProvider();
+const ForeignKeyService = new ForeignKeyServiceProvider();
 
 export async function index(_req, res, next) {
   try {
@@ -24,6 +26,9 @@ export async function describe(req, res, next) {
   try {
     const tableName = req.params.tableName;
     const data = await TableService.describe(tableName);
+
+    data.ForeignKeys = await ForeignKeyService.fetch(tableName);
+
     return res.json(data);
   } catch (error) {
     next(error);
