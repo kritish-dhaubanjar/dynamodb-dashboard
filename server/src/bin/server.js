@@ -2,6 +2,7 @@ import "dotenv/config";
 import open from "open";
 import path from "path";
 import morgan from "morgan";
+import setup from "./setup";
 import express from "express";
 import routes from "../routes";
 import AWS from "../config/aws";
@@ -11,6 +12,8 @@ import errorHandler from "../errors/handler";
 AWS.initialize();
 
 export default ({ port, host, debug, open: _open, prefix }) => {
+  setup();
+
   const root = `http://${host}:${port}`;
   const URL = `${root}/${prefix}`;
 
