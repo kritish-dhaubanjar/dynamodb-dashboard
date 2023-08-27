@@ -185,12 +185,18 @@
                   >
                     <div class="col-6 col-xl-2">
                       <label class="mb-1">Attribute Name</label>
-                      <input
-                        type="text"
-                        class="form-control rounded-0 mb-2"
-                        placeholder="Enter attribute name"
-                        v-model="filter.name"
-                      />
+                      <div class="dropdown">
+                        <input
+                          type="text"
+                          class="form-control rounded-0 mb-2"
+                          placeholder="Enter attribute name"
+                          v-model="filter.name"
+                          data-bs-toggle="dropdown"
+                        />
+                        <ul class="dropdown-menu rounded-0">
+                          <li v-for="header in filteredHeaders(filter.name)"><a class="dropdown-item" @click.prevent="filter.name = header">{{ header }}</a></li>
+                        </ul>
+                      </div>
                     </div>
                     <div class="col-6 col-xl-2">
                       <label class="mb-1">Type</label>
@@ -339,6 +345,15 @@ const route = useRoute();
 const router = useRouter();
 const store: any = inject("store");
 const table = computed(() => store.table.state.Table);
+
+const filteredHeaders = computed(() => {
+  return (filterName)=>{
+    const headers = store.ui.state.table.headers
+    const filteredHeaders = headers?.filter(header => header?.includes(filterName)) || headers || [];
+
+    return filteredHeaders;
+  }
+});
 
 const KeySchema = computed(() => table.value.KeySchema ?? []);
 const TableName = computed(
@@ -562,3 +577,9 @@ const dynamodbParameters = computed(() => {
   return preview && Object.keys(preview).length ? preview : null;
 });
 </script>
+
+<style lang="scss" scoped>
+.dropdown-menu {
+  z-index: 1028 !important;
+}
+</style>
