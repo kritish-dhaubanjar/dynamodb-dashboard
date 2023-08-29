@@ -1,5 +1,5 @@
 import AWS from "../config/aws";
-import { pick } from "../utils/object";
+import { chunk, pick } from "../utils/object";
 
 export default class ItemServiceProvider {
   constructor(_AWS_ = AWS) {
@@ -83,17 +83,22 @@ export default class ItemServiceProvider {
   }
 
   /**
+   * A single call to BatchWriteItem can transmit up to 16MB of data over the network, consisting of up to 25 item put or delete operations.
    *
    * @param {*} tableName
    * @param {*} items
    * @returns
    */
   async destroy(tableName, items) {
-    const response = await this.AWS.document.batchWrite({
+    const chunks = chunk(items, 25)
+
+    const requests = chunks.map(items => ({
       RequestItems: {
         [tableName]: items,
       },
-    });
+    }));
+
+    const response = await Promise.all(requests.map(this.AWS.document.batchWrite.bind(this.AWS.document)));
 
     return response;
   }
