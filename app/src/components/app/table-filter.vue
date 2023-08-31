@@ -194,7 +194,7 @@
                           data-bs-toggle="dropdown"
                           @click="handleOnClick"
                           @keyup="handleOnClick"
-                          id="dropdown-input-toggle"
+                          :id="`dropdown-input-toggle-${i}`"
                         />
                         <ul class="dropdown-menu rounded-0" :class="{ 'p-0 border-0': !filteredHeaders(filter.name).length }">
                           <li v-for="header in filteredHeaders(filter.name)"><a class="dropdown-item" @click.prevent="filter.name = header">{{ header }}</a></li>
@@ -580,8 +580,8 @@ const dynamodbParameters = computed(() => {
   return preview && Object.keys(preview).length ? preview : null;
 });
 
-const handleOnClick = ()=>{
-  const dropdownElement = document.getElementById('dropdown-input-toggle')
+const handleOnClick = (e)=>{
+  const dropdownElement = document.getElementById(e.target.id)
   const dropdown = new bootstrap.Dropdown(dropdownElement)
   dropdown.show()
 }
