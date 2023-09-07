@@ -9,7 +9,7 @@ USERNAME=kritishdhaubanjar
 VERDACCIO_REGISTRY=http://localhost:4873
 VERDACCIO_STORAGE=~/.local/share/verdaccio/storage/$(APP)
 
-all: install clean
+all: clean install
 	cd ./app && $(YARN) build-only
 	cd ./server && $(YARN) build
 	cp -r ./app/dist ./server/build/public
@@ -21,6 +21,8 @@ install:
 clean:
 	rm -rf ./app/dist
 	rm -rf ./server/build
+	rm -rf ./app/node_modules
+	rm -rf ./server/node_modules
 
 start: all
 	$(NODE) ./server/build/bin/cli.js start -o
