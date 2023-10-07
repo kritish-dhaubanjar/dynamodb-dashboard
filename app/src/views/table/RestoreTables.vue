@@ -47,6 +47,7 @@
                   <div>
                     <label class="form-label">AWS Access Key Id *<br /> </label>
                     <input
+                      required
                       type="text"
                       class="form-control rounded-0"
                       placeholder="eg: AKIAIOSFODNN7EXAMPLE"
