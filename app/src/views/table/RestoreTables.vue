@@ -62,6 +62,7 @@
                       >AWS Secret access key *<br />
                     </label>
                     <input
+                      required
                       type="text"
                       class="form-control rounded-0"
                       placeholder="eg: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
