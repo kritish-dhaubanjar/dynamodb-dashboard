@@ -19,6 +19,7 @@
                   <div>
                     <label class="form-label">AWS Region *<br /> </label>
                     <input
+                      required
                       type="text"
                       class="form-control rounded-0"
                       placeholder="eg: us-west-2"
