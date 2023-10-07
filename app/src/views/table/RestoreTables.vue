@@ -370,7 +370,7 @@ const progress = reactive({
 
 const credentials = reactive({
   AWS_REGION: "",
-  AWS_ENDPOINT: "",
+  AWS_ENDPOINT: "https://dynamodb.us-west-2.amazonaws.com",
   AWS_ACCESS_KEY_ID: "",
   AWS_SESSION_TOKEN: "",
   AWS_SECRET_ACCESS_KEY: "",
@@ -403,7 +403,7 @@ const explore = async () => {
 const sseOnMessageHandler = (sse, { data }) => {
   const { event, tableName, error } = JSON.parse(data);
 
-  if(event === 'END'){
+  if (event === "END") {
     return sse.close();
   }
 
@@ -419,15 +419,18 @@ const sseOnMessageHandler = (sse, { data }) => {
     progress.done.push(tableName);
     progress.queue = progress.queue.filter((e) => e !== tableName);
   }
-}
+};
 
 const restore = async () => {
   progress.failed = [];
   progress.done = [];
   progress.queue = localTables.value;
 
-  const uid = generateString(32)
-  const eventSourceURL = interpolate(`${axios.defaults.baseURL}${ROUTES.DATABASE.STREAM}`, { uid });
+  const uid = generateString(32);
+  const eventSourceURL = interpolate(
+    `${axios.defaults.baseURL}${ROUTES.DATABASE.STREAM}`,
+    { uid }
+  );
 
   const sse = new EventSource(eventSourceURL);
   sse.onmessage = (payload) => sseOnMessageHandler(sse, payload);
