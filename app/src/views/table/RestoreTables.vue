@@ -34,6 +34,7 @@
                       >AWS DynamoDB Endpoint *<br />
                     </label>
                     <input
+                      required
                       type="text"
                       class="form-control rounded-0"
                       placeholder="eg: https://dynamodb.us-west-2.amazonaws.com"
