@@ -5,111 +5,111 @@
 
       <div class="row">
         <div class="col-xl-4 mb-4">
-          <div class="card rounded-0 border-0 shadow-sm">
-            <div class="card-header py-3 border-0">
-              <h4 class="mb-1">Command line or programmatic access</h4>
-              <small
-                >Temporary credentials of an IAM role for CLI or programmatic
-                access to an AWS account.</small
-              >
-            </div>
-            <div class="card-body border-0">
-              <div class="mb-3">
-                <div class="row mb-3">
-                  <div>
-                    <label class="form-label">AWS Region *<br /> </label>
-                    <input
-                      required
-                      type="text"
-                      class="form-control rounded-0"
-                      placeholder="eg: us-west-2"
-                      v-model="credentials.AWS_REGION"
-                    />
+          <form @submit.prevent="explore">
+            <div class="card rounded-0 border-0 shadow-sm">
+              <div class="card-header py-3 border-0">
+                <h4 class="mb-1">Command line or programmatic access</h4>
+                <small
+                  >Temporary credentials of an IAM role for CLI or programmatic
+                  access to an AWS account.</small
+                >
+              </div>
+              <div class="card-body border-0">
+                <div class="mb-3">
+                  <div class="row mb-3">
+                    <div>
+                      <label class="form-label">AWS Region *<br /> </label>
+                      <input
+                        required
+                        type="text"
+                        class="form-control rounded-0"
+                        placeholder="eg: us-west-2"
+                        v-model="credentials.AWS_REGION"
+                      />
+                    </div>
                   </div>
-                </div>
 
-                <div class="row mb-3">
-                  <div>
-                    <label class="form-label"
-                      >AWS DynamoDB Endpoint *<br />
-                    </label>
-                    <input
-                      required
-                      type="text"
-                      class="form-control rounded-0"
-                      placeholder="eg: https://dynamodb.us-west-2.amazonaws.com"
-                      v-model="credentials.AWS_ENDPOINT"
-                    />
+                  <div class="row mb-3">
+                    <div>
+                      <label class="form-label"
+                        >AWS DynamoDB Endpoint *<br />
+                      </label>
+                      <input
+                        required
+                        type="text"
+                        class="form-control rounded-0"
+                        placeholder="eg: https://dynamodb.us-west-2.amazonaws.com"
+                        v-model="credentials.AWS_ENDPOINT"
+                      />
+                    </div>
                   </div>
-                </div>
 
-                <div class="row mb-3">
-                  <div>
-                    <label class="form-label">AWS Access Key Id *<br /> </label>
-                    <input
-                      required
-                      type="text"
-                      class="form-control rounded-0"
-                      placeholder="eg: AKIAIOSFODNN7EXAMPLE"
-                      v-model="credentials.AWS_ACCESS_KEY_ID"
-                    />
+                  <div class="row mb-3">
+                    <div>
+                      <label class="form-label"
+                        >AWS Access Key Id *<br />
+                      </label>
+                      <input
+                        required
+                        type="text"
+                        class="form-control rounded-0"
+                        placeholder="eg: AKIAIOSFODNN7EXAMPLE"
+                        v-model="credentials.AWS_ACCESS_KEY_ID"
+                      />
+                    </div>
                   </div>
-                </div>
 
-                <div class="row mb-3">
-                  <div>
-                    <label class="form-label"
-                      >AWS Secret access key *<br />
-                    </label>
-                    <input
-                      required
-                      type="text"
-                      class="form-control rounded-0"
-                      placeholder="eg: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
-                      v-model="credentials.AWS_SECRET_ACCESS_KEY"
-                    />
+                  <div class="row mb-3">
+                    <div>
+                      <label class="form-label"
+                        >AWS Secret access key *<br />
+                      </label>
+                      <input
+                        required
+                        type="text"
+                        class="form-control rounded-0"
+                        placeholder="eg: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
+                        v-model="credentials.AWS_SECRET_ACCESS_KEY"
+                      />
+                    </div>
                   </div>
-                </div>
 
-                <div class="row mb-3">
-                  <div>
-                    <label class="form-label">AWS session token<br /> </label>
-                    <input
-                      type="text"
-                      class="form-control rounded-0"
-                      placeholder="eg: FQoGZXIvYXdzENv//////////wEaDEeLj11xTbnBk6azRCKsAacCiJK85DSXExJ81GtHrkEyev8eedQcFY4EoM00PsD1FAEMOfzQclVEFsoh9Y4ZHUjgGmCPRUnYCLNc2NnHkadvmI+MT7jRRa1Mo2HA/HYStOOwEyfXFYG91MNj9rVXXXXXXXXA6+7FF6jcxj3cr1U9CDB9hjW+jGq4UgjxXXXXXXXCoIidDjl4Z911zIzP/Q+FYA1R2CUz5Y32EUaMzR+bQvmheUolLOq3wU="
-                      v-model="credentials.AWS_SESSION_TOKEN"
-                    />
+                  <div class="row mb-3">
+                    <div>
+                      <label class="form-label">AWS session token<br /> </label>
+                      <input
+                        type="text"
+                        class="form-control rounded-0"
+                        placeholder="eg: FQoGZXIvYXdzENv//////////wEaDEeLj11xTbnBk6azRCKsAacCiJK85DSXExJ81GtHrkEyev8eedQcFY4EoM00PsD1FAEMOfzQclVEFsoh9Y4ZHUjgGmCPRUnYCLNc2NnHkadvmI+MT7jRRa1Mo2HA/HYStOOwEyfXFYG91MNj9rVXXXXXXXXA6+7FF6jcxj3cr1U9CDB9hjW+jGq4UgjxXXXXXXXCoIidDjl4Z911zIzP/Q+FYA1R2CUz5Y32EUaMzR+bQvmheUolLOq3wU="
+                        v-model="credentials.AWS_SESSION_TOKEN"
+                      />
+                    </div>
                   </div>
-                </div>
 
-                <div class="d-flex justify-content-end mt-5 pt-5">
-                  <button
-                    type="button"
-                    class="btn btn-secondary rounded-0 me-2"
-                    @click="cancel"
-                  >
-                    Cancel
-                  </button>
+                  <div class="d-flex justify-content-end mt-5 pt-5">
+                    <button
+                      type="button"
+                      class="btn btn-secondary rounded-0 me-2"
+                      @click="cancel"
+                    >
+                      Cancel
+                    </button>
 
-                  <button
-                    class="btn btn-primary rounded-0"
-                    type="button"
-                    @click="explore"
-                  >
-                    <span
-                      class="spinner-grow spinner-grow-sm me-1"
-                      role="status"
-                      aria-hidden="true"
-                      v-if="store.ui.state.isLoading"
-                    ></span>
-                    <span class="visually-hidden">Loading...</span>
-                    Explore Tables
-                  </button>
+                    <button class="btn btn-primary rounded-0" type="submit">
+                      <span
+                        class="spinner-grow spinner-grow-sm me-1"
+                        role="status"
+                        aria-hidden="true"
+                        v-if="store.ui.state.isLoading"
+                      ></span>
+                      <span class="visually-hidden">Loading...</span>
+                      Explore Tables
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </form>
         </div>
 
         <div class="col-xl-7">
