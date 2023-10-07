@@ -369,7 +369,7 @@ const progress = reactive({
 });
 
 const credentials = reactive({
-  AWS_REGION: "",
+  AWS_REGION: "us-west-2",
   AWS_ENDPOINT: "https://dynamodb.us-west-2.amazonaws.com",
   AWS_ACCESS_KEY_ID: "",
   AWS_SESSION_TOKEN: "",
