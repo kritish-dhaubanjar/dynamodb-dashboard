@@ -85,8 +85,20 @@
                     placeholder="Enter partition key value"
                     type="text"
                     class="form-control rounded-0"
+                    :class="{
+                      'is-invalid': Object.keys(errors.keys.pk.value).length,
+                    }"
+                    required
                     v-model="parameters.keys.pk.value"
                   />
+
+                  <div
+                    class="invalid-feedback"
+                    v-for="errorMessage of errors.keys.pk.value"
+                    :key="errorMessage"
+                  >
+                    {{ errorMessage }}
+                  </div>
                 </div>
               </div>
             </div>
@@ -413,6 +425,16 @@ const parameters = reactive({
   ],
 });
 
+const defaultErrors = {
+  keys: {
+    pk: {
+      value: {} as Record<string, string>,
+    },
+  },
+};
+
+const errors = reactive(structuredClone(defaultErrors));
+
 watchEffect(() => {
   indexName.value = route.query.indexName?.toString() ?? TableName.value;
   operation.value = route.query.operation?.toString();
@@ -478,7 +500,19 @@ const queryKeySchema = computed(() => {
 //
 const setOperation = (op) => (operation.value = op);
 
+const resetErrors = () => {
+  const errorKeys = Object.keys(defaultErrors) as Array<
+    keyof typeof defaultErrors
+  >;
+
+  errorKeys.forEach((key) => {
+    Object.assign(errors[key], structuredClone(defaultErrors[key]));
+  });
+};
+
 const resetParameters = (resetOperation = true) => {
+  resetErrors();
+
   if (resetOperation) operation.value = "SCAN";
 
   parameters.keys.pk = {
@@ -509,10 +543,19 @@ const updateIndexName = (e: any) => {
   indexName.value = e.target.value;
 };
 
+const validateInput = (input: typeof parameters) => {
+  if (!input.keys.pk.value) {
+    errors.keys.pk.value.required = "Partition key value is required";
+
+    return false;
+  }
+
+  return true;
+};
+
 const run = async () => {
   const updatedParameters = { ...parameters };
 
-  //
   if (operation.value === "SCAN") {
     updatedParameters.keys.pk = {
       value: "",
@@ -524,6 +567,14 @@ const run = async () => {
       value2: "",
       condition: "=",
     };
+  }
+
+  if (operation.value === "QUERY") {
+    const isValid = validateInput(parameters);
+
+    if (!isValid) {
+      return;
+    }
   }
 
   router.push({
@@ -580,11 +631,25 @@ const dynamodbParameters = computed(() => {
   return preview && Object.keys(preview).length ? preview : null;
 });
 
-const handleOnClick = (e)=>{
-  const dropdownElement = document.getElementById(e.target.id)
-  const dropdown = new bootstrap.Dropdown(dropdownElement)
-  dropdown.show()
-}
+const handleOnClick = (e) => {
+  const dropdownElement = document.getElementById(e.target.id);
+  const dropdown = new bootstrap.Dropdown(dropdownElement);
+  dropdown.show();
+};
+
+watch(
+  () => parameters.keys.pk.value,
+  async () => {
+    if (!errors.keys.pk.value.length) {
+      return;
+    }
+
+    if (parameters.keys.pk.value) {
+      errors.keys.pk.value = structuredClone(defaultErrors.keys.pk.value);
+    }
+  },
+  { immediate: true }
+);
 </script>
 
 <style lang="scss" scoped>
