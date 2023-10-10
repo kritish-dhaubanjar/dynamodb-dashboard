@@ -5,10 +5,7 @@ import { version } from "../../package.json";
 
 const program = new Command();
 
-program
-  .name("dynamodb-dashboard")
-  .description("GUI Dashboard for local or remote DynamoDB")
-  .version(version);
+program.name("dynamodb-dashboard").description("GUI Dashboard for local or remote DynamoDB").version(version);
 
 program
   .command("start")

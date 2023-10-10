@@ -1,6 +1,6 @@
 import { pick } from "./object";
 import { create as TableSchema } from "../schemas/table.joi";
-import { ProvisionedThroughput } from '../constants/dynamodb';
+import { ProvisionedThroughput } from "../constants/dynamodb";
 
 export function constructSchema(Table) {
   const keys = Object.keys(TableSchema.describe().keys);

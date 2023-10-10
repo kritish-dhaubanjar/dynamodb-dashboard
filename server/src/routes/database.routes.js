@@ -1,6 +1,6 @@
 import { Router } from "express";
 import * as DatabaseController from "../controllers/database.controller";
-import { validateAll, validateRestore } from '../validators/database.validators.js';
+import { validateAll, validateRestore } from "../validators/database.validators.js";
 
 const router = Router();
 

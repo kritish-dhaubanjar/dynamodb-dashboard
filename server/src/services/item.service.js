@@ -47,7 +47,7 @@ export default class ItemServiceProvider {
      * items = [...[a,b,c,d,e,f,g], ...[h,i,j,k,l]]
      * slice = [a,b,c,d,e,f,g,h,i,j]
      * ExclusiveStartKey = pick(j, Object.keys(g))
-    */
+     */
     const slice = items.slice(0, params.Limit);
 
     if (items.length > slice.length) {
@@ -90,9 +90,9 @@ export default class ItemServiceProvider {
    * @returns
    */
   async destroy(tableName, items) {
-    const chunks = chunk(items, 25)
+    const chunks = chunk(items, 25);
 
-    const requests = chunks.map(items => ({
+    const requests = chunks.map((items) => ({
       RequestItems: {
         [tableName]: items,
       },
@@ -114,9 +114,7 @@ export default class ItemServiceProvider {
     const params = {
       Item: body,
       TableName: tableName,
-      ConditionExpression: schema
-        .map((key) => `attribute_not_exists(${key})`)
-        .join(" AND "),
+      ConditionExpression: schema.map((key) => `attribute_not_exists(${key})`).join(" AND "),
     };
 
     const response = await this.AWS.document.put(params);
@@ -136,9 +134,7 @@ export default class ItemServiceProvider {
       Key: ref,
       Item: body,
       TableName: tableName,
-      ConditionExpression: schema
-        .map((key) => `attribute_exists(${key})`)
-        .join(" AND "),
+      ConditionExpression: schema.map((key) => `attribute_exists(${key})`).join(" AND "),
     };
 
     const response = await this.AWS.document.put(params);
@@ -165,9 +161,7 @@ export default class ItemServiceProvider {
             Item: body,
             TableName: tableName,
             Key: pick(body, schema),
-            ConditionExpression: schema
-              .map((key) => `attribute_not_exists(${key})`)
-              .join(" AND "),
+            ConditionExpression: schema.map((key) => `attribute_not_exists(${key})`).join(" AND "),
           },
         },
       ],

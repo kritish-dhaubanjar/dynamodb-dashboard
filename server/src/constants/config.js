@@ -5,8 +5,7 @@ const config = {
     credentials: {
       accessKeyId: process.env.AWS_ACCESS_KEY_ID ?? "fakeAccessKeyId",
       sessionToken: process.env.AWS_SESSION_TOKEN,
-      secretAccessKey:
-        process.env.AWS_SECRET_ACCESS_KEY ?? "fakeSecretAccessKey",
+      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY ?? "fakeSecretAccessKey",
     },
   },
 };

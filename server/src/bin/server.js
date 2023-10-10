@@ -38,7 +38,7 @@ export default ({ port, host, debug, open: _open, prefix }) => {
     res.sendFile(path.resolve(__dirname, "..", "public", "index.html"));
   });
 
-  app.get("*", function(_req, res) {
+  app.get("*", function (_req, res) {
     res.redirect(ASSETS);
   });
 
