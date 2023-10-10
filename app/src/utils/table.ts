@@ -8,12 +8,12 @@ export function generateTableHeaders(items = [], { KeySchema = [] }) {
 
   const allHeaders = new Set();
 
-  items.forEach(item => {
-    Object.keys(item).forEach(allHeaders.add, allHeaders)
-  })
+  items.forEach((item) => {
+    Object.keys(item).forEach(allHeaders.add, allHeaders);
+  });
 
   const headers = Array.from(allHeaders).filter(
-    (key) => ![hashKey.AttributeName, rangeKey.AttributeName].includes(key)
+    (key) => ![hashKey.AttributeName, rangeKey.AttributeName].includes(key),
   );
 
   if (rangeKey.AttributeName) {
@@ -31,17 +31,15 @@ function getKeySchemaWithAttributeType({ indexName, table }) {
   if (indexName === table.TableName) {
     keySchema = table.KeySchema ?? [];
   } else {
-    const secondaryIndex = [
-      ...(table.GlobalSecondaryIndexes ?? []),
-      ...(table.LocalSecondaryIndexes ?? []),
-    ]?.find(({ IndexName }: { IndexName: string }) => IndexName === indexName);
+    const secondaryIndex = [...(table.GlobalSecondaryIndexes ?? []), ...(table.LocalSecondaryIndexes ?? [])]?.find(
+      ({ IndexName }: { IndexName: string }) => IndexName === indexName,
+    );
     keySchema = secondaryIndex?.KeySchema ?? [];
   }
 
   const keySchemaWithAttributeType = keySchema.map((key) => {
     const { AttributeType } = table.AttributeDefinitions.find(
-      (attributeDefinition: any) =>
-        key.AttributeName === attributeDefinition.AttributeName
+      (attributeDefinition: any) => key.AttributeName === attributeDefinition.AttributeName,
     );
 
     return {
@@ -50,12 +48,8 @@ function getKeySchemaWithAttributeType({ indexName, table }) {
     };
   });
 
-  const pk = keySchemaWithAttributeType.find(
-    ({ KeyType }) => KeyType === "HASH"
-  );
-  const sk = keySchemaWithAttributeType.find(
-    ({ KeyType }) => KeyType === "RANGE"
-  );
+  const pk = keySchemaWithAttributeType.find(({ KeyType }) => KeyType === "HASH");
+  const sk = keySchemaWithAttributeType.find(({ KeyType }) => KeyType === "RANGE");
 
   return {
     pk,
@@ -86,10 +80,7 @@ export function generateDynamodbParameters({ table, indexName, parameters }) {
     pkConditionExpression = `#${pk.AttributeName} ${parameters.keys.pk.condition} :${pk.AttributeName}`;
 
     attributeNames[`#${pk.AttributeName}`] = pk.AttributeName;
-    attributeValues[`:${pk.AttributeName}`] = valueOf(
-      parameters.keys.pk.value,
-      pk.AttributeType
-    );
+    attributeValues[`:${pk.AttributeName}`] = valueOf(parameters.keys.pk.value, pk.AttributeType);
   }
 
   // SK
@@ -100,30 +91,18 @@ export function generateDynamodbParameters({ table, indexName, parameters }) {
       // begins_with
       if (parameters.keys.sk.condition === "begins_with") {
         skConditionExpression = `begins_with(#${sk.AttributeName}, :${sk.AttributeName})`;
-        attributeValues[`:${sk.AttributeName}`] = valueOf(
-          parameters.keys.sk.value1,
-          sk.AttributeType
-        );
+        attributeValues[`:${sk.AttributeName}`] = valueOf(parameters.keys.sk.value1, sk.AttributeType);
       }
       // between
       else if (parameters.keys.sk.condition === "between") {
         skConditionExpression = `#${sk.AttributeName} between :${sk.AttributeName}1 and :${sk.AttributeName}2`;
-        attributeValues[`:${sk.AttributeName}1`] = valueOf(
-          parameters.keys.sk.value1,
-          sk.AttributeType
-        );
-        attributeValues[`:${sk.AttributeName}2`] = valueOf(
-          parameters.keys.sk.value2,
-          sk.AttributeType
-        );
+        attributeValues[`:${sk.AttributeName}1`] = valueOf(parameters.keys.sk.value1, sk.AttributeType);
+        attributeValues[`:${sk.AttributeName}2`] = valueOf(parameters.keys.sk.value2, sk.AttributeType);
       }
       // =, <=, <, >=, >
       else {
         skConditionExpression = `#${sk.AttributeName} ${parameters.keys.sk.condition} :${sk.AttributeName}`;
-        attributeValues[`:${sk.AttributeName}`] = valueOf(
-          parameters.keys.sk.value1,
-          sk.AttributeType
-        );
+        attributeValues[`:${sk.AttributeName}`] = valueOf(parameters.keys.sk.value1, sk.AttributeType);
       }
     }
   }
@@ -155,8 +134,7 @@ export function generateDynamodbParameters({ table, indexName, parameters }) {
     }
 
     //
-    if (!name || !value || !type || (condition === "between" && !value2))
-      continue;
+    if (!name || !value || !type || (condition === "between" && !value2)) continue;
 
     if (["begins_with", "contains", "not contains"].includes(condition)) {
       expression = `${condition}(#${name}, :${salt})`;
@@ -208,10 +186,7 @@ export function generateDynamodbParameters({ table, indexName, parameters }) {
   };
 }
 
-export function generateDynamodbIndexParameters({
-  indices = [],
-  deleteIndices = [],
-}) {
+export function generateDynamodbIndexParameters({ indices = [], deleteIndices = [] }) {
   const parameters = {};
 
   const gsis = indices.filter(({ readOnly }) => !readOnly);
@@ -231,63 +206,57 @@ export function generateDynamodbIndexParameters({
   if (gsis.length) {
     parameters.AttributeDefinitions = [];
 
-    const creates = gsis.map(
-      ({ name, pk = { name: "", type: "" }, sk = { name: "", type: "" } }) => {
-        const index = {
-          IndexName: name,
-          Projection: {
-            ProjectionType: "ALL",
-          },
-          KeySchema: [
-            {
-              AttributeName: pk.name,
-              KeyType: "HASH",
-            },
-            ...(sk.name.trim()
-              ? [
-                  {
-                    AttributeName: sk.name,
-                    KeyType: "RANGE",
-                  },
-                ]
-              : []),
-          ],
-          ProvisionedThroughput: {
-            ReadCapacityUnits: 5,
-            WriteCapacityUnits: 5,
-          },
-        };
-
-        const pkExists = parameters.AttributeDefinitions.find(
-          ({ AttributeName }) => AttributeName === pk.name
-        );
-
-        const skExists = parameters.AttributeDefinitions.find(
-          ({ AttributeName }) => AttributeName === sk.name
-        );
-
-        if (!pkExists) {
-          parameters.AttributeDefinitions.push({
+    const creates = gsis.map(({ name, pk = { name: "", type: "" }, sk = { name: "", type: "" } }) => {
+      const index = {
+        IndexName: name,
+        Projection: {
+          ProjectionType: "ALL",
+        },
+        KeySchema: [
+          {
             AttributeName: pk.name,
-            AttributeType: pk.type,
-          });
-        }
+            KeyType: "HASH",
+          },
+          ...(sk.name.trim()
+            ? [
+                {
+                  AttributeName: sk.name,
+                  KeyType: "RANGE",
+                },
+              ]
+            : []),
+        ],
+        ProvisionedThroughput: {
+          ReadCapacityUnits: 5,
+          WriteCapacityUnits: 5,
+        },
+      };
 
-        if (!skExists && sk.name.trim()) {
-          parameters.AttributeDefinitions.push({
-            AttributeName: sk.name,
-            AttributeType: sk.type,
-          });
-        }
+      const pkExists = parameters.AttributeDefinitions.find(({ AttributeName }) => AttributeName === pk.name);
 
-        return index;
+      const skExists = parameters.AttributeDefinitions.find(({ AttributeName }) => AttributeName === sk.name);
+
+      if (!pkExists) {
+        parameters.AttributeDefinitions.push({
+          AttributeName: pk.name,
+          AttributeType: pk.type,
+        });
       }
-    );
+
+      if (!skExists && sk.name.trim()) {
+        parameters.AttributeDefinitions.push({
+          AttributeName: sk.name,
+          AttributeType: sk.type,
+        });
+      }
+
+      return index;
+    });
 
     parameters.GlobalSecondaryIndexUpdates.push(
       ...creates.map((index) => ({
         Create: index,
-      }))
+      })),
     );
   }
 
@@ -409,13 +378,9 @@ export function generateDynamodbTableParameters({
           },
         };
 
-        const pkExists = parameters.AttributeDefinitions.find(
-          ({ AttributeName }) => AttributeName === pk.name
-        );
+        const pkExists = parameters.AttributeDefinitions.find(({ AttributeName }) => AttributeName === pk.name);
 
-        const skExists = parameters.AttributeDefinitions.find(
-          ({ AttributeName }) => AttributeName === sk.name
-        );
+        const skExists = parameters.AttributeDefinitions.find(({ AttributeName }) => AttributeName === sk.name);
 
         if (!pkExists) {
           parameters.AttributeDefinitions.push({
@@ -432,48 +397,44 @@ export function generateDynamodbTableParameters({
         }
 
         return index;
-      }
+      },
     );
   }
 
   if (lsis.length) {
-    parameters["LocalSecondaryIndexes"] = lsis.map(
-      ({ name, sk = { name: "", type: "" } }) => {
-        const index = {
-          IndexName: name,
-          Projection: {
-            ProjectionType: "ALL",
+    parameters["LocalSecondaryIndexes"] = lsis.map(({ name, sk = { name: "", type: "" } }) => {
+      const index = {
+        IndexName: name,
+        Projection: {
+          ProjectionType: "ALL",
+        },
+        KeySchema: [
+          {
+            AttributeName: pk.name,
+            KeyType: "HASH",
           },
-          KeySchema: [
-            {
-              AttributeName: pk.name,
-              KeyType: "HASH",
-            },
-            ...(sk.name.trim()
-              ? [
-                  {
-                    AttributeName: sk.name,
-                    KeyType: "RANGE",
-                  },
-                ]
-              : []),
-          ],
-        };
+          ...(sk.name.trim()
+            ? [
+                {
+                  AttributeName: sk.name,
+                  KeyType: "RANGE",
+                },
+              ]
+            : []),
+        ],
+      };
 
-        const skExists = parameters.AttributeDefinitions.find(
-          ({ AttributeName }) => AttributeName === sk.name
-        );
+      const skExists = parameters.AttributeDefinitions.find(({ AttributeName }) => AttributeName === sk.name);
 
-        if (!skExists) {
-          parameters.AttributeDefinitions.push({
-            AttributeName: sk.name,
-            AttributeType: sk.type,
-          });
-        }
-
-        return index;
+      if (!skExists) {
+        parameters.AttributeDefinitions.push({
+          AttributeName: sk.name,
+          AttributeType: sk.type,
+        });
       }
-    );
+
+      return index;
+    });
   }
 
   return parameters;

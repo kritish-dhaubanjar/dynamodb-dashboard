@@ -1,18 +1,29 @@
 <template>
   <div class="row">
-    <div class="col-12 col-xl-8" id="edit-item">
+    <div
+      class="col-12 col-xl-8"
+      id="edit-item"
+    >
       <h3>Create item</h3>
       <p>
-        You can add, remove, or edit the attributes of an item. You can nest
-        attributes inside other attributes up to 32 levels deep.
+        You can add, remove, or edit the attributes of an item. You can nest attributes inside other attributes up to 32
+        levels deep.
       </p>
       <textarea ref="textAreaRef" />
 
-      <div class="alert alert-danger rounded-0" role="alert" v-if="!!errorMsg">
+      <div
+        class="alert alert-danger rounded-0"
+        role="alert"
+        v-if="!!errorMsg"
+      >
         {{ errorMsg }}
       </div>
 
-      <div class="alert alert-primary rounded-0" role="alert" v-if="!hasKeys">
+      <div
+        class="alert alert-primary rounded-0"
+        role="alert"
+        v-if="!hasKeys"
+      >
         You must provide the partition key attribute with a non-empty value.
       </div>
 
@@ -47,9 +58,7 @@
       </div>
 
       <!-- Toast -->
-      <div
-        class="toast-container position-fixed top-0 start-50 translate-middle-x p-3"
-      >
+      <div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3">
         <div
           class="toast align-items-center border-0"
           :class="toast.className"
@@ -74,155 +83,152 @@
 </template>
 
 <script lang="ts">
-import * as bootstrap from "bootstrap";
+  import * as bootstrap from "bootstrap";
 
-import * as CodeMirror from "codemirror";
+  import * as CodeMirror from "codemirror";
 
-import { useRoute, useRouter } from "vue-router";
-import { inject, onMounted, reactive, ref, watch } from "vue";
+  import { useRoute, useRouter } from "vue-router";
+  import { inject, onMounted, reactive, ref, watch } from "vue";
 
-import { getTable } from "@/services/table";
-import { createItem } from "@/services/item";
-import codeMirrorConfig from "./codeMirrorConfig";
+  import { getTable } from "@/services/table";
+  import { createItem } from "@/services/item";
+  import codeMirrorConfig from "./codeMirrorConfig";
 
-export default {
-  setup() {
-    let codeMirror;
-    const item = ref("{}");
-    const editItem = ref("{}");
-    const errorMsg = ref("");
+  export default {
+    setup() {
+      let codeMirror;
+      const item = ref("{}");
+      const editItem = ref("{}");
+      const errorMsg = ref("");
 
-    const hasKeys = ref(true);
-    const isValid = ref(true);
+      const hasKeys = ref(true);
+      const isValid = ref(true);
 
-    const toast = reactive({
-      className: "text-bg-success",
-      message: "The item has been saved successfully.",
-    });
+      const toast = reactive({
+        className: "text-bg-success",
+        message: "The item has been saved successfully.",
+      });
 
-    const route = useRoute();
-    const router = useRouter();
-    const textAreaRef = ref(null);
-    const toastRef = ref(null);
-    const store = inject("store");
+      const route = useRoute();
+      const router = useRouter();
+      const textAreaRef = ref(null);
+      const toastRef = ref(null);
+      const store = inject("store");
 
-    const cancel = () => {
-      if (window.history.length > 1) {
-        router.back();
-      } else {
-        router.push({ name: "home" });
-      }
-    };
+      const cancel = () => {
+        if (window.history.length > 1) {
+          router.back();
+        } else {
+          router.push({ name: "home" });
+        }
+      };
 
-    const getQuery = (originalItem, editedItem) => {
-      const q = {};
+      const getQuery = (originalItem, editedItem) => {
+        const q = {};
 
-      try {
-        const original = JSON.parse(originalItem);
-        const validItem = JSON.parse(editedItem);
+        try {
+          const original = JSON.parse(originalItem);
+          const validItem = JSON.parse(editedItem);
 
-        const keys = Object.keys(original);
+          const keys = Object.keys(original);
 
-        keys.forEach((key) => (q[key] = validItem[key]));
-      } catch (error) {
-        void 0;
-      }
+          keys.forEach((key) => (q[key] = validItem[key]));
+        } catch (error) {
+          void 0;
+        }
 
-      return q;
-    };
+        return q;
+      };
 
-    const create = async () => {
-      const table = store.table.state.Table;
-      const tableName = table.TableName;
+      const create = async () => {
+        const table = store.table.state.Table;
+        const tableName = table.TableName;
 
-      try {
-        await createItem(tableName, JSON.parse(editItem.value));
+        try {
+          await createItem(tableName, JSON.parse(editItem.value));
 
-        toast.className = "text-bg-success";
-        toast.message = "The item has been saved successfully.";
+          toast.className = "text-bg-success";
+          toast.message = "The item has been saved successfully.";
 
-        setTimeout(() => {
-          router.replace({
-            name: "edit-item",
-            params: { tableName },
-            query: getQuery(item.value, editItem.value),
-          });
-        }, 250);
-      } catch (error) {
-        toast.className = "text-bg-danger";
-        toast.message = error.response.data.message ?? error.message;
-      } finally {
-        const toastEl = new bootstrap.Toast(toastRef.value, { delay: 5000 });
-        setTimeout(() => toastEl.show(), 0);
-      }
-    };
+          setTimeout(() => {
+            router.replace({
+              name: "edit-item",
+              params: { tableName },
+              query: getQuery(item.value, editItem.value),
+            });
+          }, 250);
+        } catch (error) {
+          toast.className = "text-bg-danger";
+          toast.message = error.response.data.message ?? error.message;
+        } finally {
+          const toastEl = new bootstrap.Toast(toastRef.value, { delay: 5000 });
+          setTimeout(() => toastEl.show(), 0);
+        }
+      };
 
-    watch([item, editItem], ([original, edited]) => {
-      isValid.value = false;
-      errorMsg.value = "";
-
-      try {
-        const validItem = JSON.parse(edited);
-        const originalItem = JSON.parse(original);
-
-        isValid.value = true;
-        hasKeys.value = true;
-
-        Object.keys(originalItem).forEach(
-          (key) => (hasKeys.value &= Object.keys(validItem).includes(key))
-        );
-      } catch (error) {
+      watch([item, editItem], ([original, edited]) => {
         isValid.value = false;
-        errorMsg.value = error.message;
-      }
-    });
+        errorMsg.value = "";
 
-    // https://codemirror.net/
-    onMounted(async () => {
-      codeMirror = codeMirrorConfig(textAreaRef, editItem);
+        try {
+          const validItem = JSON.parse(edited);
+          const originalItem = JSON.parse(original);
 
-      await initItem();
+          isValid.value = true;
+          hasKeys.value = true;
 
-      codeMirror.dispatch({
-        changes: {
-          from: 0,
-          to: codeMirror.state.doc.length,
-          insert: item.value + "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
-        },
-      });
-    });
-
-    const initItem = async () => {
-      const { tableName } = route.params;
-      const table = await getTable(tableName);
-      const { KeySchema, AttributeDefinitions } = table;
-
-      const emptyItem = {};
-
-      KeySchema.forEach(({ AttributeName }) => {
-        const { AttributeType } = AttributeDefinitions.find(
-          (attributeDefinition) =>
-            attributeDefinition.AttributeName === AttributeName
-        );
-
-        emptyItem[AttributeName] = AttributeType === "S" ? "" : 0;
+          Object.keys(originalItem).forEach((key) => (hasKeys.value &= Object.keys(validItem).includes(key)));
+        } catch (error) {
+          isValid.value = false;
+          errorMsg.value = error.message;
+        }
       });
 
-      item.value = JSON.stringify(emptyItem, null, 2);
-      store.table.setters.setTable(table);
-    };
+      // https://codemirror.net/
+      onMounted(async () => {
+        codeMirror = codeMirrorConfig(textAreaRef, editItem);
 
-    return {
-      store,
-      textAreaRef,
-      isValid,
-      hasKeys,
-      toast,
-      toastRef,
-      cancel,
-      create,
-      errorMsg,
-    };
-  },
-};
+        await initItem();
+
+        codeMirror.dispatch({
+          changes: {
+            from: 0,
+            to: codeMirror.state.doc.length,
+            insert: item.value + "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+          },
+        });
+      });
+
+      const initItem = async () => {
+        const { tableName } = route.params;
+        const table = await getTable(tableName);
+        const { KeySchema, AttributeDefinitions } = table;
+
+        const emptyItem = {};
+
+        KeySchema.forEach(({ AttributeName }) => {
+          const { AttributeType } = AttributeDefinitions.find(
+            (attributeDefinition) => attributeDefinition.AttributeName === AttributeName,
+          );
+
+          emptyItem[AttributeName] = AttributeType === "S" ? "" : 0;
+        });
+
+        item.value = JSON.stringify(emptyItem, null, 2);
+        store.table.setters.setTable(table);
+      };
+
+      return {
+        store,
+        textAreaRef,
+        isValid,
+        hasKeys,
+        toast,
+        toastRef,
+        cancel,
+        create,
+        errorMsg,
+      };
+    },
+  };
 </script>
