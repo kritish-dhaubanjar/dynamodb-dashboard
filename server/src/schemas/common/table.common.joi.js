@@ -6,13 +6,13 @@ export const KeySchemaSchema = Joi.array()
     Joi.object({
       AttributeName: Joi.string().required(),
       KeyType: Joi.string().valid("HASH", "RANGE").required(),
-    })
+    }),
   )
   .has(
     Joi.object({
       AttributeName: Joi.string(),
       KeyType: Joi.string().valid("HASH"),
-    })
+    }),
   )
   .required()
   .min(1);
@@ -25,9 +25,7 @@ export const ProvisionedThroughputSchema = Joi.object({
 
 // ProjectionSchema
 export const ProjectionSchema = Joi.object({
-  ProjectionType: Joi.string()
-    .valid("ALL", "KEYS_ONLY" /*"INCLUDE"*/)
-    .required(),
+  ProjectionType: Joi.string().valid("ALL", "KEYS_ONLY" /*"INCLUDE"*/).required(),
 }).required();
 
 // AttributeDefinitions
@@ -35,10 +33,8 @@ export const AttributeDefinitionsSchema = Joi.array()
   .items(
     Joi.object({
       AttributeName: Joi.string().required(),
-      AttributeType: Joi.string()
-        .valid("N", "S", "BOOL", "B", "SS", "NS", "BS")
-        .required(),
-    })
+      AttributeType: Joi.string().valid("N", "S", "BOOL", "B", "SS", "NS", "BS").required(),
+    }),
   )
   .required()
   .min(1);

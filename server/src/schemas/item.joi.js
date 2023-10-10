@@ -31,6 +31,6 @@ export const destroy = Joi.array()
       DeleteRequest: Joi.object({
         Key: Joi.object().required(),
       }).required(),
-    })
+    }),
   )
   .min(1);

@@ -1,4 +1,4 @@
-export default function(error, _req, res, _next) {
+export default function (error, _req, res, _next) {
   console.error(error);
 
   if (error.isJoi) {

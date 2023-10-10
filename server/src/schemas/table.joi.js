@@ -20,14 +20,14 @@ export const create = Joi.object({
       KeySchema: KeySchemaSchema,
       Projection: ProjectionSchema,
       ProvisionedThroughput: ProvisionedThroughputSchema,
-    })
+    }),
   ),
   LocalSecondaryIndexes: Joi.array().items(
     Joi.object({
       IndexName: Joi.string().required(),
       KeySchema: KeySchemaSchema,
       Projection: ProjectionSchema,
-    })
+    }),
   ),
 });
 
@@ -43,6 +43,6 @@ export const update = Joi.object({
         ProvisionedThroughput: ProvisionedThroughputSchema,
       }),
       Delete: Joi.object({ IndexName: Joi.string().required() }),
-    })
+    }),
   ),
 });

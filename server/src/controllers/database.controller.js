@@ -1,5 +1,5 @@
 import AWS from "../config/aws";
-import EventEmitter from 'events';
+import EventEmitter from "events";
 import DatabaseServiceProvider from "../services/database.service";
 import { EVENTS } from "../constants/event";
 
@@ -21,7 +21,7 @@ export async function stream(req, res, next) {
   const uid = req.params.uid;
 
   res.writeHead(200, {
-    "Connection": "keep-alive",
+    Connection: "keep-alive",
     "Content-Type": "text/event-stream",
     "Cache-Control": "no-cache, no-transform",
   });
@@ -30,7 +30,7 @@ export async function stream(req, res, next) {
     if (id !== uid) return;
 
     res.write(`data: ${JSON.stringify({ ...data, event })}\n\n`);
-  }
+  };
 
   eventEmitter.on(EVENTS.SUCCESS, (id, payload) => emit(id, EVENTS.SUCCESS, payload));
   eventEmitter.on(EVENTS.FAILED, (id, payload) => emit(id, EVENTS.FAILED, payload));
