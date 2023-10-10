@@ -1,0 +1,9 @@
+{
+  "singleQuote": true,
+  "trailingComma": "all",
+  "vueIndentScriptAndStyle": true,
+  "htmlWhitespaceSensitivity": "ignore",
+  "printWidth": 120,
+  "tabWidth": 2,
+  "singleAttributePerLine": true
+}
