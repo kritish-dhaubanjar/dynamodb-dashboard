@@ -4,8 +4,7 @@
     role="alert"
   >
     <p class="mb-0">
-      This table has more items to retrieve. To retrieve the next page of items,
-      choose Retrieve next page.
+      This table has more items to retrieve. To retrieve the next page of items, choose Retrieve next page.
     </p>
 
     <div>
@@ -22,11 +21,11 @@
 </template>
 
 <script setup lang="ts">
-import { inject } from "vue";
+  import { inject } from "vue";
 
-const emit = defineEmits(["next"]);
+  const emit = defineEmits(["next"]);
 
-const props = defineProps({
-  disabled: Boolean,
-});
+  const props = defineProps({
+    disabled: Boolean,
+  });
 </script>

@@ -24,7 +24,7 @@ axios.interceptors.response.use(
   (error) => {
     store.ui.setters.setIsLoading(false);
     return Promise.reject(error);
-  }
+  },
 );
 
 axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;

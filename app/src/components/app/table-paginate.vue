@@ -3,7 +3,11 @@
     <div class="d-flex">
       <nav aria-label="Page navigation example">
         <ul class="pagination pagination-sm">
-          <li class="page-item" v-for="page in pages" :key="page">
+          <li
+            class="page-item"
+            v-for="page in pages"
+            :key="page"
+          >
             <RouterLink
               class="page-link rounded-0"
               :class="{
@@ -11,8 +15,9 @@
                 disabled: store.ui.state.isLoading,
               }"
               :to="{ name: 'home', query: { ...route.query, page } }"
-              >{{ page }}</RouterLink
             >
+              {{ page }}
+            </RouterLink>
           </li>
           <li
             class="page-item"
@@ -23,8 +28,9 @@
               class="page-link rounded-0"
               href="#"
               @click.prevent="emit('next')"
-              >...</a
             >
+              ...
+            </a>
           </li>
         </ul>
       </nav>
@@ -39,13 +45,17 @@
           {{ limit }} items
         </button>
         <ul class="dropdown-menu rounded-0">
-          <li v-for="limit in [10, 25, 50, 100, 200, 300, 500]" :key="limit">
+          <li
+            v-for="limit in [10, 25, 50, 100, 200, 300, 500]"
+            :key="limit"
+          >
             <RouterLink
               class="dropdown-item"
               :to="{ name: 'home', query: { ...route.query, limit } }"
               :class="{ active: limit === store.dynamodb.state.Limit }"
-              >{{ limit }} items</RouterLink
             >
+              {{ limit }} items
+            </RouterLink>
           </li>
         </ul>
       </div>
@@ -54,16 +64,16 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute } from "vue-router";
-import { computed, inject } from "vue";
+  import { useRoute } from "vue-router";
+  import { computed, inject } from "vue";
 
-const emit = defineEmits(["next"]);
+  const emit = defineEmits(["next"]);
 
-const route = useRoute();
-const store: any = inject("store");
+  const route = useRoute();
+  const store: any = inject("store");
 
-const rows = computed(() => store.ui.state.table.rows);
-const limit = computed(() => store.dynamodb.state.Limit);
+  const rows = computed(() => store.ui.state.table.rows);
+  const limit = computed(() => store.dynamodb.state.Limit);
 
-const pages = computed(() => Math.ceil(rows.value.length / limit.value));
+  const pages = computed(() => Math.ceil(rows.value.length / limit.value));
 </script>

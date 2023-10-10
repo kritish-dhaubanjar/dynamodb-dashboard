@@ -11,7 +11,10 @@
       >
         <thead ref="thead">
           <tr class="shadow-sm border-top-0 border-bottom-0">
-            <th scope="col" :style="`min-width: ${widths[0]}px`">
+            <th
+              scope="col"
+              :style="`min-width: ${widths[0]}px`"
+            >
               <input
                 class="form-check-input mt-1"
                 type="checkbox"
@@ -19,10 +22,7 @@
                 aria-label="Checkbox for following text input"
                 :checked="selectedItems.length > 0"
                 @change="toggle"
-                :indeterminate="
-                  selectedItems.length > 0 &&
-                  selectedItems.length < items.length
-                "
+                :indeterminate="selectedItems.length > 0 && selectedItems.length < items.length"
               />
             </th>
             <th
@@ -72,10 +72,7 @@
                 aria-label="Checkbox for following text input"
                 :checked="selectedItems.length > 0"
                 @change="toggle"
-                :indeterminate="
-                  selectedItems.length > 0 &&
-                  selectedItems.length < items.length
-                "
+                :indeterminate="selectedItems.length > 0 && selectedItems.length < items.length"
               />
             </th>
             <th
@@ -118,7 +115,10 @@
               />
             </td>
 
-            <td v-for="(key, index) in headers" :key="key">
+            <td
+              v-for="(key, index) in headers"
+              :key="key"
+            >
               <div v-if="index === 0">
                 <i
                   class="bi bi-clipboard2 me-2"
@@ -144,13 +144,15 @@
       <div class="hide-double-scrollbar position-absolute bg-white w-100"></div>
 
       <!--  -->
-      <div class="modal" tabindex="-1" ref="modalRef">
+      <div
+        class="modal"
+        tabindex="-1"
+        ref="modalRef"
+      >
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">
-                Delete {{ selectedItems.length }} items
-              </h5>
+              <h5 class="modal-title">Delete {{ selectedItems.length }} items</h5>
               <button
                 type="button"
                 class="btn-close"
@@ -160,7 +162,9 @@
             </div>
             <div class="modal-body">
               <p>
-                Delete <b>{{ selectedItems.length }}</b> item from the
+                Delete
+                <b>{{ selectedItems.length }}</b>
+                item from the
                 <b>{{ store.table.state.Table.TableName }}</b>
                 table? This action cannot be reversed.
               </p>
@@ -199,329 +203,309 @@
       @scroll="handleScroll"
       ref="scrollcontainer"
     >
-      <hr ref="scrollbar" class="m-0" />
+      <hr
+        ref="scrollbar"
+        class="m-0"
+      />
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
-import { throttle } from "lodash";
-import * as bootstrap from "bootstrap";
-import { useRouter } from "vue-router";
-import { destroyItems } from "@/services/item";
-import {
-  computed,
-  inject,
-  onMounted,
-  ref,
-  watch,
-  watchEffect,
-  reactive,
-  nextTick,
-} from "vue";
+  import { throttle } from "lodash";
+  import * as bootstrap from "bootstrap";
+  import { useRouter } from "vue-router";
+  import { destroyItems } from "@/services/item";
+  import { computed, inject, onMounted, ref, watch, watchEffect, reactive, nextTick } from "vue";
 
-import { SORT_ORDER, SORTS } from "../../constants/sort";
+  import { SORT_ORDER, SORTS } from "../../constants/sort";
 
-const props = defineProps({
-  action: String,
-});
-
-const router = useRouter();
-const store: any = inject("store");
-const emit = defineEmits(["reset"]);
-
-const sort = reactive({
-  key: null,
-  order: null,
-});
-
-const selectedItems = ref([]);
-
-const headers = computed(() => store.ui.state.table.headers ?? []);
-const hasMoreItems = computed(
-  () => store.dynamodb.state.ExclusiveStartKey ?? false
-);
-
-const items = computed(() => {
-  selectedItems.value = [];
-
-  const { Limit } = store.dynamodb.state;
-  const { rows, page } = store.ui.state.table;
-
-  const sortedRows = sortItems(rows);
-
-  return sortedRows.slice((page - 1) * Limit, page * Limit);
-});
-
-/* SORT */
-const sortItems = (items = []) => {
-  if (!sort.key || !sort.order) return items;
-
-  return [...items].sort((a, b) => {
-    const v1 = a[sort.key] ?? "";
-    const v2 = b[sort.key] ?? "";
-
-    if (sort.order === SORT_ORDER.ASC) {
-      if (v1 > v2) return 1;
-      if (v1 < v2) return -1;
-      return 0;
-    }
-
-    if (sort.order === SORT_ORDER.DESC) {
-      if (v1 > v2) return -1;
-      if (v1 < v2) return 1;
-      return 0;
-    }
-
-    return 0;
+  const props = defineProps({
+    action: String,
   });
-};
 
-const setSort = (key) => {
-  const index = SORTS.findIndex((order) => order === sort.order);
+  const router = useRouter();
+  const store: any = inject("store");
+  const emit = defineEmits(["reset"]);
 
-  if (sort.key === key) {
-    sort.order = SORTS[(index + 1) % SORTS.length];
-  } else {
-    sort.key = key;
-    sort.order = SORTS[1];
-  }
-};
-/* SORT */
+  const sort = reactive({
+    key: null,
+    order: null,
+  });
 
-/* SCROLL */
-const row = ref(null);
-const table = ref(null);
-const thead = ref(null);
-const tbody = ref(null);
-const scrollbar = ref(null);
-const tableContainer = ref(null);
-const scrollcontainer = ref(null);
-const tableHeaderContainer = ref(null);
+  const selectedItems = ref([]);
 
-watch(
-  () => items.value,
-  async () => {
-    await nextTick(() => {
-      scrollbar.value.style.width = `${+table.value.scrollWidth}px`;
-    });
-  }
-);
+  const headers = computed(() => store.ui.state.table.headers ?? []);
+  const hasMoreItems = computed(() => store.dynamodb.state.ExclusiveStartKey ?? false);
 
-/* RESIZE */
-const widths = ref([]);
+  const items = computed(() => {
+    selectedItems.value = [];
 
-watch(
-  () => items.value,
-  async () => {
-    await nextTick(() => {
-      const rows = tbody.value?.getElementsByTagName("tr")?.[0];
-      const cells = rows?.getElementsByTagName("td");
+    const { Limit } = store.dynamodb.state;
+    const { rows, page } = store.ui.state.table;
 
-      if (cells) {
-        widths.value = [...cells].map(
-          (td) => td.getBoundingClientRect()?.width
-        );
+    const sortedRows = sortItems(rows);
+
+    return sortedRows.slice((page - 1) * Limit, page * Limit);
+  });
+
+  /* SORT */
+  const sortItems = (items = []) => {
+    if (!sort.key || !sort.order) return items;
+
+    return [...items].sort((a, b) => {
+      const v1 = a[sort.key] ?? "";
+      const v2 = b[sort.key] ?? "";
+
+      if (sort.order === SORT_ORDER.ASC) {
+        if (v1 > v2) return 1;
+        if (v1 < v2) return -1;
+        return 0;
       }
+
+      if (sort.order === SORT_ORDER.DESC) {
+        if (v1 > v2) return -1;
+        if (v1 < v2) return 1;
+        return 0;
+      }
+
+      return 0;
     });
-  }
-);
-/* RESIZE */
-
-const handleScrollbarPosition = throttle((event) => {
-  scrollcontainer.value?.scroll({ left: event.target.scrollLeft });
-  tableHeaderContainer.value?.scroll({ left: event.target.scrollLeft });
-}, 0.5);
-
-const handleScroll = throttle((event) => {
-  tableContainer.value?.scroll({ left: event.target.scrollLeft });
-  tableHeaderContainer.value?.scroll({ left: event.target.scrollLeft });
-}, 0.5);
-
-// Tooltip
-watch(
-  () => items.value,
-  () => {
-    setTimeout(() => {
-      const tooltipTriggerList = [].slice.call(
-        document.querySelectorAll('[data-bs-toggle="tooltip"]')
-      );
-      tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl);
-      });
-    }, 0);
-  }
-);
-
-const pk = computed(() =>
-  store.table.state.Table.KeySchema.find(({ KeyType }) => KeyType === "HASH")
-);
-const sk = computed(() =>
-  store.table.state.Table.KeySchema.find(({ KeyType }) => KeyType === "RANGE")
-);
-
-const modal = ref(null);
-const modalRef = ref(null);
-
-onMounted(() => {
-  modal.value = new bootstrap.Modal(modalRef.value, {});
-});
-
-const handleItem = (item: object) => {
-  const table = store.table.state.Table;
-  const tableName = table.TableName;
-
-  return {
-    name: "edit-item",
-    params: { tableName },
-    query: {
-      ...(pk.value && {
-        [pk.value.AttributeName]: item[pk.value.AttributeName],
-      }),
-      ...(sk.value && {
-        [sk.value.AttributeName]: item[sk.value.AttributeName],
-      }),
-    },
   };
-};
 
-const find = (item: any) => {
-  const index = selectedItems.value.findIndex((_item) => {
-    const pkMatch = pk.value
-      ? _item[pk.value.AttributeName] === item[pk.value.AttributeName]
-      : true;
+  const setSort = (key) => {
+    const index = SORTS.findIndex((order) => order === sort.order);
 
-    const skMatch = sk.value
-      ? _item[sk.value.AttributeName] === item[sk.value.AttributeName]
-      : true;
+    if (sort.key === key) {
+      sort.order = SORTS[(index + 1) % SORTS.length];
+    } else {
+      sort.key = key;
+      sort.order = SORTS[1];
+    }
+  };
+  /* SORT */
 
-    return pkMatch && skMatch;
-  });
+  /* SCROLL */
+  const row = ref(null);
+  const table = ref(null);
+  const thead = ref(null);
+  const tbody = ref(null);
+  const scrollbar = ref(null);
+  const tableContainer = ref(null);
+  const scrollcontainer = ref(null);
+  const tableHeaderContainer = ref(null);
 
-  return index;
-};
-
-const select = (item: any) => {
-  const index = find(item);
-
-  if (index > -1) {
-    selectedItems.value.splice(index, 1);
-  } else {
-    selectedItems.value.push(item);
-  }
-};
-
-const toggle = () => {
-  if (selectedItems.value.length) selectedItems.value = [];
-  else selectedItems.value = [...items.value];
-};
-
-watchEffect(() => {
-  if (props.action && selectedItems.value.length) {
-    if (props.action === "EDIT") {
-      selectedItems.value.forEach((item) => {
-        const route = router.resolve(handleItem(item));
-        window.open(route.href, "_blank");
+  watch(
+    () => items.value,
+    async () => {
+      await nextTick(() => {
+        scrollbar.value.style.width = `${+table.value.scrollWidth}px`;
       });
-    }
+    },
+  );
 
-    if (props.action === "DELETE") {
-      modal.value.show();
-    }
-  }
+  /* RESIZE */
+  const widths = ref([]);
 
-  emit("reset", "");
-});
+  watch(
+    () => items.value,
+    async () => {
+      await nextTick(() => {
+        const rows = tbody.value?.getElementsByTagName("tr")?.[0];
+        const cells = rows?.getElementsByTagName("td");
 
-const destroy = async () => {
-  const table = store.table.state.Table;
-  const tableName = table.TableName;
+        if (cells) {
+          widths.value = [...cells].map((td) => td.getBoundingClientRect()?.width);
+        }
+      });
+    },
+  );
+  /* RESIZE */
 
-  const payload = [];
+  const handleScrollbarPosition = throttle((event) => {
+    scrollcontainer.value?.scroll({ left: event.target.scrollLeft });
+    tableHeaderContainer.value?.scroll({ left: event.target.scrollLeft });
+  }, 0.5);
 
-  selectedItems.value.forEach((item) => {
-    const { query } = handleItem(item);
-    payload.push(query);
+  const handleScroll = throttle((event) => {
+    tableContainer.value?.scroll({ left: event.target.scrollLeft });
+    tableHeaderContainer.value?.scroll({ left: event.target.scrollLeft });
+  }, 0.5);
+
+  // Tooltip
+  watch(
+    () => items.value,
+    () => {
+      setTimeout(() => {
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.map(function (tooltipTriggerEl) {
+          return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+      }, 0);
+    },
+  );
+
+  const pk = computed(() => store.table.state.Table.KeySchema.find(({ KeyType }) => KeyType === "HASH"));
+  const sk = computed(() => store.table.state.Table.KeySchema.find(({ KeyType }) => KeyType === "RANGE"));
+
+  const modal = ref(null);
+  const modalRef = ref(null);
+
+  onMounted(() => {
+    modal.value = new bootstrap.Modal(modalRef.value, {});
   });
 
-  await destroyItems(tableName, payload);
+  const handleItem = (item: object) => {
+    const table = store.table.state.Table;
+    const tableName = table.TableName;
 
-  const filteredRows = store.ui.state.table.rows.filter((item) => {
+    return {
+      name: "edit-item",
+      params: { tableName },
+      query: {
+        ...(pk.value && {
+          [pk.value.AttributeName]: item[pk.value.AttributeName],
+        }),
+        ...(sk.value && {
+          [sk.value.AttributeName]: item[sk.value.AttributeName],
+        }),
+      },
+    };
+  };
+
+  const find = (item: any) => {
+    const index = selectedItems.value.findIndex((_item) => {
+      const pkMatch = pk.value ? _item[pk.value.AttributeName] === item[pk.value.AttributeName] : true;
+
+      const skMatch = sk.value ? _item[sk.value.AttributeName] === item[sk.value.AttributeName] : true;
+
+      return pkMatch && skMatch;
+    });
+
+    return index;
+  };
+
+  const select = (item: any) => {
     const index = find(item);
-    return index === -1;
+
+    if (index > -1) {
+      selectedItems.value.splice(index, 1);
+    } else {
+      selectedItems.value.push(item);
+    }
+  };
+
+  const toggle = () => {
+    if (selectedItems.value.length) selectedItems.value = [];
+    else selectedItems.value = [...items.value];
+  };
+
+  watchEffect(() => {
+    if (props.action && selectedItems.value.length) {
+      if (props.action === "EDIT") {
+        selectedItems.value.forEach((item) => {
+          const route = router.resolve(handleItem(item));
+          window.open(route.href, "_blank");
+        });
+      }
+
+      if (props.action === "DELETE") {
+        modal.value.show();
+      }
+    }
+
+    emit("reset", "");
   });
 
-  store.ui.setters.setTable(table, [...filteredRows]);
+  const destroy = async () => {
+    const table = store.table.state.Table;
+    const tableName = table.TableName;
 
-  modal.value.hide();
-};
+    const payload = [];
 
-const copy = (partitionKey) => {
-  navigator.clipboard.writeText(partitionKey);
-};
+    selectedItems.value.forEach((item) => {
+      const { query } = handleItem(item);
+      payload.push(query);
+    });
 
-const handleItemSelect = (event, item) => {
-  if (event.detail === 3) {
-    select(item);
-    // clear selection
-    window.getSelection()?.empty() && window.getSelection()?.removeAllRanges();
-  }
-};
+    await destroyItems(tableName, payload);
+
+    const filteredRows = store.ui.state.table.rows.filter((item) => {
+      const index = find(item);
+      return index === -1;
+    });
+
+    store.ui.setters.setTable(table, [...filteredRows]);
+
+    modal.value.hide();
+  };
+
+  const copy = (partitionKey) => {
+    navigator.clipboard.writeText(partitionKey);
+  };
+
+  const handleItemSelect = (event, item) => {
+    if (event.detail === 3) {
+      select(item);
+      // clear selection
+      window.getSelection()?.empty() && window.getSelection()?.removeAllRanges();
+    }
+  };
 </script>
 
 <style scoped lang="scss">
-section {
-  top: -38px;
-}
+  section {
+    top: -38px;
+  }
 
-td div {
-  overflow: hidden;
-  max-width: 428px;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  max-height: 25px !important;
-}
+  td div {
+    overflow: hidden;
+    max-width: 428px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-height: 25px !important;
+  }
 
-i:hover {
-  cursor: pointer;
-}
+  i:hover {
+    cursor: pointer;
+  }
 
-th {
-  cursor: pointer;
-}
+  th {
+    cursor: pointer;
+  }
 
-.table-responsive {
-  border-top: 1px solid #e3e3e3;
+  .table-responsive {
+    border-top: 1px solid #e3e3e3;
 
-  thead {
-    tr {
-      top: 0;
-      position: sticky;
-      background: #fff;
+    thead {
+      tr {
+        top: 0;
+        position: sticky;
+        background: #fff;
+      }
     }
   }
-}
 
-.scrollbar-container {
-  height: 16px;
+  .scrollbar-container {
+    height: 16px;
 
-  z-index: 1;
-  top: 0;
-  left: 0;
-  right: 0;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    right: 0;
 
-  hr {
-    border-color: transparent;
+    hr {
+      border-color: transparent;
+    }
   }
-}
 
-.hide-double-scrollbar {
-  height: 15px;
-  z-index: 2;
-  margin-left: -14px;
-}
+  .hide-double-scrollbar {
+    height: 15px;
+    z-index: 2;
+    margin-left: -14px;
+  }
 
-.table-actions {
-  z-index: 1026;
-}
+  .table-actions {
+    z-index: 1026;
+  }
 </style>

@@ -6,42 +6,47 @@
       <div class="card rounded-0 border-0 shadow-sm">
         <div class="card-header py-3 border-0">
           <h4 class="mb-1">Secondary indexes</h4>
-          <small
-            >Use secondary indexes to perform queries on attributes that are not
-            part of your table's primary key.</small
-          >
+          <small>
+            Use secondary indexes to perform queries on attributes that are not part of your table's primary key.
+          </small>
           <ul>
             <li>
               <small>
-                A local secondary index has the same partition key as its base
-                table, but it has a different sort key.</small
-              >
+                A local secondary index has the same partition key as its base table, but it has a different sort key.
+              </small>
             </li>
             <li>
               <small>
-                Create global secondary indexes to query attributes outside the
-                primary key of your original table.
+                Create global secondary indexes to query attributes outside the primary key of your original table.
               </small>
             </li>
           </ul>
         </div>
         <div class="card-body border-0">
-          <div class="row mb-4" v-for="(index, i) in table.indices" :key="i">
+          <div
+            class="row mb-4"
+            v-for="(index, i) in table.indices"
+            :key="i"
+          >
             <div class="col-lg-3 col-xl-1 mb-2">
-              <label class="form-label"
-                >Index Type
+              <label class="form-label">
+                Index Type
                 <br />
               </label>
 
-              <select class="rounded-0 form-select" value="GSI" disabled>
+              <select
+                class="rounded-0 form-select"
+                value="GSI"
+                disabled
+              >
                 <option value="GSI">GSI &nbsp; (Global Secondary Index)</option>
                 <option value="LSI">LSI &nbsp; (Local Secondary Index)</option>
               </select>
             </div>
 
             <div class="col-lg-3 col-xl-2 mb-2">
-              <label class="form-label"
-                >Index Name
+              <label class="form-label">
+                Index Name
                 <br />
               </label>
 
@@ -58,8 +63,8 @@
               </div> -->
             </div>
             <div class="col-lg-3 col-xl-2 mb-2">
-              <label class="form-label"
-                >Partition key
+              <label class="form-label">
+                Partition key
                 <br />
               </label>
               <input
@@ -74,8 +79,8 @@
               </div> -->
             </div>
             <div class="col-lg-3 col-xl-2 mb-2">
-              <label class="form-label"
-                >Partition key type
+              <label class="form-label">
+                Partition key type
                 <br />
               </label>
               <select
@@ -90,8 +95,8 @@
             </div>
 
             <div class="col-lg-3 col-xl-2 mb-2">
-              <label class="form-label"
-                >Sort key - optional
+              <label class="form-label">
+                Sort key - optional
                 <br />
               </label>
               <input
@@ -107,8 +112,8 @@
             </div>
 
             <div class="col-lg-3 col-xl-2 mb-2">
-              <label class="form-label"
-                >Sort key type
+              <label class="form-label">
+                Sort key type
                 <br />
               </label>
               <select
@@ -133,10 +138,7 @@
             </div>
           </div>
           <button
-            v-if="
-              !table.indices.length ||
-              table.indices.filter(({ readOnly }) => !readOnly).length === 0
-            "
+            v-if="!table.indices.length || table.indices.filter(({ readOnly }) => !readOnly).length === 0"
             class="btn btn-outline-secondary rounded-0 my-3"
             @click="addSecondaryIndex"
           >
@@ -164,7 +166,11 @@
           Cancel
         </button>
 
-        <button class="btn btn-primary rounded-0" type="button" @click="update">
+        <button
+          class="btn btn-primary rounded-0"
+          type="button"
+          @click="update"
+        >
           <span
             class="spinner-grow spinner-grow-sm me-1"
             role="status"
@@ -178,9 +184,7 @@
     </div>
 
     <!-- Toast -->
-    <div
-      class="toast-container position-fixed top-0 start-50 translate-middle-x p-3"
-    >
+    <div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3">
       <div
         class="toast align-items-center border-0"
         :class="toast.className"
@@ -204,31 +208,30 @@
 </template>
 
 <script lang="ts" setup>
-import * as bootstrap from "bootstrap";
-import { useRoute, useRouter } from "vue-router";
-import { getTable, updateTable } from "@/services/table";
-import { computed, inject, onBeforeMount, reactive, ref } from "vue";
-import { generateDynamodbIndexParameters } from "@/utils/table";
+  import * as bootstrap from "bootstrap";
+  import { useRoute, useRouter } from "vue-router";
+  import { getTable, updateTable } from "@/services/table";
+  import { computed, inject, onBeforeMount, reactive, ref } from "vue";
+  import { generateDynamodbIndexParameters } from "@/utils/table";
 
-const route = useRoute();
-const router = useRouter();
-const store: any = inject("store");
+  const route = useRoute();
+  const router = useRouter();
+  const store: any = inject("store");
 
-onBeforeMount(async () => {
-  try {
-    const data = await getTable(route.params.tableName.toString());
-    store.table.setters.setTable(data);
+  onBeforeMount(async () => {
+    try {
+      const data = await getTable(route.params.tableName.toString());
+      store.table.setters.setTable(data);
 
-    table.indices = (data.GlobalSecondaryIndexes ?? []).map(
-      ({ IndexName = "", KeySchema = [] }) => {
+      table.indices = (data.GlobalSecondaryIndexes ?? []).map(({ IndexName = "", KeySchema = [] }) => {
         const pk = KeySchema.find(({ KeyType }) => KeyType === "HASH");
         const sk = KeySchema.find(({ KeyType }) => KeyType === "RANGE");
 
         const pkAttributeType = data.AttributeDefinitions.find(
-          ({ AttributeName }) => pk?.AttributeName === AttributeName
+          ({ AttributeName }) => pk?.AttributeName === AttributeName,
         );
         const skAttributeType = data.AttributeDefinitions.find(
-          ({ AttributeName }) => sk?.AttributeName === AttributeName
+          ({ AttributeName }) => sk?.AttributeName === AttributeName,
         );
 
         return {
@@ -244,74 +247,73 @@ onBeforeMount(async () => {
             type: skAttributeType?.AttributeType ?? "",
           },
         };
-      }
-    );
-  } catch (error) {
-    window.location.href = "/";
-  }
-});
-
-const table = reactive({
-  indices: [],
-  deleteIndices: [],
-});
-
-const cancel = () => {
-  if (window.history.length > 1) {
-    router.back();
-  } else {
-    router.push({ name: "home" });
-  }
-};
-
-const reset = () => {
-  table.indices = [];
-};
-
-const toastRef = ref();
-const toast = reactive({
-  className: "",
-  message: "",
-});
-
-const update = async () => {
-  try {
-    await updateTable(route.params.tableName, tableParameters.value);
-    reset();
-    toast.className = "text-bg-success";
-    toast.message = "The table has been updated successfully.";
-    setTimeout(cancel, 250);
-  } catch (error) {
-    toast.className = "text-bg-danger";
-    toast.message = error.response?.data?.message ?? error.message;
-  } finally {
-    const toastEl = new bootstrap.Toast(toastRef.value, { delay: 1000 });
-    setTimeout(() => toastEl.show(), 0);
-  }
-};
-
-const removeSecondaryIndex = (readOnly = false, index) => {
-  if (readOnly) {
-    table.deleteIndices.push(table.indices[index]?.name);
-  }
-
-  table.indices.splice(index, 1);
-};
-
-const addSecondaryIndex = () => {
-  table.indices.push({
-    type: "GSI",
-    name: "",
-    pk: {
-      name: "",
-      type: "S",
-    },
-    sk: {
-      name: "",
-      type: "S",
-    },
+      });
+    } catch (error) {
+      window.location.href = "/";
+    }
   });
-};
 
-const tableParameters = computed(() => generateDynamodbIndexParameters(table));
+  const table = reactive({
+    indices: [],
+    deleteIndices: [],
+  });
+
+  const cancel = () => {
+    if (window.history.length > 1) {
+      router.back();
+    } else {
+      router.push({ name: "home" });
+    }
+  };
+
+  const reset = () => {
+    table.indices = [];
+  };
+
+  const toastRef = ref();
+  const toast = reactive({
+    className: "",
+    message: "",
+  });
+
+  const update = async () => {
+    try {
+      await updateTable(route.params.tableName, tableParameters.value);
+      reset();
+      toast.className = "text-bg-success";
+      toast.message = "The table has been updated successfully.";
+      setTimeout(cancel, 250);
+    } catch (error) {
+      toast.className = "text-bg-danger";
+      toast.message = error.response?.data?.message ?? error.message;
+    } finally {
+      const toastEl = new bootstrap.Toast(toastRef.value, { delay: 1000 });
+      setTimeout(() => toastEl.show(), 0);
+    }
+  };
+
+  const removeSecondaryIndex = (readOnly = false, index) => {
+    if (readOnly) {
+      table.deleteIndices.push(table.indices[index]?.name);
+    }
+
+    table.indices.splice(index, 1);
+  };
+
+  const addSecondaryIndex = () => {
+    table.indices.push({
+      type: "GSI",
+      name: "",
+      pk: {
+        name: "",
+        type: "S",
+      },
+      sk: {
+        name: "",
+        type: "S",
+      },
+    });
+  };
+
+  const tableParameters = computed(() => generateDynamodbIndexParameters(table));
 </script>

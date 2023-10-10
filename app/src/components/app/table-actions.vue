@@ -70,18 +70,18 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject } from "vue";
-import { useRoute } from "vue-router";
+  import { computed, inject } from "vue";
+  import { useRoute } from "vue-router";
 
-const store: any = inject("store");
-const emit = defineEmits(["action"]);
-const route = useRoute();
+  const store: any = inject("store");
+  const emit = defineEmits(["action"]);
+  const route = useRoute();
 
-const rows = computed(() => store.ui.state.table.rows);
+  const rows = computed(() => store.ui.state.table.rows);
 
-const reload = () => window.location.reload();
+  const reload = () => window.location.reload();
 
-const tableName = computed(() => {
-  return store.table?.Table?.TableName || route.query.tableName?.toString();
-});
+  const tableName = computed(() => {
+    return store.table?.Table?.TableName || route.query.tableName?.toString();
+  });
 </script>

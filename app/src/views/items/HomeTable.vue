@@ -8,9 +8,7 @@
       <div class="d-flex justify-content-between">
         <h3 class="mb-4">
           {{ store.table.state.Table.TableName }}
-          <small class="fs-6"
-            >({{ store.table.state.Table.ItemCount ?? 0 }})</small
-          >
+          <small class="fs-6">({{ store.table.state.Table.ItemCount ?? 0 }})</small>
         </h3>
 
         <div>
@@ -30,8 +28,9 @@
                 @click.prevent
                 data-bs-toggle="modal"
                 data-bs-target="#delete-table-modal"
-                >Delete Table</a
               >
+                Delete Table
+              </a>
               <RouterLink
                 v-if="activeTableName"
                 class="dropdown-item"
@@ -56,15 +55,11 @@
           </ul>
 
           <RouterLink to="/table/create-table">
-            <button class="btn btn-outline-primary btn-sm rounded-0 ms-2">
-              Create Table
-            </button>
+            <button class="btn btn-outline-primary btn-sm rounded-0 ms-2">Create Table</button>
           </RouterLink>
 
           <RouterLink to="/table/restore-tables">
-            <button class="btn btn-outline-primary btn-sm rounded-0 ms-2">
-              Restore Tables
-            </button>
+            <button class="btn btn-outline-primary btn-sm rounded-0 ms-2">Restore Tables</button>
           </RouterLink>
         </div>
       </div>
@@ -76,7 +71,10 @@
       <br />
 
       <div class="table-container bg-white shadow-sm">
-        <ItemList :action="action" @reset="action = ''">
+        <ItemList
+          :action="action"
+          @reset="action = ''"
+        >
           <br />
           <RetrieveNext
             :disabled="store.ui.state.isLoading"
@@ -92,7 +90,12 @@
     </div>
 
     <!--  -->
-    <div id="delete-table-modal" class="modal" tabindex="-1" ref="modalRef">
+    <div
+      id="delete-table-modal"
+      class="modal"
+      tabindex="-1"
+      ref="modalRef"
+    >
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
@@ -106,7 +109,9 @@
           </div>
           <div class="modal-body">
             <p class="mb-0">
-              You are about to delete <b>{{ activeTableName }}</b> table.
+              You are about to delete
+              <b>{{ activeTableName }}</b>
+              table.
             </p>
           </div>
           <div class="modal-footer">
@@ -139,9 +144,7 @@
     </div>
 
     <!-- Toast -->
-    <div
-      class="toast-container position-fixed top-0 start-50 translate-middle-x p-3"
-    >
+    <div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3">
       <div
         class="toast align-items-center border-0"
         :class="toast.className"
@@ -165,264 +168,236 @@
 </template>
 
 <script setup lang="ts">
-import * as bootstrap from "bootstrap";
-import { useRoute, useRouter } from "vue-router";
-import {
-  computed,
-  inject,
-  onBeforeMount,
-  onMounted,
-  reactive,
-  ref,
-  watch,
-} from "vue";
+  import * as bootstrap from "bootstrap";
+  import { useRoute, useRouter } from "vue-router";
+  import { computed, inject, onBeforeMount, onMounted, reactive, ref, watch } from "vue";
 
-import { deleteTable, getTable, getTables } from "@/services/table";
-import { scanItems, queryItems } from "@/services/item";
-import { generateDynamodbParameters } from "@/utils/table";
+  import { deleteTable, getTable, getTables } from "@/services/table";
+  import { scanItems, queryItems } from "@/services/item";
+  import { generateDynamodbParameters } from "@/utils/table";
 
-import type table from "@/store/table";
+  import type table from "@/store/table";
 
-import ItemList from "@/components/app/item-list.vue";
-import TableList from "@/components/app/table-list.vue";
-import TableFilter from "@/components/app/table-filter.vue";
-import RetrieveNext from "@/components/app/retrieve-next.vue";
-import TableActions from "@/components/app/table-actions.vue";
-import TablePaginate from "@/components/app/table-paginate.vue";
+  import ItemList from "@/components/app/item-list.vue";
+  import TableList from "@/components/app/table-list.vue";
+  import TableFilter from "@/components/app/table-filter.vue";
+  import RetrieveNext from "@/components/app/retrieve-next.vue";
+  import TableActions from "@/components/app/table-actions.vue";
+  import TablePaginate from "@/components/app/table-paginate.vue";
 
-const route = useRoute();
-const router = useRouter();
-const store: any = inject("store");
+  const route = useRoute();
+  const router = useRouter();
+  const store: any = inject("store");
 
-const toastRef = ref(null);
-const toast = reactive({
-  className: "text-bg-danger",
-  message: "",
-});
-
-const activeTableName = ref("");
-
-const rows = computed(() => store.ui.state.table.rows);
-const limit = computed(() => store.dynamodb.state.Limit);
-
-const prefetchedPageCount = computed(() =>
-  Math.ceil(rows.value.length / limit.value)
-);
-
-const fetchHandler = async () => {
-  const dynamodb = store.dynamodb.state;
-  const table = store.table.state.Table;
-  const rows = store.ui.state.table.rows;
-
-  let data;
-
-  try {
-    // SCAN/QUERY
-    if (route.query.operation === "QUERY") {
-      data = await queryItems(table.TableName, dynamodb);
-    } else {
-      data = await scanItems(table.TableName, dynamodb);
-    }
-
-    store.dynamodb.setters.init({ ...dynamodb, ...data });
-    store.ui.setters.setTable(table, [...rows, ...data.Items]);
-  } catch (error: any) {
-    toast.className = "text-bg-danger";
-    toast.message = error.response.data.message ?? error.message;
-    const toastEl = new bootstrap.Toast(toastRef.value, { delay: 5000 });
-    setTimeout(() => toastEl.show(), 0);
-  }
-};
-
-onBeforeMount(async () => {
-  const query = {
-    ...route.query,
-  };
-
-  const { searchParams } = new URL(window.location.toString());
-
-  const page = searchParams.get("page");
-  const limit = searchParams.get("limit");
-  const tableName = searchParams.get("tableName");
-  const tables = await getTables();
-
-  const defaultPage = parseInt(page ?? "1");
-  const defaultLimit = parseInt(limit ?? "50");
-  const defaultTable = tableName ?? tables[0];
-
-  const operation = searchParams.get("operation");
-  const indexName = searchParams.get("indexName");
-
-  // FORCE INVALID REQ -> VALID REQ
-  const table = await getTable(defaultTable);
-  const defaultOperation = ["SCAN", "QUERY"].includes(operation ?? "")
-    ? operation
-    : "SCAN";
-
-  const defaultIndexName = table.GlobalSecondaryIndexes?.map(
-    ({ IndexName }: { IndexName: string }) => IndexName
-  ).includes(indexName)
-    ? indexName
-    : defaultTable;
-
-  let defaultParameters = searchParams.get("parameters")?.toString() ?? null;
-
-  try {
-    JSON.parse(decodeURIComponent(defaultParameters));
-  } catch (err) {
-    delete query["parameters"];
-    defaultParameters = null;
-  }
-
-  router.push({
-    name: "home",
-    query: {
-      ...query,
-      page: defaultPage,
-      limit: defaultLimit,
-      tableName: defaultTable,
-      //
-      indexName: defaultIndexName,
-      operation: defaultOperation,
-      parameters: defaultParameters,
-    },
+  const toastRef = ref(null);
+  const toast = reactive({
+    className: "text-bg-danger",
+    message: "",
   });
 
-  store.table.setters.setTableNames(tables);
-});
+  const activeTableName = ref("");
 
-watch(
-  () => [
-    route.query.tableName,
-    route.query.limit,
-    route.query.page,
-    route.query.parameters,
-    route.query.indexName,
-    route.query.requestId, // diff requests
-  ],
+  const rows = computed(() => store.ui.state.table.rows);
+  const limit = computed(() => store.dynamodb.state.Limit);
 
-  async (
-    [tableName, _limit, _page, _parameters, _indexName, requestId],
-    oldValues
-  ) => {
-    if (!tableName) return;
+  const prefetchedPageCount = computed(() => Math.ceil(rows.value.length / limit.value));
 
-    // @TABLE
-    const [
-      old_tableName,
-      old_limit,
-      old_page,
-      old_parameters,
-      old_indexName,
-      old_requestId,
-    ] = oldValues ?? [];
+  const fetchHandler = async () => {
+    const dynamodb = store.dynamodb.state;
+    const table = store.table.state.Table;
+    const rows = store.ui.state.table.rows;
 
-    {
-      if (tableName !== old_tableName) {
-        // @RESET
-        store.dynamodb.setters.init({});
-        store.ui.setters.setTable({}, []);
-        activeTableName.value = tableName?.toString();
+    let data;
 
-        // @INIT
-        try {
-          const table = await getTable(tableName.toString());
-          store.table.setters.setTable(table);
-        } catch (error) {
-          window.location.href = "/";
+    try {
+      // SCAN/QUERY
+      if (route.query.operation === "QUERY") {
+        data = await queryItems(table.TableName, dynamodb);
+      } else {
+        data = await scanItems(table.TableName, dynamodb);
+      }
+
+      store.dynamodb.setters.init({ ...dynamodb, ...data });
+      store.ui.setters.setTable(table, [...rows, ...data.Items]);
+    } catch (error: any) {
+      toast.className = "text-bg-danger";
+      toast.message = error.response.data.message ?? error.message;
+      const toastEl = new bootstrap.Toast(toastRef.value, { delay: 5000 });
+      setTimeout(() => toastEl.show(), 0);
+    }
+  };
+
+  onBeforeMount(async () => {
+    const query = {
+      ...route.query,
+    };
+
+    const { searchParams } = new URL(window.location.toString());
+
+    const page = searchParams.get("page");
+    const limit = searchParams.get("limit");
+    const tableName = searchParams.get("tableName");
+    const tables = await getTables();
+
+    const defaultPage = parseInt(page ?? "1");
+    const defaultLimit = parseInt(limit ?? "50");
+    const defaultTable = tableName ?? tables[0];
+
+    const operation = searchParams.get("operation");
+    const indexName = searchParams.get("indexName");
+
+    // FORCE INVALID REQ -> VALID REQ
+    const table = await getTable(defaultTable);
+    const defaultOperation = ["SCAN", "QUERY"].includes(operation ?? "") ? operation : "SCAN";
+
+    const defaultIndexName = table.GlobalSecondaryIndexes?.map(
+      ({ IndexName }: { IndexName: string }) => IndexName,
+    ).includes(indexName)
+      ? indexName
+      : defaultTable;
+
+    let defaultParameters = searchParams.get("parameters")?.toString() ?? null;
+
+    try {
+      JSON.parse(decodeURIComponent(defaultParameters));
+    } catch (err) {
+      delete query["parameters"];
+      defaultParameters = null;
+    }
+
+    router.push({
+      name: "home",
+      query: {
+        ...query,
+        page: defaultPage,
+        limit: defaultLimit,
+        tableName: defaultTable,
+        //
+        indexName: defaultIndexName,
+        operation: defaultOperation,
+        parameters: defaultParameters,
+      },
+    });
+
+    store.table.setters.setTableNames(tables);
+  });
+
+  watch(
+    () => [
+      route.query.tableName,
+      route.query.limit,
+      route.query.page,
+      route.query.parameters,
+      route.query.indexName,
+      route.query.requestId, // diff requests
+    ],
+
+    async ([tableName, _limit, _page, _parameters, _indexName, requestId], oldValues) => {
+      if (!tableName) return;
+
+      // @TABLE
+      const [old_tableName, old_limit, old_page, old_parameters, old_indexName, old_requestId] = oldValues ?? [];
+
+      {
+        if (tableName !== old_tableName) {
+          // @RESET
+          store.dynamodb.setters.init({});
+          store.ui.setters.setTable({}, []);
+          activeTableName.value = tableName?.toString();
+
+          // @INIT
+          try {
+            const table = await getTable(tableName.toString());
+            store.table.setters.setTable(table);
+          } catch (error) {
+            window.location.href = "/";
+          }
         }
       }
-    }
 
-    if (!_parameters) {
-      store.dynamodb.setters.reset();
-    }
-
-    if (
-      old_parameters !== _parameters ||
-      old_indexName !== _indexName ||
-      old_requestId !== requestId
-    ) {
-      const parameters = JSON.parse(
-        decodeURIComponent(_parameters?.toString() ?? "{}")
-      );
-
-      const dynamodb = { ...store.dynamodb.state };
-
-      const dynamodbParameters = generateDynamodbParameters({
-        parameters,
-        table: store.table.state.Table,
-        indexName: _indexName,
-      });
-
-      store.ui.setters.setTable({}, []);
-
-      store.dynamodb.setters.init({
-        // ...dynamodb,
-        ...dynamodbParameters,
-      });
-    }
-
-    // @ITEMS
-    {
-      if (!(_limit && _page)) return;
-      const limit = parseInt(_limit.toString());
-      const page = parseInt(_page.toString());
-
-      store.ui.setters.setPage(page);
-      store.dynamodb.setters.setLimit(limit);
-
-      // @OPTIMIZE
-      if (prefetchedPageCount.value >= page) return;
-
-      // @RESET
-      let pageCount = 0;
-
-      if (!store.dynamodb.state.ExclusiveStartKey) {
-        store.ui.setters.setTable({}, []);
+      if (!_parameters) {
+        store.dynamodb.setters.reset();
       }
 
-      // @INIT
-      do {
-        pageCount++;
-        await fetchHandler();
-        if (!store.dynamodb.state.ExclusiveStartKey) break;
-      } while (pageCount < page);
+      if (old_parameters !== _parameters || old_indexName !== _indexName || old_requestId !== requestId) {
+        const parameters = JSON.parse(decodeURIComponent(_parameters?.toString() ?? "{}"));
 
-      if (page > pageCount) {
-        // Illegal Request -> Legal Request
+        const dynamodb = { ...store.dynamodb.state };
 
-        router.push({
-          name: "home",
-          query: { ...route.query, page: pageCount },
+        const dynamodbParameters = generateDynamodbParameters({
+          parameters,
+          table: store.table.state.Table,
+          indexName: _indexName,
+        });
+
+        store.ui.setters.setTable({}, []);
+
+        store.dynamodb.setters.init({
+          // ...dynamodb,
+          ...dynamodbParameters,
         });
       }
+
+      // @ITEMS
+      {
+        if (!(_limit && _page)) return;
+        const limit = parseInt(_limit.toString());
+        const page = parseInt(_page.toString());
+
+        store.ui.setters.setPage(page);
+        store.dynamodb.setters.setLimit(limit);
+
+        // @OPTIMIZE
+        if (prefetchedPageCount.value >= page) return;
+
+        // @RESET
+        let pageCount = 0;
+
+        if (!store.dynamodb.state.ExclusiveStartKey) {
+          store.ui.setters.setTable({}, []);
+        }
+
+        // @INIT
+        do {
+          pageCount++;
+          await fetchHandler();
+          if (!store.dynamodb.state.ExclusiveStartKey) break;
+        } while (pageCount < page);
+
+        if (page > pageCount) {
+          // Illegal Request -> Legal Request
+
+          router.push({
+            name: "home",
+            query: { ...route.query, page: pageCount },
+          });
+        }
+      }
+    },
+
+    { immediate: true },
+  );
+
+  //
+  const action = ref("");
+
+  const modal = ref(null);
+  const modalRef = ref(null);
+
+  const destroy = async () => {
+    try {
+      await deleteTable(activeTableName.value);
+      modal.value?.hide();
+      window.location.href = "/";
+    } catch (error) {
+      toast.className = "text-bg-danger";
+      toast.message = error.response.data.message ?? error.message;
+      const toastEl = new bootstrap.Toast(toastRef.value, { delay: 5000 });
+      setTimeout(() => toastEl.show(), 0);
     }
-  },
+  };
 
-  { immediate: true }
-);
-
-//
-const action = ref("");
-
-const modal = ref(null);
-const modalRef = ref(null);
-
-const destroy = async () => {
-  try {
-    await deleteTable(activeTableName.value);
-    modal.value?.hide();
-    window.location.href = "/";
-  } catch (error) {
-    toast.className = "text-bg-danger";
-    toast.message = error.response.data.message ?? error.message;
-    const toastEl = new bootstrap.Toast(toastRef.value, { delay: 5000 });
-    setTimeout(() => toastEl.show(), 0);
-  }
-};
-
-onMounted(() => {
-  modal.value = new bootstrap.Modal(modalRef.value, {});
-});
+  onMounted(() => {
+    modal.value = new bootstrap.Modal(modalRef.value, {});
+  });
 </script>

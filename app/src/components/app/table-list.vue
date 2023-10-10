@@ -12,9 +12,7 @@
           class="form-control rounded-0 border-start-0"
           placeholder="Find tables by table name"
         />
-        <span class="input-group-text bg-white rounded-0 border-end-0 pe-0"
-          ><i class="bi bi-search"></i
-        ></span>
+        <span class="input-group-text bg-white rounded-0 border-end-0 pe-0"><i class="bi bi-search"></i></span>
       </div>
     </li>
 
@@ -34,7 +32,10 @@
         },
       }"
     >
-      <li class="list-group-item py-2" @click="navigate">
+      <li
+        class="list-group-item py-2"
+        @click="navigate"
+      >
         <div class="form-check">
           <input
             class="form-check-input"
@@ -42,14 +43,14 @@
             type="radio"
             :value="tableName"
             :id="tableName"
-            :checked="
-              tableName ===
-              (activeTableName ?? store.table.state.Table.TableName)
-            "
+            :checked="tableName === (activeTableName ?? store.table.state.Table.TableName)"
           />
-          <label class="form-check-label ps-3 text-break" :for="tableName">{{
-            tableName
-          }}</label>
+          <label
+            class="form-check-label ps-3 text-break"
+            :for="tableName"
+          >
+            {{ tableName }}
+          </label>
         </div>
       </li>
     </router-link>
@@ -57,37 +58,37 @@
 </template>
 
 <script lang="ts">
-import { ref, inject, computed, toRef } from "vue";
+  import { ref, inject, computed, toRef } from "vue";
 
-export default {
-  props: {
-    activeTableName: String,
-  },
-  setup(props: any) {
-    const store: any = inject("store");
+  export default {
+    props: {
+      activeTableName: String,
+    },
+    setup(props: any) {
+      const store: any = inject("store");
 
-    const search = ref("");
-    const activeTableName = toRef(props, "activeTableName");
+      const search = ref("");
+      const activeTableName = toRef(props, "activeTableName");
 
-    const tableNames = computed(() =>
-      store.table.state.TableNames.filter((tableName: string) =>
-        tableName.toLowerCase().includes(search.value.toLowerCase())
-      )
-    );
+      const tableNames = computed(() =>
+        store.table.state.TableNames.filter((tableName: string) =>
+          tableName.toLowerCase().includes(search.value.toLowerCase()),
+        ),
+      );
 
-    return { activeTableName, tableNames, search, store };
-  },
-};
+      return { activeTableName, tableNames, search, store };
+    },
+  };
 </script>
 
 <style lang="scss">
-label,
-li {
-  cursor: pointer;
-  color: var(--bs-link-hover-color);
-}
+  label,
+  li {
+    cursor: pointer;
+    color: var(--bs-link-hover-color);
+  }
 
-input:focus + span {
-  border-color: #86b7fe;
-}
+  input:focus + span {
+    border-color: #86b7fe;
+  }
 </style>

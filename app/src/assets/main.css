@@ -1,19 +1,22 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500&display=swap");
 
 * {
   font-size: 14px;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
-input, button, select, a{
+input,
+button,
+select,
+a {
   box-shadow: none !important;
 }
 
-.modal-backdrop.show{
+.modal-backdrop.show {
   display: none;
 }
 
-.modal{
-  background-color: rgba(0,0,0,0.5);
+.modal {
+  background-color: rgba(0, 0, 0, 0.5);
 }

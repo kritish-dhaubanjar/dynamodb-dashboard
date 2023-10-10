@@ -28,12 +28,7 @@ export async function scanItems(tableName: string, params: any) {
   return data;
 }
 
-export async function updateItem(
-  tableName: string,
-  original: any,
-  body: any,
-  KeySchema: []
-) {
+export async function updateItem(tableName: string, original: any, body: any, KeySchema: []) {
   const url = interpolate(ROUTES.ITEM.UPDATE, { tableName });
 
   const ref: any = {};
@@ -52,19 +47,15 @@ export async function updateItem(
   return { data, ref: newRef, body };
 }
 
-export async function getItem(
-  tableName: string,
-  params: any,
-  AttributeDefinitions: []
-) {
+export async function getItem(tableName: string, params: any, AttributeDefinitions: []) {
   const url = interpolate(ROUTES.ITEM.GET, { tableName });
 
   const formattedParams: any = {};
 
   Object.keys(params).forEach((key) => {
-    const { AttributeType } = AttributeDefinitions.find(
-      ({ AttributeName }) => AttributeName === key
-    ) ?? { AttributeType: "S" };
+    const { AttributeType } = AttributeDefinitions.find(({ AttributeName }) => AttributeName === key) ?? {
+      AttributeType: "S",
+    };
 
     switch (AttributeType) {
       case "N":
