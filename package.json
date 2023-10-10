@@ -1,0 +1,14 @@
+{
+  "name": "dynamodb-dashboard",
+  "version": "1.0.0",
+  "repository": "git@github.com:kritish-dhaubanjar/dynamodb-dashboard",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "app:prettify": "cd app && yarn prettify",
+    "server:prettify": "cd server && yarn prettify"
+  },
+  "devDependencies": {
+    "prettier": "^3.0.3"
+  }
+}

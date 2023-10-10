@@ -7,7 +7,8 @@
     "preview": "vite preview --port 4173",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
+    "prettify": "prettier --write 'src/**/*.{js,ts,vue,css}'"
   },
   "dependencies": {
     "@codemirror/commands": "^6.2.4",
@@ -38,7 +39,7 @@
     "eslint-plugin-vue": "^9.11.0",
     "module-alias": "^2.2.3",
     "npm-run-all": "^4.1.5",
-    "prettier": "^2.8.8",
+    "prettier": "^3.0.3",
     "sass": "^1.63.6",
     "typescript": "~5.1.6",
     "vite": "^3.2.7",
