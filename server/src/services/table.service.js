@@ -10,6 +10,7 @@ export default class TableServiceProvider {
     const params = {};
 
     do {
+      // eslint-disable-next-line no-await-in-loop
       const response = await this.AWS.dynamodb.listTables(params);
       tables.push(...response.TableNames);
       params.LastEvaluatedTableName = response.ExclusiveStartTableName;

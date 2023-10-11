@@ -1,5 +1,5 @@
-import AWS from "../config/aws";
 import EventEmitter from "events";
+import AWS from "../config/aws";
 import DatabaseServiceProvider from "../services/database.service";
 import { EVENTS } from "../constants/event";
 
@@ -11,14 +11,14 @@ export async function index(req, res, next) {
     const DatabaseService = new DatabaseServiceProvider(AWS, credentials);
     const data = await DatabaseService.all();
 
-    return res.json(data);
+    res.json(data);
   } catch (error) {
     next(error);
   }
 }
 
-export async function stream(req, res, next) {
-  const uid = req.params.uid;
+export async function stream(req, res, _next) {
+  const { uid } = req.params;
 
   res.writeHead(200, {
     Connection: "keep-alive",
@@ -39,14 +39,15 @@ export async function stream(req, res, next) {
 
 export async function restore(req, res, next) {
   try {
-    const uid = req.params.uid;
+    const { uid } = req.params;
     const { credentials, tableNames } = req.body;
 
     const DatabaseService = new DatabaseServiceProvider(AWS, credentials);
     const data = await DatabaseService.restore(tableNames, uid, eventEmitter);
 
     eventEmitter.emit(EVENTS.END, uid);
-    return res.json(data);
+
+    res.json(data);
   } catch (error) {
     next(error);
   }

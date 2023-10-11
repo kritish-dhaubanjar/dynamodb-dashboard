@@ -41,9 +41,11 @@ export default class DatabaseServiceProvider {
           const schema = Table.KeySchema.map(({ AttributeName }) => AttributeName);
 
           do {
+            // eslint-disable-next-line no-await-in-loop
             const response = await this.SOURCE.ItemService.fetch(OPERATIONS.SCAN, tableName, params);
 
             const { Items = [], LastEvaluatedKey = null } = response;
+            // eslint-disable-next-line no-await-in-loop
             await Promise.all(Items.map((item) => this.TARGET.ItemService.create(tableName, schema, item)));
 
             params.ExclusiveStartKey = LastEvaluatedKey;
@@ -54,6 +56,7 @@ export default class DatabaseServiceProvider {
         } catch (error) {
           // ERROR
           eventEmitter.emit(EVENTS.FAILED, uid, { tableName, error });
+
           console.error(error);
         }
       }),

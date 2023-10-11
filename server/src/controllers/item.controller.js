@@ -6,14 +6,14 @@ const ItemService = new ItemServiceProvider();
 
 export async function get(req, res, next) {
   try {
-    const tableName = req.params.tableName;
+    const { tableName } = req.params;
     const data = await ItemService.get(tableName, req.body);
 
     if (!data.Item) {
       res.status(404);
     }
 
-    return res.json(data);
+    res.json(data);
   } catch (error) {
     next(error);
   }
@@ -21,9 +21,9 @@ export async function get(req, res, next) {
 
 export async function scan(req, res, next) {
   try {
-    const tableName = req.params.tableName;
+    const { tableName } = req.params;
     const data = await ItemService.fetch(OPERATIONS.SCAN, tableName, req.body);
-    return res.json(data);
+    res.json(data);
   } catch (error) {
     next(error);
   }
@@ -31,9 +31,9 @@ export async function scan(req, res, next) {
 
 export async function query(req, res, next) {
   try {
-    const tableName = req.params.tableName;
+    const { tableName } = req.params;
     const data = await ItemService.fetch(OPERATIONS.QUERY, tableName, req.body);
-    return res.json(data);
+    res.json(data);
   } catch (error) {
     next(error);
   }
@@ -41,9 +41,9 @@ export async function query(req, res, next) {
 
 export async function destroy(req, res, next) {
   try {
-    const tableName = req.params.tableName;
+    const { tableName } = req.params;
     const data = await ItemService.destroy(tableName, req.body);
-    return res.json(data);
+    res.json(data);
   } catch (error) {
     next(error);
   }
@@ -51,9 +51,9 @@ export async function destroy(req, res, next) {
 
 export async function create(req, res, next) {
   try {
-    const tableName = req.params.tableName;
+    const { tableName } = req.params;
     const data = await ItemService.create(tableName, req.schema, req.body);
-    return res.json(data);
+    res.json(data);
   } catch (error) {
     next(error);
   }
@@ -62,7 +62,7 @@ export async function create(req, res, next) {
 export async function update(req, res, next) {
   try {
     const { ref, body } = req.body;
-    const tableName = req.params.tableName;
+    const { tableName } = req.params;
 
     const isReplace = isPartialMatchWith(ref, body, req.schema);
 
@@ -74,7 +74,7 @@ export async function update(req, res, next) {
       data = await ItemService.transactUpdate(tableName, req.schema, req.body);
     }
 
-    return res.json(data);
+    res.json(data);
   } catch (error) {
     next(error);
   }

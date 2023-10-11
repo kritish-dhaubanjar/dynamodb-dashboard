@@ -3,7 +3,7 @@ export function pick(object = {}, keys = []) {
   const filteredKeys = Object.keys(object).filter((key) => keys.includes(key));
 
   filteredKeys.forEach((key) => {
-    if (!Boolean(object[key])) return;
+    if (!object[key]) return;
 
     result[key] = object[key];
   });
@@ -14,6 +14,8 @@ export function pick(object = {}, keys = []) {
 export function isPartialMatchWith(object = {}, source = {}, keys = []) {
   let match = true;
 
+  // TODO: Refactor this to make it simple
+  // eslint-disable-next-line no-restricted-syntax
   for (const key of keys) {
     match &&= object[key] === source[key];
   }

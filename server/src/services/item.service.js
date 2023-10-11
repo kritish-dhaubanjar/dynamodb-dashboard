@@ -28,6 +28,7 @@ export default class ItemServiceProvider {
     let intermediateExclusiveStartKey = params.ExclusiveStartKey;
 
     do {
+      // eslint-disable-next-line no-await-in-loop
       const response = await this.AWS.document[operation](params); // AWS.document.scan(...), AWS.document.query(...)
       scannedCount += response.ScannedCount;
 
@@ -92,9 +93,9 @@ export default class ItemServiceProvider {
   async destroy(tableName, items) {
     const chunks = chunk(items, 25);
 
-    const requests = chunks.map((items) => ({
+    const requests = chunks.map((chunkedItem) => ({
       RequestItems: {
-        [tableName]: items,
+        [tableName]: chunkedItem,
       },
     }));
 

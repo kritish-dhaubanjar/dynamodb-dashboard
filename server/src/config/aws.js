@@ -1,6 +1,6 @@
-import config from "../constants/config";
 import { DynamoDB } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocument } from "@aws-sdk/lib-dynamodb";
+import config from "../constants/config";
 
 export class AWS {
   initializeFromDynamoDB({ dynamodb }) {

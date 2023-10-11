@@ -3,9 +3,9 @@ import open from "open";
 import path from "path";
 import morgan from "morgan";
 import express from "express";
+import compression from "compression";
 import routes from "../routes";
 import AWS from "../config/aws";
-import compression from "compression";
 import errorHandler from "../errors/handler";
 
 AWS.initialize();
@@ -38,13 +38,13 @@ export default ({ port, host, debug, open: _open, prefix }) => {
     res.sendFile(path.resolve(__dirname, "..", "public", "index.html"));
   });
 
-  app.get("*", function (_req, res) {
+  app.get("*", (_req, res) => {
     res.redirect(ASSETS);
   });
 
   app.use(errorHandler);
 
-  const server = app.listen(port, host, () => {
+  app.listen(port, host, () => {
     console.info(`dynamodb-dashboard started at: ${URL}\n`);
 
     if (_open) {
