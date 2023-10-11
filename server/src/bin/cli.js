@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-import server from "./server";
 import { Command } from "commander";
+import server from "./server";
 import { version } from "../../package.json";
 
 const program = new Command();

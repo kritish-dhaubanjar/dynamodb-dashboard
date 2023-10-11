@@ -6,24 +6,42 @@ const TableService = new TableServiceProvider();
 
 export function validateScan(req, _res, next) {
   const { error } = scan.validate(req.body);
-  if (error) return next(error);
+
+  if (error) {
+    next(error);
+
+    return;
+  }
+
   next();
 }
 
 export function validateQuery(req, _res, next) {
   const { error } = query.validate(req.body);
-  if (error) return next(error);
+
+  if (error) {
+    next(error);
+
+    return;
+  }
+
   next();
 }
 
 export function validateDelete(req, _res, next) {
   const { error } = destroy.validate(req.body);
-  if (error) return next(error);
+
+  if (error) {
+    next(error);
+
+    return;
+  }
+
   next();
 }
 
 export async function validateCreate(req, _res, next) {
-  const tableName = req.params.tableName;
+  const { tableName } = req.params;
 
   try {
     const { Table } = await TableService.describe(tableName);
@@ -36,18 +54,22 @@ export async function validateCreate(req, _res, next) {
     const create = Joi.object(schema).unknown(true);
 
     const { error } = create.validate(req.body);
-    if (error) return next(error);
+
+    if (error) {
+      next(error);
+      return;
+    }
 
     req.schema = Object.keys(schema);
 
     next();
   } catch (error) {
-    return next(error);
+    next(error);
   }
 }
 
 export async function validateUpdate(req, _res, next) {
-  const tableName = req.params.tableName;
+  const { tableName } = req.params;
 
   try {
     const { Table } = await TableService.describe(tableName);
@@ -64,12 +86,16 @@ export async function validateUpdate(req, _res, next) {
     });
 
     const { error } = update.validate(req.body);
-    if (error) return next(error);
+
+    if (error) {
+      next(error);
+      return;
+    }
 
     req.schema = Object.keys(schema);
 
     next();
   } catch (error) {
-    return next(error);
+    next(error);
   }
 }

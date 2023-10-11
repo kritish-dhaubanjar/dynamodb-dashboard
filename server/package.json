@@ -12,7 +12,9 @@
     "build": "rimraf build && babel src --out-dir build",
     "babel-node": "babel-node --presets='@babel/preset-env'",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prettify": "prettier --write 'src/**/*.{js,ts}'"
+    "prettify": "prettier --write 'src/**/*.{js,ts}'",
+    "lint": "eslint src/**/*.js",
+    "lint:fix": "eslint src/**/*.js --fix"
   },
   "author": "Kritish Dhaubanjar",
   "keywords": [
@@ -27,6 +29,10 @@
     "@babel/core": "^7.18.13",
     "@babel/node": "^7.18.10",
     "@babel/preset-env": "^7.18.10",
+    "eslint": "^7.32.0 || ^8.2.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-import": "^2.25.2",
     "nodemon": "^3.0.1",
     "rimraf": "^5.0.0"
   },
