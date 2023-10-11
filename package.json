@@ -6,7 +6,11 @@
   "private": false,
   "scripts": {
     "app:prettify": "cd app && yarn prettify",
-    "server:prettify": "cd server && yarn prettify"
+    "server:prettify": "cd server && yarn prettify",
+    "server:lint": "cd app && yarn lint",
+    "server:lint:fix": "cd app && yarn lint:fix",
+    "app:lint": "cd app && yarn lint",
+    "app:lint:fix": "cd app && yarn lint:fix"
   },
   "devDependencies": {
     "prettier": "^3.0.3"

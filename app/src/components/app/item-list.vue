@@ -231,14 +231,21 @@
   const sort = reactive({
     key: null,
     order: null,
+  } as {
+    key: null | string;
+    order: null | string;
   });
 
   const selectedItems = ref([]);
 
   const headers = computed(() => store.ui.state.table.headers ?? []);
+
+  // TODO: can we remove this as `hasMoreItems` is not being used.
   const hasMoreItems = computed(() => store.dynamodb.state.ExclusiveStartKey ?? false);
 
   const items = computed(() => {
+    // TODO: Fix this
+    // eslint-disable-next-line vue/no-side-effects-in-computed-properties
     selectedItems.value = [];
 
     const { Limit } = store.dynamodb.state;
@@ -254,8 +261,8 @@
     if (!sort.key || !sort.order) return items;
 
     return [...items].sort((a, b) => {
-      const v1 = a[sort.key] ?? "";
-      const v2 = b[sort.key] ?? "";
+      const v1 = (sort.key && a[sort.key]) || "";
+      const v2 = (sort.key && b[sort.key]) || "";
 
       if (sort.order === SORT_ORDER.ASC) {
         if (v1 > v2) return 1;
@@ -273,7 +280,7 @@
     });
   };
 
-  const setSort = (key) => {
+  const setSort = (key: any) => {
     const index = SORTS.findIndex((order) => order === sort.order);
 
     if (sort.key === key) {
@@ -299,6 +306,9 @@
     () => items.value,
     async () => {
       await nextTick(() => {
+        // TODO: Fix the TS issue
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        //@ts-ignore
         scrollbar.value.style.width = `${+table.value.scrollWidth}px`;
       });
     },
