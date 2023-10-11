@@ -76,6 +76,8 @@
         ),
       );
 
+      // TODO: fix this
+      // eslint-disable-next-line vue/no-dupe-keys
       return { activeTableName, tableNames, search, store };
     },
   };

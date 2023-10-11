@@ -1,8 +1,6 @@
 import { generateString } from "./string";
 
 export function generateTableHeaders(items = [], { KeySchema = [] }) {
-  let max = {};
-
   const hashKey = KeySchema.find(({ KeyType }) => KeyType === "HASH") ?? {};
   const rangeKey = KeySchema.find(({ KeyType }) => KeyType === "RANGE") ?? {};
 

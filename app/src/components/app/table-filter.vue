@@ -216,7 +216,10 @@
                           class="dropdown-menu rounded-0"
                           :class="{ 'p-0 border-0': !filteredHeaders(filter.name).length }"
                         >
-                          <li v-for="header in filteredHeaders(filter.name)">
+                          <li
+                            v-for="header in filteredHeaders(filter.name)"
+                            v-bind:key="header"
+                          >
                             <a
                               class="dropdown-item"
                               @click.prevent="filter.name = header"
