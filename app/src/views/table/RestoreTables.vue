@@ -59,13 +59,37 @@
                         AWS DynamoDB Endpoint *
                         <br />
                       </label>
-                      <input
-                        required
-                        type="text"
-                        class="form-control rounded-0"
-                        placeholder="eg: https://dynamodb.us-west-2.amazonaws.com"
-                        v-model="credentials.AWS_ENDPOINT"
-                      />
+
+                      <div class="dropdown">
+                        <input
+                          required
+                          type="text"
+                          class="form-control rounded-0"
+                          placeholder="eg: https://dynamodb.us-west-2.amazonaws.com"
+                          v-model="credentials.AWS_ENDPOINT"
+                          data-bs-toggle="dropdown"
+                          @click="handleOnClick"
+                          @keyup="handleOnClick"
+                          id="dropdown-input-toggle-aws-dynamodb"
+                        />
+
+                        <ul
+                          class="dropdown-menu rounded-0"
+                          :class="{ 'p-0 border-0': !filteredAWSDynamoDBEndpoints(credentials.AWS_ENDPOINT).length }"
+                        >
+                          <li
+                            v-for="endpoint in filteredAWSDynamoDBEndpoints(credentials.AWS_ENDPOINT)"
+                            v-bind:key="endpoint"
+                          >
+                            <a
+                              class="dropdown-item"
+                              @click.prevent="credentials.AWS_ENDPOINT = endpoint"
+                            >
+                              {{ endpoint }}
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
                     </div>
                   </div>
 
@@ -375,10 +399,10 @@
   import * as bootstrap from "bootstrap";
   import { useRouter } from "vue-router";
   import ROUTES from "@/constants/routes";
-  import { AWS_REGIONS } from "@/constants/dynamodb";
   import { computed, inject, reactive, ref } from "vue";
   import { generateString, interpolate } from "@/utils/string";
   import { getRemoteTables, restoreTables } from "@/services/table";
+  import { AWS_REGIONS, AWS_DYNAMODB_ENDPOINTS } from "@/constants/dynamodb";
 
   const store: any = inject("store");
 
@@ -490,6 +514,11 @@
 
   const filteredAWSRegions = computed(
     () => (q: string) => AWS_REGIONS.filter((region: string) => region?.includes(q)) || AWS_REGIONS || [],
+  );
+
+  const filteredAWSDynamoDBEndpoints = computed(
+    () => (q: string) =>
+      AWS_DYNAMODB_ENDPOINTS.filter((endpoint: string) => endpoint?.includes(q)) || AWS_DYNAMODB_ENDPOINTS || [],
   );
 </script>
 

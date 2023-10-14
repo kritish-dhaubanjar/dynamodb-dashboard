@@ -38,4 +38,37 @@ export const AWS_REGIONS = [
   "us-gov-west-1",
 ];
 
+export const AWS_DYNAMODB_ENDPOINTS = [
+  "https://dynamodb.us-east-2.amazonaws.com",
+  "https://dynamodb.us-east-1.amazonaws.com",
+  "https://dynamodb.us-west-1.amazonaws.com",
+  "https://dynamodb.us-west-2.amazonaws.com",
+  "https://dynamodb.af-south-1.amazonaws.com",
+  "https://dynamodb.ap-east-1.amazonaws.com",
+  "https://dynamodb.ap-south-2.amazonaws.com",
+  "https://dynamodb.ap-southeast-3.amazonaws.com",
+  "https://dynamodb.ap-southeast-4.amazonaws.com",
+  "https://dynamodb.ap-south-1.amazonaws.com",
+  "https://dynamodb.ap-northeast-3.amazonaws.com",
+  "https://dynamodb.ap-northeast-2.amazonaws.com",
+  "https://dynamodb.ap-southeast-1.amazonaws.com",
+  "https://dynamodb.ap-southeast-2.amazonaws.com",
+  "https://dynamodb.ap-northeast-1.amazonaws.com",
+  "https://dynamodb.ca-central-1.amazonaws.com",
+  "https://dynamodb.eu-central-1.amazonaws.com",
+  "https://dynamodb.eu-west-1.amazonaws.com",
+  "https://dynamodb.eu-west-2.amazonaws.com",
+  "https://dynamodb.eu-south-1.amazonaws.com",
+  "https://dynamodb.eu-west-3.amazonaws.com",
+  "https://dynamodb.eu-south-2.amazonaws.com",
+  "https://dynamodb.eu-north-1.amazonaws.com",
+  "https://dynamodb.eu-central-2.amazonaws.com",
+  "https://dynamodb.il-central-1.amazonaws.com",
+  "https://dynamodb.me-south-1.amazonaws.com",
+  "https://dynamodb.me-central-1.amazonaws.com",
+  "https://dynamodb.sa-east-1.amazonaws.com",
+  "https://dynamodb.us-gov-east-1.amazonaws.com",
+  "https://dynamodb.us-gov-west-1.amazonaws.com",
+];
+
 export default DYNAMODB;
