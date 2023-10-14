@@ -19,13 +19,37 @@
                         AWS Region *
                         <br />
                       </label>
-                      <input
-                        required
-                        type="text"
-                        class="form-control rounded-0"
-                        placeholder="eg: us-west-2"
-                        v-model="credentials.AWS_REGION"
-                      />
+
+                      <div class="dropdown">
+                        <input
+                          required
+                          type="text"
+                          class="form-control rounded-0"
+                          placeholder="eg: us-west-2"
+                          v-model="credentials.AWS_REGION"
+                          data-bs-toggle="dropdown"
+                          @click="handleOnClick"
+                          @keyup="handleOnClick"
+                          id="dropdown-input-toggle-aws-region"
+                        />
+
+                        <ul
+                          class="dropdown-menu rounded-0"
+                          :class="{ 'p-0 border-0': !filteredAWSRegions(credentials.AWS_REGION).length }"
+                        >
+                          <li
+                            v-for="region in filteredAWSRegions(credentials.AWS_REGION)"
+                            v-bind:key="region"
+                          >
+                            <a
+                              class="dropdown-item"
+                              @click.prevent="credentials.AWS_REGION = region"
+                            >
+                              {{ region }}
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
                     </div>
                   </div>
 
@@ -350,8 +374,9 @@
   import axios from "axios";
   import * as bootstrap from "bootstrap";
   import { useRouter } from "vue-router";
-  import ROUTES from "../../constants/routes";
-  import { inject, reactive, ref } from "vue";
+  import ROUTES from "@/constants/routes";
+  import { AWS_REGIONS } from "@/constants/dynamodb";
+  import { computed, inject, reactive, ref } from "vue";
   import { generateString, interpolate } from "@/utils/string";
   import { getRemoteTables, restoreTables } from "@/services/table";
 
@@ -456,6 +481,16 @@
       router.push({ name: "home" });
     }
   };
+
+  const handleOnClick = (e) => {
+    const dropdownElement = document.getElementById(e.target.id);
+    const dropdown = new bootstrap.Dropdown(dropdownElement);
+    dropdown.show();
+  };
+
+  const filteredAWSRegions = computed(
+    () => (q: string) => AWS_REGIONS.filter((region: string) => region?.includes(q)) || AWS_REGIONS || [],
+  );
 </script>
 
 <style scoped>
