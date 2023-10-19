@@ -537,4 +537,10 @@
   .checkbox-container {
     width: 36px;
   }
+
+  .dropdown-menu {
+    max-height: 512px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
 </style>
