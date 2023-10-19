@@ -537,6 +537,8 @@
   const run = async () => {
     const updatedParameters = { ...parameters };
 
+    resetErrors();
+
     if (operation.value === "SCAN") {
       updatedParameters.keys.pk = {
         value: "",
