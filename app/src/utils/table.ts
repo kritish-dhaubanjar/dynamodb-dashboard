@@ -132,7 +132,7 @@ export function generateDynamodbParameters({ table, indexName, parameters }) {
     }
 
     //
-    if (!name || !value || !type || (condition === "between" && !value2)) continue;
+    if (!name || !type || (condition === "between" && !value2)) continue;
 
     if (["begins_with", "contains", "not contains"].includes(condition)) {
       expression = `${condition}(#${name}, :${salt})`;
