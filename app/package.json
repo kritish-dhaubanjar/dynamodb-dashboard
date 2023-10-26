@@ -22,7 +22,7 @@
     "bootstrap": "5.2.3",
     "bootstrap-icons": "^1.10.5",
     "codemirror": "^6.0.1",
-    "darkreader": "^4.9.58",
+    "darkreader": "^4.9.67",
     "lodash": "^4.17.21",
     "vue": "^3.3.4",
     "vue-router": "^4.2.4"
