@@ -1220,10 +1220,10 @@ csstype@^3.1.1:
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.1.2.tgz#1d4bf9d572f11c14031f0436e1c10bc1f571f50b"
   integrity sha512-I7K1Uu0MBPzaFKg4nI5Q7Vs2t+3gWWW648spaF+Rg7pI9ds18Ugn+lvg4SHczUdKlHI5LWBXyqfS8+DufyBsgQ==
 
-darkreader@^4.9.58:
-  version "4.9.66"
-  resolved "https://registry.yarnpkg.com/darkreader/-/darkreader-4.9.66.tgz#d276b002a993c792c2b2947c5ebd2bf8afafbd4a"
-  integrity sha512-ZyPZ6cSwx/vKsuH2pWRO1FgiLfdDhbHhVOnvAW3HO6qys7ZT1XOpL5rsVtBQFgkuRQwxpeMY1qiR7/iKsQCzLw==
+darkreader@^4.9.67:
+  version "4.9.67"
+  resolved "https://registry.yarnpkg.com/darkreader/-/darkreader-4.9.67.tgz#15a3709bd558f9f459eeb9e682bf45b4cd064bb8"
+  integrity sha512-gFEz+GZGCWVtnRbTb/7oa3QdvPqe21Cyjj/hxg3sMP8RK7zUYptjnDFxe77xvVcfhkf+bz6CfweqrixVoHxaPg==
 
 de-indent@^1.0.2:
   version "1.0.2"
