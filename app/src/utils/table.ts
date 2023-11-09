@@ -129,6 +129,7 @@ export function generateDynamodbParameters({ table, indexName, parameters }) {
       expression = `${condition}(#${name})`;
       attributes.map((name) => (attributeNames[`#${name}`] = name));
       filters.push(expression);
+      continue;
     }
 
     //
