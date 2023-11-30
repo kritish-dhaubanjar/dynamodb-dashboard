@@ -357,10 +357,14 @@
   import * as bootstrap from "bootstrap";
   import { useRouter } from "vue-router";
   import { createTable } from "@/services/table";
-  import { computed, inject, reactive, ref } from "vue";
+  import { onMounted, computed, inject, reactive, ref } from "vue";
   import { generateDynamodbTableParameters } from "@/utils/table";
 
   const store: any = inject("store");
+
+  onMounted(() => {
+    store.table.setters.setTable({ TableName: "Create Table" });
+  });
 
   const table = reactive({
     name: "",

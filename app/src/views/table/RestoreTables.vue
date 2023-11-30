@@ -399,12 +399,16 @@
   import * as bootstrap from "bootstrap";
   import { useRouter } from "vue-router";
   import ROUTES from "@/constants/routes";
-  import { computed, inject, reactive, ref } from "vue";
+  import { onMounted, computed, inject, reactive, ref } from "vue";
   import { generateString, interpolate } from "@/utils/string";
   import { getRemoteTables, restoreTables } from "@/services/table";
   import { AWS_REGIONS, AWS_DYNAMODB_ENDPOINTS } from "@/constants/dynamodb";
 
   const store: any = inject("store");
+
+  onMounted(() => {
+    store.table.setters.setTable({ TableName: "Restore Table" });
+  });
 
   const remoteTableSearch = ref("");
   const localTableSearch = ref("");
