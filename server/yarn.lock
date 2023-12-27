@@ -400,12 +400,12 @@
     tslib "^2.5.0"
 
 "@aws-sdk/lib-dynamodb@^3.154.0":
-  version "3.478.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.478.0.tgz#d2703061d3f10d7b980c0993e40a5ecf2eaa9908"
-  integrity sha512-RYzGedXOlpLzgp+kAJ1tL71QNtGemI6wBivzbaNSOu+C7GIvIEEHvzvvNYOZ8UkrMVXgfELLm5XbSRk+JEWE3g==
+  version "3.481.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.481.0.tgz#70c29f3fb15fc7e2d96e408f244e4018e9ef786e"
+  integrity sha512-8TgpDBDMrls6KhusWx3+clIrU4jQd72HHlhuB7CMD1Od+dsT+Ov4L+NZjQ1V5+NwyMiPjAMiSB0SMZlKLjzPmg==
   dependencies:
-    "@aws-sdk/util-dynamodb" "3.478.0"
-    "@smithy/smithy-client" "^2.1.18"
+    "@aws-sdk/util-dynamodb" "3.481.0"
+    "@smithy/smithy-client" "^2.2.0"
     "@smithy/types" "^2.7.0"
     tslib "^2.5.0"
 
@@ -536,10 +536,10 @@
     "@smithy/types" "^2.7.0"
     tslib "^2.5.0"
 
-"@aws-sdk/util-dynamodb@3.478.0":
-  version "3.478.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/util-dynamodb/-/util-dynamodb-3.478.0.tgz#845585d638f1dd92f70890f7903db977bbaa7d47"
-  integrity sha512-DmyINA+flhy5VzHFrPCwPX3ZLRThgUjVORGVybBWDLUnuFKzG4kNz+VPyzNLxDdvYebESbiSlfR5mR6MTvzIZA==
+"@aws-sdk/util-dynamodb@3.481.0":
+  version "3.481.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/util-dynamodb/-/util-dynamodb-3.481.0.tgz#cbccae437918aee26875678d444497d9e6c446e7"
+  integrity sha512-43okW9YKT2YyUPVbLvrXjzAEptoHyWL4SdzWHbaxNJiEBVn7pq6eYqWzgWAnH12Vz1wbRP/iYWU/ZzwaozzA9w==
   dependencies:
     tslib "^2.5.0"
 
@@ -1947,12 +1947,14 @@
     "@smithy/util-utf8" "^2.0.0"
     tslib "^2.5.0"
 
-"@smithy/smithy-client@^2.1.18":
-  version "2.1.18"
-  resolved "https://registry.yarnpkg.com/@smithy/smithy-client/-/smithy-client-2.1.18.tgz#f8ce2c0e9614f207256ddcd992403aff40750546"
-  integrity sha512-7FqdbaJiVaHJDD9IfDhmzhSDbpjyx+ZsfdYuOpDJF09rl8qlIAIlZNoSaflKrQ3cEXZN2YxGPaNWGhbYimyIRQ==
+"@smithy/smithy-client@^2.1.18", "@smithy/smithy-client@^2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@smithy/smithy-client/-/smithy-client-2.2.0.tgz#9865981a2f49dd0e9ef68193aebcd5654cdd7f00"
+  integrity sha512-C/bkNue5H5Obgl83SnlBt4v6VM68CqIjIELh3vAabud87xFYznLNKtj6Qb69Z+QOnLp9T+We++sEem/f2AHE+Q==
   dependencies:
+    "@smithy/middleware-endpoint" "^2.2.3"
     "@smithy/middleware-stack" "^2.0.9"
+    "@smithy/protocol-http" "^3.0.11"
     "@smithy/types" "^2.7.0"
     "@smithy/util-stream" "^2.0.23"
     tslib "^2.5.0"
