@@ -117,9 +117,9 @@
     tslib "^2.5.0"
 
 "@aws-sdk/client-dynamodb@^3.154.0":
-  version "3.490.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.490.0.tgz#528941c93d9296b79d868dec98c507ea7b8520f4"
-  integrity sha512-bU6BulAlYuRXD/rUPMvzE/hah/szww8kifdpBrB1yEJYO45TFQiJebo1n4Y7qjqe/cMi4aOeTVBQDt8E3QlYZw==
+  version "3.494.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.494.0.tgz#de50c0a68bef4232a440b64b3e10ddf64dabe367"
+  integrity sha512-sj0VAJD5M9nfrVSs3bMCpVXxEusWPum8UIRG0Hr+Ua/5ecPy3G+kbBVlpQW2vh5rTDq4BQiYDLkZM2kNtWfGJw==
   dependencies:
     "@aws-crypto/sha256-browser" "3.0.0"
     "@aws-crypto/sha256-js" "3.0.0"
