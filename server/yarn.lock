@@ -1940,7 +1940,7 @@
     "@smithy/util-utf8" "^2.1.0"
     tslib "^2.5.0"
 
-"@smithy/smithy-client@^2.2.1", "@smithy/smithy-client@^2.3.0":
+"@smithy/smithy-client@^2.3.0":
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/@smithy/smithy-client/-/smithy-client-2.3.0.tgz#bfafb0bde47ac7bf2579e13ff9310a5f6481a013"
   integrity sha512-oEaLdVmHcbdK8IHQ4yE7xOYK2nSkF2xXp6nRr5NhfKB5QTKNzpNsXLiGJgfmm7j0ol1S6BhjyBhi7tZ8M0JJtg==
@@ -1952,7 +1952,7 @@
     "@smithy/util-stream" "^2.1.0"
     tslib "^2.5.0"
 
-"@smithy/types@^2.8.0", "@smithy/types@^2.9.0":
+"@smithy/types@^2.9.0":
   version "2.9.0"
   resolved "https://registry.yarnpkg.com/@smithy/types/-/types-2.9.0.tgz#634a1736d6b0583baafcb0e1123d4618325ebbec"
   integrity sha512-ST1M87Lf2cLHRI+irEFRIHXGY08HHTAUbiRFYkmFyJdTMg3VDxkcm7DwW9/EgV3X8M6wDPrbIkx/RXONyttrQg==
@@ -2638,9 +2638,9 @@ doctrine@^3.0.0:
     esutils "^2.0.2"
 
 dotenv@^16.0.1:
-  version "16.3.1"
-  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.3.1.tgz#369034de7d7e5b120972693352a3bf112172cc3e"
-  integrity sha512-IPzF4w4/Rd94bA9imS68tZBaYyBWSCE47V1RGuMrB94iyTOIEwRmVL2x/4An+6mETpLrKJ5hQkB8W4kFAadeIQ==
+  version "16.3.2"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.3.2.tgz#3cb611ce5a63002dbabf7c281bc331f69d28f03f"
+  integrity sha512-HTlk5nmhkm8F6JcdXvHIzaorzCoziNQT9mGxLPVXW8wJF1TiGSL60ZGB4gHWabHOaMmWmhvk2/lPHfnBiT78AQ==
 
 eastasianwidth@^0.2.0:
   version "0.2.0"
