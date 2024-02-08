@@ -447,11 +447,11 @@
     tslib "^2.5.0"
 
 "@aws-sdk/lib-dynamodb@^3.154.0":
-  version "3.507.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.507.0.tgz#0542bcb1849eb7581c5e8de6da513c05b308a7e1"
-  integrity sha512-nbvbgkoojfSQIytel2gjctpv7q8qADdb20xTdZEjDSUdFYKCQxCSsCV93QT+GI11rzYmngZyxic4DeMRZweBdw==
+  version "3.509.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.509.0.tgz#2a3c74173cab7731e37d8fa6d726936e0473c9c2"
+  integrity sha512-jKcQQ7qBWllD4QNY0VNm5vanCs1yWTD8QA6sSWQQUHl2TpUOyklV9ghCGhtQXbb0ppH0az0oVrFaz0z7+whlWQ==
   dependencies:
-    "@aws-sdk/util-dynamodb" "3.507.0"
+    "@aws-sdk/util-dynamodb" "3.509.0"
     "@smithy/smithy-client" "^2.3.1"
     "@smithy/types" "^2.9.1"
     tslib "^2.5.0"
@@ -553,10 +553,10 @@
     "@smithy/types" "^2.9.1"
     tslib "^2.5.0"
 
-"@aws-sdk/util-dynamodb@3.507.0":
-  version "3.507.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/util-dynamodb/-/util-dynamodb-3.507.0.tgz#7a04a33ab459bd2aa73c90584f8a088202dfca02"
-  integrity sha512-iVWXCDS8F04lBTSHdqC6hLOhoMFyB7/tcKmwvrjnanDIVf55Q5witH320RlcB5YS6SRnVE+nlEfEOdxaz+wjsw==
+"@aws-sdk/util-dynamodb@3.509.0":
+  version "3.509.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/util-dynamodb/-/util-dynamodb-3.509.0.tgz#b67dda1bfecddc1de085e686790635f99c2c6962"
+  integrity sha512-wvlcYicawWCwvklfpTJrLn+S2oTfpOG4Q/uWvQJgv3Z3SVr5Yp3OjUvMKCRUGVu1r+thedvx6LZWecoGXfQivA==
   dependencies:
     tslib "^2.5.0"
 
