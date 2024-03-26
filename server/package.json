@@ -38,7 +38,6 @@
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.154.0",
-    "@aws-sdk/credential-providers": "^3.171.0",
     "@aws-sdk/lib-dynamodb": "^3.154.0",
     "commander": "^11.0.0",
     "compression": "^1.7.4",
