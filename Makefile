@@ -10,6 +10,7 @@ VERDACCIO_REGISTRY=http://localhost:4873
 VERDACCIO_STORAGE=~/.local/share/verdaccio/storage/$(APP)
 
 all: clean install
+	export NODE_ENV=production
 	cd ./app && $(YARN) build-only
 	cd ./server && $(YARN) build
 	cp -r ./app/dist ./server/build/public

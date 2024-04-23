@@ -9,7 +9,10 @@ WORKDIR /usr/src/server
 COPY ["./server/package.json", "./server/yarn.lock", "./"]
 RUN yarn
 COPY ./server ./
+ENV NODE_ENV=production
 RUN yarn build
+RUN rm -rf node_modules
+RUN yarn
 
 # Stage II [app-builder]
 FROM node:16-alpine as app-builder
@@ -20,6 +23,7 @@ COPY ["./app/package.json", "./app/yarn.lock", "./"]
 RUN yarn
 COPY ./app ./
 RUN sed -i "s/dynamodb/$PREFIX_ARG/g" .env.production
+ENV NODE_ENV=production
 RUN yarn build-only
 
 # Stage III [dynamodb-dashboard]
