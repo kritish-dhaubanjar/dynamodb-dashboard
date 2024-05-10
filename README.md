@@ -160,6 +160,7 @@ Thanks goes to these wonderful people:
     <td align="center"><a href="https://github.com/bipinmdr07"><img src="https://avatars.githubusercontent.com/u/16375412?v=4" width="100px;" alt=""/><br /><sub><b>Bipin Manandhar</b></sub></a><br /></td>
     <td align="center"><a href="https://github.com/maskeynihal"><img src="https://avatars.githubusercontent.com/u/26411488?v=4" width="100px;" alt=""/><br /><sub><b>Nihal Maskey</b></sub></a><br /></td>
     <td align="center"><a href="https://github.com/bhattaraib58"><img src="https://avatars.githubusercontent.com/u/15843175?v=4" width="100px;" alt=""/><br /><sub><b>Biplap Bhattarai</b></sub></a><br /></td>
+    <td align="center"><a href="https://github.com/JimDabell"><img src="https://avatars.githubusercontent.com/u/5674?v=4" width="100px;" alt=""/><br /><sub><b>Jim Dabell</b></sub></a><br /></td>
   </tr>
 </table>
 
