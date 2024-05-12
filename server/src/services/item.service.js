@@ -1,5 +1,7 @@
+import { chunk, pick } from "lodash";
+
 import AWS from "../config/aws";
-import { chunk, pick } from "../utils/object";
+import { deserialize, serialize } from "../utils/dynamodb";
 
 export default class ItemServiceProvider {
   constructor(_AWS_ = AWS) {
@@ -59,7 +61,7 @@ export default class ItemServiceProvider {
     }
 
     return {
-      Items: slice,
+      Items: slice.map((item) => serialize(item)),
       Count: slice.length,
       ScannedCount: scannedCount,
       LastEvaluatedKey: params.ExclusiveStartKey,
@@ -79,6 +81,8 @@ export default class ItemServiceProvider {
     };
 
     const response = await this.AWS.document.get(params);
+
+    response.Item = serialize(response.Item);
 
     return response;
   }
@@ -131,14 +135,20 @@ export default class ItemServiceProvider {
    * @returns
    */
   async update(tableName, schema, { ref, body }) {
+    const { Item } = await this.AWS.document.get({
+      Key: ref,
+      TableName: tableName,
+    });
+
     const params = {
       Key: ref,
-      Item: body,
       TableName: tableName,
+      Item: deserialize(Item, body),
       ConditionExpression: schema.map((key) => `attribute_exists(${key})`).join(" AND "),
     };
 
     const response = await this.AWS.document.put(params);
+
     return response;
   }
 
@@ -149,6 +159,11 @@ export default class ItemServiceProvider {
    * @returns
    */
   async transactUpdate(tableName, schema, { ref, body }) {
+    const { Item } = await this.AWS.document.get({
+      TableName: tableName,
+      Key: ref,
+    });
+
     const response = this.AWS.document.transactWrite({
       TransactItems: [
         {
@@ -159,7 +174,7 @@ export default class ItemServiceProvider {
         },
         {
           Put: {
-            Item: body,
+            Item: deserialize(Item, body),
             TableName: tableName,
             Key: pick(body, schema),
             ConditionExpression: schema.map((key) => `attribute_not_exists(${key})`).join(" AND "),
