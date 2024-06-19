@@ -355,13 +355,13 @@
     tslib "^2.6.2"
 
 "@aws-sdk/lib-dynamodb@^3.154.0":
-  version "3.596.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.596.0.tgz#bca9eca213129fc1027f9eb0b5e3301b4360af11"
-  integrity sha512-nTl1lsVRG1iQeY2dIyIWbPrvKepSpE/doL9ET3hAzjTClm81mpvYs3XIVtQsbcmjkgQ62GUrym6D1nk1LcIq+A==
+  version "3.598.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.598.0.tgz#bea95385e132ba3218fb1c726bca4485ef0440d8"
+  integrity sha512-EEt9FzYG+IqbR/5trMCqxVR5PsTxqgrT24Fa3wuh4dEBQGN5ZmB8PLNVaw8SuBZRftXUtkfasTzqED9RqF91PQ==
   dependencies:
-    "@aws-sdk/util-dynamodb" "3.596.0"
-    "@smithy/smithy-client" "^3.1.1"
-    "@smithy/types" "^3.0.0"
+    "@aws-sdk/util-dynamodb" "3.598.0"
+    "@smithy/smithy-client" "^3.1.2"
+    "@smithy/types" "^3.1.0"
     tslib "^2.6.2"
 
 "@aws-sdk/middleware-endpoint-discovery@3.598.0":
@@ -447,10 +447,10 @@
     "@smithy/types" "^3.1.0"
     tslib "^2.6.2"
 
-"@aws-sdk/util-dynamodb@3.596.0":
-  version "3.596.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/util-dynamodb/-/util-dynamodb-3.596.0.tgz#d3d4fce5d55c54e876ad8fdaf05a78d5f63edb9c"
-  integrity sha512-oLdB6rUo0gQmry97yvOZ3pJvgzNZLrTk29O2NvMRB5EtXStymfxC53ZeJShdI20jZgP/l8vRUtVf7tjWwjlcIQ==
+"@aws-sdk/util-dynamodb@3.598.0":
+  version "3.598.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/util-dynamodb/-/util-dynamodb-3.598.0.tgz#f1f78c60ae4c6029b023b83ac664beda89f34674"
+  integrity sha512-BYFlkZFpFN86nyfAGCh1MP+KBs9TNigbKztECs6wiWzj/rqPj0oALJghuTvJQRpYNF1iC+p4zwz2Wtx2LFEwLA==
   dependencies:
     tslib "^2.6.2"
 
@@ -1885,7 +1885,7 @@
     "@smithy/util-utf8" "^3.0.0"
     tslib "^2.6.2"
 
-"@smithy/smithy-client@^3.1.1", "@smithy/smithy-client@^3.1.2":
+"@smithy/smithy-client@^3.1.2":
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/@smithy/smithy-client/-/smithy-client-3.1.2.tgz#1c27ab4910bbfd6c0bc04ddd8412494e7a7daba7"
   integrity sha512-f3eQpczBOFUtdT/ptw2WpUKu1qH1K7xrssrSiHYtd9TuLXkvFqb88l9mz9FHeUVNSUxSnkW1anJnw6rLwUKzQQ==
@@ -1897,7 +1897,7 @@
     "@smithy/util-stream" "^3.0.2"
     tslib "^2.6.2"
 
-"@smithy/types@^3.0.0", "@smithy/types@^3.1.0":
+"@smithy/types@^3.1.0":
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/@smithy/types/-/types-3.1.0.tgz#e2eb2e2130026a8a0631b2605c17df1975aa99d6"
   integrity sha512-qi4SeCVOUPjhSSZrxxB/mB8DrmuSFUcJnD9KXjuP+7C3LV/KFV4kpuUSH3OHDZgQB9TEH/1sO/Fq/5HyaK9MPw==
