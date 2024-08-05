@@ -18,7 +18,7 @@
     "@codemirror/lint": "^6.4.1",
     "@codemirror/theme-one-dark": "^6.1.2",
     "@popperjs/core": "^2.11.8",
-    "axios": "^1.6.0",
+    "axios": "^1.7.3",
     "bootstrap": "5.2.3",
     "bootstrap-icons": "^1.11.2",
     "codemirror": "^6.0.1",
