@@ -28,7 +28,7 @@
     "vue-router": "^4.4.2"
   },
   "devDependencies": {
-    "@rushstack/eslint-patch": "^1.6.1",
+    "@rushstack/eslint-patch": "^1.10.4",
     "@types/bootstrap": "^5.2.6",
     "@types/lodash": "^4.14.201",
     "@types/node": "^20.9.0",
