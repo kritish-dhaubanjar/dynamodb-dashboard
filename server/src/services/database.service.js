@@ -37,7 +37,7 @@ export default class DatabaseServiceProvider {
           await Promise.allSettled([this.TARGET.TableService.destroy(tableName)]);
           await this.TARGET.TableService.create(constructSchema(Table));
 
-          const params = { Limit: 100 };
+          const params = {};
           const schema = Table.KeySchema.map(({ AttributeName }) => AttributeName);
 
           do {
