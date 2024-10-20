@@ -44,11 +44,15 @@ To configure, set the AWS environment variables in the terminal session before l
 
 **OR**
 
-```shell
-$ git clone https://github.com/kritish-dhaubanjar/dynamodb-dashboard.git
-$ cd dynamodb-dashboard
-$ make watch
-```
+1.  ```shell
+    git clone https://github.com/kritish-dhaubanjar/dynamodb-dashboard.git
+    ```
+2. ```shell
+   cd dynamodb-dashboard
+   ```
+3. ```shell
+   make watch
+   ```
 
 ## Docker
 
@@ -58,14 +62,16 @@ $ make watch
   <summary><h4>1. Build Docker image & run a container (from source & Dockerfile)</h4></summary>
   
   **a. Clone Repository**
-  ```shell
-  $ git clone https://github.com/kritish-dhaubanjar/dynamodb-dashboard.git
-  $ cd dynamodb-dashboard
-  ```
+  1. ```shell
+     git clone https://github.com/kritish-dhaubanjar/dynamodb-dashboard.git
+     ```
+  2. ```shell
+     cd dynamodb-dashboard
+     ```
   
   **b. Build Docker Image**
   ```shell
-  $ docker build . -t dynamodb-dashboard:local
+  docker build . -t dynamodb-dashboard:local
   ```
   
   *Build Arguments:*
@@ -75,7 +81,7 @@ $ make watch
   
   **c. Run Docker Container**
   ```shell
-  $ docker run -p 8080:4567 dynamodb-dashboard:local
+  docker run -p 8080:4567 dynamodb-dashboard:local
   ```
   
   *Environment Variables:*
@@ -90,10 +96,12 @@ $ make watch
 <details>
   <summary><h4>2. Run a container (<a href="https://hub.docker.com/r/kritishdhaubanjar/dynamodb-dashboard">from Docker Hub</a>)</h4></summary>
   
-  ```shell
-  $ docker pull kritishdhaubanjar/dynamodb-dashboard:latest
-  $ docker run -p 8080:4567 kritishdhaubanjar/dynamodb-dashboard:latest
-  ```
+  1. ```shell
+     docker pull kritishdhaubanjar/dynamodb-dashboard:latest
+     ```
+  2. ```shell
+     docker run -p 8080:4567 kritishdhaubanjar/dynamodb-dashboard:latest
+     ```
   
   *Environment Variables:*
   - `AWS_REGION` (default: `us-west-2`)
@@ -113,14 +121,16 @@ $ make watch
   *dynamoDB image (from docker hub) + dynamodb-dashboard image (built from source)*
   
   **a. Clone Repository**
-  ```shell
-  $ git clone https://github.com/kritish-dhaubanjar/dynamodb-dashboard.git
-  $ cd dynamodb-dashboard
-  ```
-  
+  1. ```shell
+     git clone https://github.com/kritish-dhaubanjar/dynamodb-dashboard.git
+     ```
+  2. ```shell
+     cd dynamodb-dashboard
+     ```
+    
   **b. Build & Run Docker Image**
   ```shell
-  $ docker-compose -f docker-compose.build.yml up
+  docker-compose -f docker-compose.build.yml up
   ```
 </details>
 <details>
@@ -129,7 +139,7 @@ $ make watch
   *dynamoDB image (from docker hub) + dynamodb-dashboard image (from docker hub)*
   
   ```shell
-  $ docker-compose up
+  docker-compose up
   ```
 </details>
 <details>
@@ -138,7 +148,7 @@ $ make watch
   *dynamoDB (host network) + dynamodb-dashboard image (from docker hub)*
   
   ```shell
-  $ docker-compose -f docker-compose.host.yml up
+  docker-compose -f docker-compose.host.yml up
   ```
 </details>
 
@@ -157,10 +167,10 @@ Thanks goes to these wonderful people:
 <table>
   <tr>
     <td align="center"><a href="https://github.com/sbimochan"><img src="https://avatars.githubusercontent.com/u/11685953?v=4" width="100px;" alt=""/><br /><sub><b>Bimochan Shrestha</b></sub></a><br /><a href="https://github.com/kritish-dhaubanjar/dynamodb-dashboard/commits?author=sbimochan" title="Commits">📖</a></td>
-    <td align="center"><a href="https://github.com/bipinmdr07"><img src="https://avatars.githubusercontent.com/u/16375412?v=4" width="100px;" alt=""/><br /><sub><b>Bipin Manandhar</b></sub></a><br /></td>
-    <td align="center"><a href="https://github.com/maskeynihal"><img src="https://avatars.githubusercontent.com/u/26411488?v=4" width="100px;" alt=""/><br /><sub><b>Nihal Maskey</b></sub></a><br /></td>
-    <td align="center"><a href="https://github.com/bhattaraib58"><img src="https://avatars.githubusercontent.com/u/15843175?v=4" width="100px;" alt=""/><br /><sub><b>Biplap Bhattarai</b></sub></a><br /></td>
-    <td align="center"><a href="https://github.com/JimDabell"><img src="https://avatars.githubusercontent.com/u/5674?v=4" width="100px;" alt=""/><br /><sub><b>Jim Dabell</b></sub></a><br /></td>
+    <td align="center"><a href="https://github.com/bipinmdr07"><img src="https://avatars.githubusercontent.com/u/16375412?v=4" width="100px;" alt=""/><br /><sub><b>Bipin Manandhar</b></sub></a><br /><a href="https://github.com/kritish-dhaubanjar/dynamodb-dashboard/commits?author=bipinmdr07" title="Commits">📖</a></td>
+    <td align="center"><a href="https://github.com/maskeynihal"><img src="https://avatars.githubusercontent.com/u/26411488?v=4" width="100px;" alt=""/><br /><sub><b>Nihal Maskey</b></sub></a><br /><a href="https://github.com/kritish-dhaubanjar/dynamodb-dashboard/commits?author=maskeynihal" title="Commits">📖</a></td>
+    <td align="center"><a href="https://github.com/bhattaraib58"><img src="https://avatars.githubusercontent.com/u/15843175?v=4" width="100px;" alt=""/><br /><sub><b>Biplap Bhattarai</b></sub></a><br /><a href="https://github.com/kritish-dhaubanjar/dynamodb-dashboard/commits?author=bhattaraib58" title="Commits">📖</a></td>
+    <td align="center"><a href="https://github.com/JimDabell"><img src="https://avatars.githubusercontent.com/u/5674?v=4" width="100px;" alt=""/><br /><sub><b>Jim Dabell</b></sub></a><br /><a href="https://github.com/kritish-dhaubanjar/dynamodb-dashboard/commits?author=JimDabell" title="Commits">📖</a></td>
   </tr>
 </table>
 
