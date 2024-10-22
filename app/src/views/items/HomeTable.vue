@@ -84,7 +84,18 @@
 
           <TableActions @action="(type) => (action = type)" />
 
-          <TablePaginate @next="fetchHandler" />
+          <div class="d-flex justify-content-between align-items-center px-4 py-3">
+            <div>
+              <div v-if="store.ui.state.table.selectedRows > 0">
+                <strong>{{ `${store.ui.state.table.selectedRows} ` }}</strong>
+
+                <span v-if="store.ui.state.table.selectedRows > 1">items</span>
+                <span v-else>item</span>
+                selected
+              </div>
+            </div>
+            <TablePaginate @next="fetchHandler" />
+          </div>
         </ItemList>
       </div>
     </div>
