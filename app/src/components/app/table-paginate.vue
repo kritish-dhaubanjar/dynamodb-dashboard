@@ -1,5 +1,5 @@
 <template>
-  <div class="px-4 py-3 d-flex align-items-center justify-content-end">
+  <div class="d-flex align-items-center justify-content-end">
     <div class="d-flex">
       <nav aria-label="Page navigation example">
         <ul class="pagination pagination-sm">

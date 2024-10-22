@@ -6,6 +6,7 @@ const state = reactive({
     page: 1,
     rows: [],
     headers: [] as string[],
+    selectedRows: 0,
   },
   isLoading: false,
 });
@@ -20,6 +21,9 @@ const setters = {
   },
   setPage: (page: number) => {
     state.table.page = page;
+  },
+  setSelectedRows: (selectedRows: number) => {
+    state.table.selectedRows = selectedRows;
   },
 };
 

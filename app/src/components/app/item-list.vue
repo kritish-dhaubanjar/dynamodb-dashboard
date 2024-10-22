@@ -1,6 +1,7 @@
 <template>
   <div class="sticky-top table-actions bg-white">
     <slot></slot>
+
     <div
       class="table-responsive mx-3 overflow-hidden position-sticky bg-white shadow-sm"
       ref="tableHeaderContainer"
@@ -312,6 +313,14 @@
         scrollbar.value.style.width = `${+table.value.scrollWidth}px`;
       });
     },
+  );
+
+  watch(
+    selectedItems,
+    (items) => {
+      store.ui.setters.setSelectedRows(items.length);
+    },
+    { immediate: true, deep: true },
   );
 
   /* RESIZE */
