@@ -621,7 +621,9 @@
   watch(
     () => parameters.keys.pk.value,
     async () => {
-      if (!errors.keys.pk.value.length) {
+      const hasError = Boolean(Object.keys(errors.keys.pk.value).length);
+
+      if (!hasError) {
         return;
       }
 
