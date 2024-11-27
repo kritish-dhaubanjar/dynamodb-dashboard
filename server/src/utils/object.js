@@ -1,3 +1,10 @@
+/**
+ * @param {object} object
+ * @param {object} source
+ * @param {Array<string>} keys
+ *
+ * @returns {boolean}
+ */
 export function isPartialMatchWith(object = {}, source = {}, keys = []) {
   let match = true;
 

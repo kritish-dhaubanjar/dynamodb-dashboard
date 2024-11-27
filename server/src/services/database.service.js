@@ -6,6 +6,10 @@ import ItemServiceProvider from "./item.service";
 import TableServiceProvider from "./table.service";
 
 export default class DatabaseServiceProvider {
+  /**
+   * @param {AWS} _AWS_
+   * @param {object} credentials
+   */
   constructor(_AWS_, credentials) {
     // TARGET
     this.TARGET = {
@@ -22,12 +26,22 @@ export default class DatabaseServiceProvider {
     this.SOURCE.TableService = new TableServiceProvider(this.SOURCE.AWS);
   }
 
+  /**
+   * @returns {Promise<Array<string>>}
+   */
   async all() {
     const tables = await this.SOURCE.TableService.all();
 
     return tables;
   }
 
+  /**
+   * @param {Array<string>} tableNames
+   * @param {string} uid
+   * @param {EventEmitter} eventEmitter
+   *
+   * @returns {Promise<Array<string>>}
+   */
   async restore(tableNames = [], uid, eventEmitter) {
     const tableChunks = chunk(tableNames, 5);
 

@@ -4,6 +4,9 @@ import AWS from "../config/aws";
 import { deserialize, serialize } from "../utils/dynamodb";
 
 export default class ItemServiceProvider {
+  /**
+   * @param {AWS} _AWS_
+   */
   constructor(_AWS_ = AWS) {
     this.AWS = _AWS_;
   }
@@ -12,10 +15,11 @@ export default class ItemServiceProvider {
   // https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Query.html
   /**
    *
-   * @param {*} operation
-   * @param {*} tableName
-   * @param {*} conditions
-   * @returns
+   * @param {"scan"|"query"} operation
+   * @param {string} tableName
+   * @param {object} conditions
+   *
+   * @returns {Promise<object>}
    */
   async fetch(operation, tableName, conditions) {
     const params = {
@@ -69,10 +73,10 @@ export default class ItemServiceProvider {
   }
 
   /**
+   * @param {string} tableName
+   * @param {object} keys
    *
-   * @param {*} tableName
-   * @param {*} keys
-   * @returns
+   * @returns {Promise<object>}
    */
   async get(tableName, keys) {
     const params = {
@@ -90,9 +94,10 @@ export default class ItemServiceProvider {
   /**
    * A single call to BatchWriteItem can transmit up to 16MB of data over the network, consisting of up to 25 item put or delete operations.
    *
-   * @param {*} tableName
-   * @param {*} items
-   * @returns
+   * @param {string} tableName
+   * @param {Array<object>} items
+   *
+   * @returns {Promise<Array<object>>}
    */
   async destroy(tableName, items) {
     const chunks = chunk(items, 25);
@@ -109,11 +114,11 @@ export default class ItemServiceProvider {
   }
 
   /**
+   * @param {string} tableName
+   * @param {object} schema
+   * @param {object} body
    *
-   * @param {*} tableName
-   * @param {*} schema
-   * @param {*} data
-   * @returns
+   * @returns {Promise<object>}
    */
   async create(tableName, schema, body) {
     const params = {
@@ -128,11 +133,11 @@ export default class ItemServiceProvider {
   }
 
   /**
+   * @param {string} tableName
+   * @param {object} schema
+   * @param {{ ref: object, body: object }} param
    *
-   * @param {*} tableName
-   * @param {*} schema
-   * @param {*} param
-   * @returns
+   * @returns {Promise<object>}
    */
   async update(tableName, schema, { ref, body }) {
     const { Item } = await this.AWS.document.get({
@@ -153,10 +158,11 @@ export default class ItemServiceProvider {
   }
 
   /**
-   * @param {*} tableName
-   * @param {*} schema
-   * @param {*} param
-   * @returns
+   * @param {string} tableName
+   * @param {object} schema
+   * @param {{ ref: object, body: object }} param
+   *
+   * @returns {Promise<object>}
    */
   async transactUpdate(tableName, schema, { ref, body }) {
     const { Item } = await this.AWS.document.get({

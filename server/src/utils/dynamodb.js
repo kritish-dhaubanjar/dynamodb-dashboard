@@ -2,6 +2,11 @@ import { get, set, pick } from "lodash";
 import { create as TableSchema } from "../schemas/table.joi";
 import { ProvisionedThroughput } from "../constants/dynamodb";
 
+/**
+ * @param {object} Table
+ *
+ * @returns {object}
+ */
 export function constructSchema(Table) {
   const keys = Object.keys(TableSchema.describe().keys);
   const schema = pick(Table, keys);
@@ -18,7 +23,15 @@ export function constructSchema(Table) {
   return schema;
 }
 
-// https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.NamingRulesDataTypes.html#HowItWorks.DataTypes
+/**
+ * https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.NamingRulesDataTypes.html#HowItWorks.DataTypes
+ *
+ * @param {object} Item
+ * @param {string} path
+ * @param {function} callback
+ *
+ * @returns {object}
+ */
 export function serialize(Item, path = "", callback = () => {}) {
   if (["string", "number", "boolean"].includes(typeof Item) || Item === null) {
     return Item;
@@ -60,6 +73,12 @@ export function serialize(Item, path = "", callback = () => {}) {
   return output;
 }
 
+/**
+ * @param {object} object
+ * @param {object} source
+ *
+ * @returns {object}
+ */
 export function deserialize(source = {}, object = {}) {
   const paths = [];
 

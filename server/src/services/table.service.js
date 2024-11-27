@@ -1,12 +1,20 @@
 import AWS from "../config/aws";
 import { OPERATIONS } from "../constants/dynamodb";
 import { constructSchema } from "../utils/dynamodb";
+import DatabaseServiceProvider from "./database.service";
 
 export default class TableServiceProvider {
+  /**
+   * @param {AWS} _AWS_
+   * @param {object} credentials
+   */
   constructor(_AWS_ = AWS) {
     this.AWS = _AWS_;
   }
 
+  /**
+   * @returns {Promise<Array<object>>}
+   */
   async all() {
     const tables = [];
     const params = {};
@@ -21,12 +29,22 @@ export default class TableServiceProvider {
     return tables;
   }
 
+  /**
+   * @param {object} params
+   *
+   * @returns {Promise<object>}
+   */
   async create(params) {
     const response = await this.AWS.dynamodb.createTable(params);
 
     return response;
   }
 
+  /**
+   * @param {object} params
+   *
+   * @returns {Promise<object>}
+   */
   async describe(tableName) {
     const response = await this.AWS.dynamodb.describeTable({
       TableName: tableName,
@@ -35,6 +53,11 @@ export default class TableServiceProvider {
     return response;
   }
 
+  /**
+   * @param {string} tableName
+   *
+   * @returns {Promise<object>}
+   */
   async destroy(tableName) {
     const response = await this.AWS.dynamodb.deleteTable({
       TableName: tableName,
@@ -43,6 +66,12 @@ export default class TableServiceProvider {
     return response;
   }
 
+  /**
+   * @param {string} tableName
+   * @param {object} params
+   *
+   * @returns {Promise<object>}
+   */
   async update(tableName, params) {
     const response = await this.AWS.dynamodb.updateTable({
       TableName: tableName,
@@ -52,6 +81,12 @@ export default class TableServiceProvider {
     return response;
   }
 
+  /**
+   * @param {string} tableName
+   * @param {DatabaseServiceProvider} DatabaseServiceProvider
+   *
+   * @returns {Promise}
+   */
   static async restore(tableName, DatabaseServiceProvider) {
     const { Table } = await DatabaseServiceProvider.SOURCE.TableService.describe(tableName);
 

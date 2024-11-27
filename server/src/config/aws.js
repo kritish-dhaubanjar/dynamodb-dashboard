@@ -3,11 +3,23 @@ import { DynamoDBDocument } from "@aws-sdk/lib-dynamodb";
 import config from "../constants/config";
 
 export class AWS {
+  /**
+   * @param {object} param
+   * @param {DynamoDB} param.dynamodb
+   */
   initializeFromDynamoDB({ dynamodb }) {
     this.dynamodb = dynamodb;
     this.document = DynamoDBDocument.from(this.dynamodb);
   }
 
+  /**
+   * @param {object} param
+   * @param {string} param.AWS_REGION
+   * @param {string} param.AWS_ENDPOINT
+   * @param {string} param.AWS_ACCESS_KEY_ID
+   * @param {string} param.AWS_SECRET_ACCESS_KEY
+   * @param {string|undefined} param.AWS_SESSION_TOKEN
+   */
   initialize({
     AWS_REGION = config.aws.region,
     AWS_ENDPOINT = config.aws.endpoint,
