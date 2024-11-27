@@ -19,7 +19,7 @@ export function constructSchema(Table) {
 }
 
 // https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.NamingRulesDataTypes.html#HowItWorks.DataTypes
-export function serialize(Item, path = "", callback = () => { }) {
+export function serialize(Item, path = "", callback = () => {}) {
   if (["string", "number", "boolean"].includes(typeof Item) || Item === null) {
     return Item;
   }
