@@ -1,3 +1,5 @@
+import { chunk } from "lodash";
+
 import { AWS } from "../config/aws";
 import { EVENTS } from "../constants/event";
 import { OPERATIONS } from "../constants/dynamodb";
@@ -29,38 +31,42 @@ export default class DatabaseServiceProvider {
     return tables;
   }
 
-  async restore(tableNames, uid, eventEmitter) {
-    await Promise.all(
-      tableNames.map(async (tableName) => {
-        try {
-          const { Table } = await this.SOURCE.TableService.describe(tableName);
-          await Promise.allSettled([this.TARGET.TableService.destroy(tableName)]);
-          await this.TARGET.TableService.create(constructSchema(Table));
+  async restore(tableNames = [], uid, eventEmitter) {
+    const tableChunks = chunk(tableNames, 5)
 
-          const params = { Limit: 100 };
-          const schema = Table.KeySchema.map(({ AttributeName }) => AttributeName);
+    for (const chunk of tableChunks) {
+      await Promise.all(
+        chunk.map(async (tableName) => {
+          try {
+            const { Table } = await this.SOURCE.TableService.describe(tableName);
+            await Promise.allSettled([this.TARGET.TableService.destroy(tableName)]);
+            await this.TARGET.TableService.create(constructSchema(Table));
 
-          do {
-            // eslint-disable-next-line no-await-in-loop
-            const response = await this.SOURCE.ItemService.fetch(OPERATIONS.SCAN, tableName, params);
+            const params = { Limit: 100 };
+            const schema = Table.KeySchema.map(({ AttributeName }) => AttributeName);
 
-            const { Items = [], LastEvaluatedKey = null } = response;
-            // eslint-disable-next-line no-await-in-loop
-            await Promise.all(Items.map((item) => this.TARGET.ItemService.create(tableName, schema, item)));
+            do {
+              // eslint-disable-next-line no-await-in-loop
+              const response = await this.SOURCE.ItemService.fetch(OPERATIONS.SCAN, tableName, params);
 
-            params.ExclusiveStartKey = LastEvaluatedKey;
-          } while (params.ExclusiveStartKey);
+              const { Items = [], LastEvaluatedKey = null } = response;
+              // eslint-disable-next-line no-await-in-loop
+              await Promise.all(Items.map((item) => this.TARGET.ItemService.create(tableName, schema, item)));
 
-          // SUCCESS
-          eventEmitter.emit(EVENTS.SUCCESS, uid, { tableName });
-        } catch (error) {
-          // ERROR
-          eventEmitter.emit(EVENTS.FAILED, uid, { tableName, error });
+              params.ExclusiveStartKey = LastEvaluatedKey;
+            } while (params.ExclusiveStartKey);
 
-          console.error(error);
-        }
-      }),
-    );
+            // SUCCESS
+            eventEmitter.emit(EVENTS.SUCCESS, uid, { tableName });
+          } catch (error) {
+            // ERROR
+            eventEmitter.emit(EVENTS.FAILED, uid, { tableName, error });
+
+            console.error(error);
+          }
+        }),
+      )
+    }
 
     return tableNames;
   }
