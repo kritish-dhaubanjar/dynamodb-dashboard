@@ -4,6 +4,7 @@ import { EVENTS } from "../constants/event";
 
 import ItemServiceProvider from "./item.service";
 import TableServiceProvider from "./table.service";
+import { QUEUE_SIZE } from "../constants/dynamodb";
 
 export default class DatabaseServiceProvider {
   constructor(_AWS_, credentials) {
@@ -29,21 +30,42 @@ export default class DatabaseServiceProvider {
   }
 
   async restore(tableNames = [], uid, eventEmitter) {
-    const tableChunks = chunk(tableNames, 5);
+    const cloneTableNames = [...tableNames];
+    const queuedTables = cloneTableNames.splice(0, QUEUE_SIZE)
+    let activeTableCount = queuedTables.length
 
-    for (const chunk of tableChunks) {
-      await Promise.all(
-        chunk.map(async (tableName) => {
-          try {
-            await TableServiceProvider.restore(tableName, this);
-            eventEmitter.emit(EVENTS.SUCCESS, uid, { tableName });
-          } catch (error) {
-            eventEmitter.emit(EVENTS.FAILED, uid, { tableName, error });
-            console.error(error);
-          }
-        }),
-      );
+    const restoreTable = async (tableName) => {
+      try {
+        await TableServiceProvider.restore(tableName, this);
+        eventEmitter.emit(EVENTS.SUCCESS, uid, { tableName });
+      } catch (error) {
+        eventEmitter.emit(EVENTS.FAILED, uid, { tableName, error });
+        console.error(error);
+      } finally {
+        eventEmitter.emit(EVENTS.RESTORE_TABLE);
+      }
     }
+
+    eventEmitter.on(EVENTS.RESTORE_TABLE, async () => {
+      if (!cloneTableNames.length) {
+        activeTableCount -= 1
+
+        if (activeTableCount === 0) {
+          eventEmitter.emit(EVENTS.END, uid);
+        }
+
+        return;
+      }
+
+      const tableName = cloneTableNames.shift();
+
+      restoreTable(tableName)
+    })
+
+
+    queuedTables.map(async (tableName) => {
+      await restoreTable(tableName)
+    })
 
     return tableNames;
   }
