@@ -156,6 +156,7 @@ To configure, set the AWS environment variables in the terminal session before l
 To configure Nginx to serve dynamodb-dashboard with (EventSource (Server-Sent Events or SSE) event stream), you need to ensure Nginx is correctly set up to handle long-lived HTTP connections and provide appropriate headers. Here's a basic example configuration:
 ```
 server
+server
 {
     listen 80;
     listen [::]:80;
@@ -166,16 +167,21 @@ server
     proxy_send_timeout 300;
     proxy_connect_timeout 300;
 
-    proxy_buffering off;
-    proxy_cache off;
-    chunked_transfer_encoding off;
-
-    add_header Content-Type text/event-stream;
-    add_header Cache-Control no-cache;
-    add_header Connection keep-alive;
-
     location /
     {
+        proxy_pass http://localhost:4567;
+    }
+
+    location /dynamodb/api/database/stream/
+    {
+        proxy_buffering off;
+        proxy_cache off;
+        chunked_transfer_encoding off;
+
+        add_header Content-Type text/event-stream;
+        add_header Cache-Control no-cache;
+        add_header Connection keep-alive;
+
         proxy_pass http://localhost:4567;
     }
 }
