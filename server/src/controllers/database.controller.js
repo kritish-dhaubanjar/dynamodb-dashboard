@@ -45,8 +45,6 @@ export async function restore(req, res, next) {
     const DatabaseService = new DatabaseServiceProvider(AWS, credentials);
     const data = await DatabaseService.restore(tableNames, uid, eventEmitter);
 
-    eventEmitter.emit(EVENTS.END, uid);
-
     res.json(data);
   } catch (error) {
     next(error);

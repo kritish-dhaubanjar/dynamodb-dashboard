@@ -492,8 +492,6 @@
       toast.message = error.response?.data?.message ?? error.message;
       const toastEl = new bootstrap.Toast(toastRef.value, { delay: 1000 });
       setTimeout(() => toastEl.show(), 0);
-    } finally {
-      progress.queue = [];
     }
   };
 
