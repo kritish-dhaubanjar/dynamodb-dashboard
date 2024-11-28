@@ -154,8 +154,7 @@ To configure, set the AWS environment variables in the terminal session before l
 
 ## NGINX Config
 To configure Nginx to serve dynamodb-dashboard with (EventSource (Server-Sent Events or SSE) event stream), you need to ensure Nginx is correctly set up to handle long-lived HTTP connections and provide appropriate headers. Here's a basic example configuration:
-```
-server
+```nginx
 server
 {
     listen 80;
