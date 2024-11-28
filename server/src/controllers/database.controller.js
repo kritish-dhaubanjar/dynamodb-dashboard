@@ -32,6 +32,7 @@ export async function stream(req, res, _next) {
     res.write(`data: ${JSON.stringify({ ...data, event })}\n\n`);
   };
 
+  eventEmitter.on(EVENTS.ACTIVE, (id, payload) => emit(id, EVENTS.ACTIVE, payload));
   eventEmitter.on(EVENTS.SUCCESS, (id, payload) => emit(id, EVENTS.SUCCESS, payload));
   eventEmitter.on(EVENTS.FAILED, (id, payload) => emit(id, EVENTS.FAILED, payload));
   eventEmitter.on(EVENTS.END, (id) => emit(id, EVENTS.END));

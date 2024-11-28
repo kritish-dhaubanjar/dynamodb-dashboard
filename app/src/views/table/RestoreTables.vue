@@ -309,10 +309,15 @@
                               <td class="border-end-0">
                                 {{ table }}
                                 <div
-                                  v-if="
-                                    progress.queue.includes(table) &&
-                                    ![...progress.done, ...progress.failed].includes(table)
-                                  "
+                                  v-if="progress.restoreStatus.get(table) === STATUS.PENDING"
+                                  class="spinner-grow text-warning spinner-grow-sm float-end"
+                                  role="status"
+                                >
+                                  <span class="visually-hidden">Loading...</span>
+                                </div>
+
+                                <div
+                                  v-if="progress.restoreStatus.get(table) === STATUS.ACTIVE"
                                   class="spinner-border spinner-border-sm float-end"
                                   role="status"
                                 >
@@ -321,11 +326,11 @@
 
                                 <i
                                   class="bi bi-check-circle float-end text-success"
-                                  v-if="progress.done.includes(table)"
+                                  v-if="progress.restoreStatus.get(table) === STATUS.DONE"
                                 ></i>
                                 <i
                                   class="bi bi-exclamation-circle float-end text-danger"
-                                  v-if="progress.failed.includes(table)"
+                                  v-if="progress.restoreStatus.get(table) === STATUS.FAILED"
                                 ></i>
                               </td>
                             </tr>
@@ -399,6 +404,8 @@
   import * as bootstrap from "bootstrap";
   import { useRouter } from "vue-router";
   import ROUTES from "@/constants/routes";
+  import { EVENTS } from "@/constants/event";
+  import { STATUS } from "@/constants/status";
   import { onMounted, computed, inject, reactive, ref } from "vue";
   import { generateString, interpolate } from "@/utils/string";
   import { getRemoteTables, restoreTables } from "@/services/table";
@@ -415,11 +422,7 @@
   const remoteTables = ref([]);
   const localTables = ref([]);
 
-  const progress = reactive({
-    queue: [],
-    done: [],
-    failed: [],
-  });
+  const progress = reactive({ restoreStatus: new Map() });
 
   const credentials = reactive({
     AWS_REGION: "",
@@ -438,9 +441,7 @@
   });
 
   const explore = async () => {
-    progress.done = [];
-    progress.queue = [];
-    progress.failed = [];
+    progress.restoreStatus = new Map();
 
     try {
       remoteTables.value = await getRemoteTables({ credentials });
@@ -456,28 +457,29 @@
   const sseOnMessageHandler = (sse, { data }) => {
     const { event, tableName, error } = JSON.parse(data);
 
-    if (event === "END") {
+    if (event === EVENTS.END) {
       return sse.close();
+    } else if (event === EVENTS.ACTIVE) {
+      progress.restoreStatus.set(tableName, STATUS.ACTIVE);
+      return;
     }
 
-    if (error) {
-      progress.failed.push(tableName);
-      progress.queue = progress.queue.filter((e) => e !== tableName);
+    if (event === EVENTS.FAILED) {
+      progress.restoreStatus.set(tableName, STATUS.FAILED);
 
       toast.className = "text-bg-danger";
       toast.message = error.response?.data?.message ?? error.message;
       const toastEl = new bootstrap.Toast(toastRef.value, { delay: 1000 });
       setTimeout(() => toastEl.show(), 0);
     } else {
-      progress.done.push(tableName);
-      progress.queue = progress.queue.filter((e) => e !== tableName);
+      progress.restoreStatus.set(tableName, STATUS.DONE);
     }
   };
 
   const restore = async () => {
-    progress.failed = [];
-    progress.done = [];
-    progress.queue = localTables.value;
+    for (const table of Object.values(localTables.value)) {
+      progress.restoreStatus.set(table, STATUS.PENDING);
+    }
 
     const uid = generateString(32);
     const eventSourceURL = interpolate(`${axios.defaults.baseURL}${ROUTES.DATABASE.STREAM}`, { uid });
