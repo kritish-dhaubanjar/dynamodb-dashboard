@@ -1,5 +1,6 @@
 export const EVENTS = {
   END: "END",
+  ACTIVE: "ACTIVE",
   FAILED: "FAILED",
   SUCCESS: "SUCCESS",
   RESTORE_TABLE: "RESTORE_TABLE",

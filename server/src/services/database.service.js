@@ -4,7 +4,7 @@ import { EVENTS } from "../constants/event";
 
 import ItemServiceProvider from "./item.service";
 import TableServiceProvider from "./table.service";
-import { QUEUE_SIZE } from "../constants/dynamodb";
+import { POOL_SIZE } from "../constants/dynamodb";
 
 export default class DatabaseServiceProvider {
   /**
@@ -45,10 +45,12 @@ export default class DatabaseServiceProvider {
    */
   async restore(tableNames = [], uid, eventEmitter) {
     const cloneTableNames = [...tableNames];
-    const queuedTables = cloneTableNames.splice(0, QUEUE_SIZE)
+    const queuedTables = cloneTableNames.splice(0, POOL_SIZE)
     let activeTableCount = queuedTables.length
 
     const restoreTable = async (tableName) => {
+      eventEmitter.emit(EVENTS.ACTIVE, uid, { tableName })
+
       try {
         await TableServiceProvider.restore(tableName, this);
         eventEmitter.emit(EVENTS.SUCCESS, uid, { tableName });
