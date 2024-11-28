@@ -309,7 +309,7 @@
                               <td class="border-end-0">
                                 {{ table }}
                                 <div
-                                  v-if="progress.restoreStatus.get(table) === STATUS.PENDING"
+                                  v-if="progress.get(table) === false"
                                   class="spinner-grow text-warning spinner-grow-sm float-end"
                                   role="status"
                                 >
@@ -317,7 +317,7 @@
                                 </div>
 
                                 <div
-                                  v-if="progress.restoreStatus.get(table) === STATUS.ACTIVE"
+                                  v-if="progress.get(table) === EVENTS.BEGIN"
                                   class="spinner-border spinner-border-sm float-end"
                                   role="status"
                                 >
@@ -326,11 +326,11 @@
 
                                 <i
                                   class="bi bi-check-circle float-end text-success"
-                                  v-if="progress.restoreStatus.get(table) === STATUS.DONE"
+                                  v-if="progress.get(table) === EVENTS.SUCCESS"
                                 ></i>
                                 <i
                                   class="bi bi-exclamation-circle float-end text-danger"
-                                  v-if="progress.restoreStatus.get(table) === STATUS.FAILED"
+                                  v-if="progress.get(table) === EVENTS.FAILURE"
                                 ></i>
                               </td>
                             </tr>
@@ -405,7 +405,6 @@
   import { useRouter } from "vue-router";
   import ROUTES from "@/constants/routes";
   import { EVENTS } from "@/constants/event";
-  import { STATUS } from "@/constants/status";
   import { onMounted, computed, inject, reactive, ref } from "vue";
   import { generateString, interpolate } from "@/utils/string";
   import { getRemoteTables, restoreTables } from "@/services/table";
@@ -422,7 +421,7 @@
   const remoteTables = ref([]);
   const localTables = ref([]);
 
-  const progress = reactive({ restoreStatus: new Map() });
+  const progress = ref(new Map());
 
   const credentials = reactive({
     AWS_REGION: "",
@@ -441,7 +440,7 @@
   });
 
   const explore = async () => {
-    progress.restoreStatus = new Map();
+    progress.value = new Map();
 
     try {
       remoteTables.value = await getRemoteTables({ credentials });
@@ -455,46 +454,60 @@
   };
 
   const sseOnMessageHandler = (sse, { data }) => {
-    const { event, tableName, error } = JSON.parse(data);
+    const payload = JSON.parse(data);
 
-    if (event === EVENTS.END) {
+    const { event } = payload;
+
+    if(event === EVENTS.ACK){
+      const { uid } = payload;
+
+      (async () => {
+        try {
+          await restoreTables(uid, { credentials, tableNames: localTables.value });
+        } catch (error) {
+          toast.className = "text-bg-danger";
+          toast.message = error.response?.data?.message ?? error.message;
+          const toastEl = new bootstrap.Toast(toastRef.value, { delay: 1000 });
+          setTimeout(() => toastEl.show(), 0);
+        }
+      })();
+    }
+
+    if (event === EVENTS.CLOSE) {
       return sse.close();
-    } else if (event === EVENTS.ACTIVE) {
-      progress.restoreStatus.set(tableName, STATUS.ACTIVE);
+    }
+
+    if (event === EVENTS.BEGIN) {
+      const { tableName } = payload;
+      progress.value.set(tableName, EVENTS.BEGIN);
       return;
     }
 
-    if (event === EVENTS.FAILED) {
-      progress.restoreStatus.set(tableName, STATUS.FAILED);
+    if (event === EVENTS.FAILURE) {
+      const { tableName, error } = payload;
+      progress.value.set(tableName, EVENTS.FAILURE);
 
       toast.className = "text-bg-danger";
       toast.message = error.response?.data?.message ?? error.message;
       const toastEl = new bootstrap.Toast(toastRef.value, { delay: 1000 });
       setTimeout(() => toastEl.show(), 0);
-    } else {
-      progress.restoreStatus.set(tableName, STATUS.DONE);
+      return;
+    }
+
+    if (event === EVENTS.SUCCESS) {
+      const { tableName } = payload;
+      progress.value.set(tableName, EVENTS.SUCCESS);
     }
   };
 
   const restore = async () => {
-    for (const table of Object.values(localTables.value)) {
-      progress.restoreStatus.set(table, STATUS.PENDING);
-    }
+    Object.values(localTables.value).map((tableName) => progress.value.set(tableName, false));
 
     const uid = generateString(32);
     const eventSourceURL = interpolate(`${axios.defaults.baseURL}${ROUTES.DATABASE.STREAM}`, { uid });
 
     const sse = new EventSource(eventSourceURL);
     sse.onmessage = (payload) => sseOnMessageHandler(sse, payload);
-
-    try {
-      await restoreTables(uid, { credentials, tableNames: localTables.value });
-    } catch (error) {
-      toast.className = "text-bg-danger";
-      toast.message = error.response?.data?.message ?? error.message;
-      const toastEl = new bootstrap.Toast(toastRef.value, { delay: 1000 });
-      setTimeout(() => toastEl.show(), 0);
-    }
   };
 
   const toggle = (table) => {

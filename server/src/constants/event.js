@@ -1,7 +1,10 @@
 export const EVENTS = {
-  END: "END",
-  ACTIVE: "ACTIVE",
-  FAILED: "FAILED",
+  BEGIN: "BEGIN",
   SUCCESS: "SUCCESS",
-  RESTORE_TABLE: "RESTORE_TABLE",
+  FAILURE: "FAILURE",
+  END: "END",
+  CLOSE: "CLOSE",
+  ACK: "ACK",
 };
+
+export const POOL_SIZE = 7;

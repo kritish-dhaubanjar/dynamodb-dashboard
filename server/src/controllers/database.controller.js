@@ -20,22 +20,26 @@ export async function index(req, res, next) {
 export async function stream(req, res, _next) {
   const { uid } = req.params;
 
-  res.writeHead(200, {
-    Connection: "keep-alive",
-    "Content-Type": "text/event-stream",
-    "Cache-Control": "no-cache, no-transform",
-  });
-
   const emit = (id, event, data = {}) => {
     if (id !== uid) return;
 
     res.write(`data: ${JSON.stringify({ ...data, event })}\n\n`);
   };
 
-  eventEmitter.on(EVENTS.ACTIVE, (id, payload) => emit(id, EVENTS.ACTIVE, payload));
+  eventEmitter.on(EVENTS.BEGIN, (id, payload) => emit(id, EVENTS.BEGIN, payload));
   eventEmitter.on(EVENTS.SUCCESS, (id, payload) => emit(id, EVENTS.SUCCESS, payload));
-  eventEmitter.on(EVENTS.FAILED, (id, payload) => emit(id, EVENTS.FAILED, payload));
-  eventEmitter.on(EVENTS.END, (id) => emit(id, EVENTS.END));
+  eventEmitter.on(EVENTS.FAILURE, (id, payload) => emit(id, EVENTS.FAILURE, payload));
+  eventEmitter.on(EVENTS.END, (id, payload) => emit(id, EVENTS.END, payload));
+
+  eventEmitter.on(EVENTS.CLOSE, (id) => emit(id, EVENTS.CLOSE));
+
+  res.writeHead(200, {
+    Connection: "keep-alive",
+    "Content-Type": "text/event-stream",
+    "Cache-Control": "no-cache, no-transform",
+  });
+
+  res.write(`data: ${JSON.stringify({ uid, event: EVENTS.ACK })}\n\n`);
 }
 
 export async function restore(req, res, next) {
@@ -44,7 +48,7 @@ export async function restore(req, res, next) {
     const { credentials, tableNames } = req.body;
 
     const DatabaseService = new DatabaseServiceProvider(AWS, credentials);
-    const data = await DatabaseService.restore(tableNames, uid, eventEmitter);
+    const data = DatabaseService.restore(tableNames, uid, eventEmitter);
 
     res.json(data);
   } catch (error) {

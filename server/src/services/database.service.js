@@ -41,47 +41,39 @@ export default class DatabaseServiceProvider {
    * @param {string} uid
    * @param {EventEmitter} eventEmitter
    *
-   * @returns {Promise<Array<string>>}
+   * @returns {Array<string>}
    */
-  async restore(tableNames = [], uid, eventEmitter) {
-    const cloneTableNames = [...tableNames];
-    const queuedTables = cloneTableNames.splice(0, POOL_SIZE)
-    let activeTableCount = queuedTables.length
+  restore(tableNames = [], uid, eventEmitter) {
+    const queue = [...tableNames];
+    const jobs = queue.splice(0, POOL_SIZE);
+    let counter = jobs.length;
 
-    const restoreTable = async (tableName) => {
-      eventEmitter.emit(EVENTS.ACTIVE, uid, { tableName })
-
-      try {
-        await TableServiceProvider.restore(tableName, this);
-        eventEmitter.emit(EVENTS.SUCCESS, uid, { tableName });
-      } catch (error) {
-        eventEmitter.emit(EVENTS.FAILED, uid, { tableName, error });
-        console.error(error);
-      } finally {
-        eventEmitter.emit(EVENTS.RESTORE_TABLE);
-      }
-    }
-
-    eventEmitter.on(EVENTS.RESTORE_TABLE, async () => {
-      if (!cloneTableNames.length) {
-        activeTableCount -= 1
-
-        if (activeTableCount === 0) {
-          eventEmitter.emit(EVENTS.END, uid);
-        }
-
+    eventEmitter.on(EVENTS.END, () => {
+      if (queue.length) {
+        const job = queue.shift();
+        run(job);
         return;
       }
 
-      const tableName = cloneTableNames.shift();
+      if (counter-- === 0) {
+        eventEmitter.emit(EVENTS.CLOSE, uid);
+      }
+    });
 
-      restoreTable(tableName)
-    })
+    const run = async (tableName) => {
+      try {
+        eventEmitter.emit(EVENTS.BEGIN, uid, { tableName });
+        await TableServiceProvider.restore(tableName, this);
+        eventEmitter.emit(EVENTS.SUCCESS, uid, { tableName });
+      } catch (error) {
+        eventEmitter.emit(EVENTS.FAILURE, uid, { tableName, error });
+        console.error(error);
+      } finally {
+        eventEmitter.emit(EVENTS.END, uid, { tableName });
+      }
+    };
 
-
-    queuedTables.map(async (tableName) => {
-      await restoreTable(tableName)
-    })
+    jobs.map(run);
 
     return tableNames;
   }
