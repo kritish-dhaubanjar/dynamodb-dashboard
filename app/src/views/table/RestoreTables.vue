@@ -507,6 +507,8 @@
     const eventSourceURL = interpolate(`${axios.defaults.baseURL}${ROUTES.DATABASE.STREAM}`, { uid });
 
     const sse = new EventSource(eventSourceURL);
+
+    sse.onerror = sse.close;
     sse.onmessage = (payload) => sseOnMessageHandler(sse, payload);
   };
 

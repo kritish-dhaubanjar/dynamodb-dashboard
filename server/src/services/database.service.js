@@ -55,7 +55,7 @@ export default class DatabaseServiceProvider {
         return;
       }
 
-      if (counter-- === 0) {
+      if (--counter === 0) {
         eventEmitter.emit(EVENTS.CLOSE, uid);
       }
     });
