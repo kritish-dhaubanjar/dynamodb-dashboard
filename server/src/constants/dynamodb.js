@@ -8,4 +8,4 @@ export const ProvisionedThroughput = {
   WriteCapacityUnits: 1,
 };
 
-export const QUEUE_SIZE = 7; // 'cause 7 is a lucky number ;) (and it's a prime number)
+export const POOL_SIZE = 7; // 'cause 7 is a lucky number ;) (and it's a prime number)
