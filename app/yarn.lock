@@ -310,10 +310,10 @@
     "@codemirror/view" "^6.17.0"
     "@lezer/common" "^1.0.0"
 
-"@codemirror/commands@^6.0.0", "@codemirror/commands@^6.6.0":
-  version "6.6.0"
-  resolved "https://registry.yarnpkg.com/@codemirror/commands/-/commands-6.6.0.tgz#d308f143fe1b8896ca25fdb855f66acdaf019dd4"
-  integrity sha512-qnY+b7j1UNcTS31Eenuc/5YJB6gQOzkUoNmJQc0rznwqSRpeaWWpjkWy2C/MPTcePpsKJEM26hXrOXl1+nceXg==
+"@codemirror/commands@^6.0.0", "@codemirror/commands@^6.7.1":
+  version "6.7.1"
+  resolved "https://registry.yarnpkg.com/@codemirror/commands/-/commands-6.7.1.tgz#04561e95bc0779eaa49efd63e916c4efb3bbf6d6"
+  integrity sha512-llTrboQYw5H4THfhN4U3qCnSZ1SOJ60ohhz+SzU0ADGtwlc533DtklQP0vSFaQuCPDn3BPpOd1GbbnUtwNjsrw==
   dependencies:
     "@codemirror/language" "^6.0.0"
     "@codemirror/state" "^6.4.0"
