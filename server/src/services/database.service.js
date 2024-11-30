@@ -1,4 +1,3 @@
-import { chunk } from "lodash";
 import { AWS } from "../config/aws";
 import { EVENTS } from "../constants/event";
 
