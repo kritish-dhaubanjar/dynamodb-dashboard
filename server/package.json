@@ -1,6 +1,6 @@
 {
   "name": "dynamodb-dashboard",
-  "version": "1.10.2",
+  "version": "1.11.0",
   "description": "GUI Dashboard for local or remote DynamoDB",
   "main": "index.js",
   "bin": {
