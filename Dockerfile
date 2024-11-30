@@ -3,7 +3,7 @@ ARG HOST_ARG=0.0.0.0
 ARG PREFIX_ARG=dynamodb
 
 # Stage I [server-builder]
-FROM node:22-alpine as server-builder
+FROM node:22-alpine AS server-builder
 
 WORKDIR /usr/src/server
 COPY ["./server/package.json", "./server/yarn.lock", "./"]
@@ -15,7 +15,7 @@ RUN rm -rf node_modules
 RUN yarn
 
 # Stage II [app-builder]
-FROM node:22-alpine as app-builder
+FROM node:22-alpine AS app-builder
 
 ARG PREFIX_ARG
 WORKDIR /usr/src/app
