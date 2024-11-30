@@ -10,7 +10,6 @@ program.name("dynamodb-dashboard").description("GUI Dashboard for local or remot
 program
   .command("start")
   .option("-d, --debug", "show log output for running app", false)
-  .option("-o, --open", "open http://<host>:<port>/<prefix>", false)
   .option("-p, --port <port>", "port to run app", 4567)
   .option("-h, --host <host>", "host to run app", "0.0.0.0")
   .option("--prefix <prefix>", "prefix of route URIs (depends on 'app' build arg)", "dynamodb")

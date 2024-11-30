@@ -23,7 +23,6 @@ dynamodb-dashboard start
 
 ##### Options
 - `-d, --debug` : show log output of running application (default: false)
-- `-o, --open` : open http://\<host>:\<port>/dynamodb (default: false)
 - `-p, --port <port>` : port to run app (default: 4567)
 - `-h, --host <host>` : host to run app (default: 127.0.0.1)
 

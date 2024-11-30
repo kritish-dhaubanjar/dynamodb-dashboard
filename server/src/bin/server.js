@@ -1,5 +1,4 @@
 import "dotenv/config";
-import open from "open";
 import path from "path";
 import morgan from "morgan";
 import express from "express";
@@ -10,7 +9,7 @@ import errorHandler from "../errors/handler";
 
 AWS.initialize();
 
-export default ({ port, host, debug, open: _open, prefix }) => {
+export default ({ port, host, debug, prefix }) => {
   const root = `http://${host}:${port}`;
   const URL = `${root}/${prefix}`;
 
@@ -46,9 +45,5 @@ export default ({ port, host, debug, open: _open, prefix }) => {
 
   app.listen(port, host, () => {
     console.info(`dynamodb-dashboard started at: ${URL}\n`);
-
-    if (_open) {
-      open(URL);
-    }
   });
 };
