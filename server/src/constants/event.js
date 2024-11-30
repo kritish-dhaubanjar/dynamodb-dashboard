@@ -7,5 +7,3 @@ export const EVENTS = {
   ACK: "ACK",
   PROGRESS: "PROGRESS",
 };
-
-export const POOL_SIZE = 7;
