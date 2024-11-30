@@ -5,4 +5,5 @@ export const EVENTS = {
   END: "END",
   CLOSE: "CLOSE",
   ACK: "ACK",
+  PROGRESS: "PROGRESS",
 };

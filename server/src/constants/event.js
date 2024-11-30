@@ -5,6 +5,7 @@ export const EVENTS = {
   END: "END",
   CLOSE: "CLOSE",
   ACK: "ACK",
+  PROGRESS: "PROGRESS",
 };
 
 export const POOL_SIZE = 7;

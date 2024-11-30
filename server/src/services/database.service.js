@@ -62,7 +62,13 @@ export default class DatabaseServiceProvider {
     const run = async (tableName) => {
       try {
         eventEmitter.emit(EVENTS.BEGIN, uid, { tableName });
-        await TableServiceProvider.restore(tableName, this);
+
+        const restore = TableServiceProvider.restore(tableName, this);
+
+        for await (const [ItemCount, TotalItemCount] of restore) {
+          eventEmitter.emit(EVENTS.PROGRESS, uid, { tableName, data: [ItemCount, TotalItemCount] });
+        }
+
         eventEmitter.emit(EVENTS.SUCCESS, uid, { tableName });
       } catch (error) {
         eventEmitter.emit(EVENTS.FAILURE, uid, { tableName, error });
@@ -75,5 +81,21 @@ export default class DatabaseServiceProvider {
     jobs.map(run);
 
     return tableNames;
+  }
+
+  /*
+   * @param {string} tableName
+   * @return {Promise<Array<number>>}
+   */
+  async compare(tableName) {
+    const [{ Table: TargetTable }, { Table: SourceTable }] = await Promise.all([
+      this.TARGET.TableService.describe(tableName),
+      this.SOURCE.TableService.describe(tableName),
+    ]);
+
+    const ItemCount = TargetTable.ItemCount;
+    const TotalItemCount = SourceTable.ItemCount;
+
+    return [ItemCount, TotalItemCount];
   }
 }

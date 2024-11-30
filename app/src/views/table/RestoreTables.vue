@@ -307,31 +307,50 @@
                                 />
                               </th>
                               <td class="border-end-0">
-                                {{ table }}
-                                <div
-                                  v-if="progress.get(table) === false"
-                                  class="spinner-grow text-warning spinner-grow-sm float-end"
-                                  role="status"
-                                >
-                                  <span class="visually-hidden">Loading...</span>
-                                </div>
+                                <div class="d-flex align-items-center">
+                                  <div class="w-100">
+                                    {{ table }}
 
-                                <div
-                                  v-if="progress.get(table) === EVENTS.BEGIN"
-                                  class="spinner-border spinner-border-sm float-end"
-                                  role="status"
-                                >
-                                  <span class="visually-hidden">Loading...</span>
-                                </div>
+                                    <div
+                                      v-if="
+                                        progress.get(table) === EVENTS.BEGIN || Number.isFinite(progress.get(table))
+                                      "
+                                      class="progress mt-2 me-3"
+                                      role="progressbar"
+                                      style="height: 4px"
+                                    >
+                                      <div
+                                        class="progress-bar"
+                                        :style="`width: ${progress.get(table)}%`"
+                                      ></div>
+                                    </div>
+                                  </div>
 
-                                <i
-                                  class="bi bi-check-circle float-end text-success"
-                                  v-if="progress.get(table) === EVENTS.SUCCESS"
-                                ></i>
-                                <i
-                                  class="bi bi-exclamation-circle float-end text-danger"
-                                  v-if="progress.get(table) === EVENTS.FAILURE"
-                                ></i>
+                                  <div
+                                    v-if="progress.get(table) === false"
+                                    class="spinner-grow text-warning spinner-grow-sm float-end"
+                                    role="status"
+                                  >
+                                    <span class="visually-hidden">Loading...</span>
+                                  </div>
+
+                                  <div
+                                    v-if="progress.get(table) === EVENTS.BEGIN || Number.isFinite(progress.get(table))"
+                                    class="spinner-border spinner-border-sm float-end"
+                                    role="status"
+                                  >
+                                    <span class="visually-hidden">Loading...</span>
+                                  </div>
+
+                                  <i
+                                    class="bi bi-check-circle float-end text-success"
+                                    v-if="progress.get(table) === EVENTS.SUCCESS"
+                                  ></i>
+                                  <i
+                                    class="bi bi-exclamation-circle float-end text-danger"
+                                    v-if="progress.get(table) === EVENTS.FAILURE"
+                                  ></i>
+                                </div>
                               </td>
                             </tr>
                           </tbody>
@@ -458,7 +477,7 @@
 
     const { event } = payload;
 
-    if(event === EVENTS.ACK){
+    if (event === EVENTS.ACK) {
       const { uid } = payload;
 
       (async () => {
@@ -480,6 +499,13 @@
     if (event === EVENTS.BEGIN) {
       const { tableName } = payload;
       progress.value.set(tableName, EVENTS.BEGIN);
+      return;
+    }
+
+    if (event === EVENTS.PROGRESS) {
+      const { tableName, data } = payload;
+      const percentage = Math.ceil((data[0] / data[1]) * 100);
+      progress.value.set(tableName, percentage);
       return;
     }
 

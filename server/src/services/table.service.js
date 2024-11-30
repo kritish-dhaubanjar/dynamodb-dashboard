@@ -87,7 +87,7 @@ export default class TableServiceProvider {
    *
    * @returns {Promise}
    */
-  static async restore(tableName, DatabaseServiceProvider) {
+  static async *restore(tableName, DatabaseServiceProvider) {
     const { Table } = await DatabaseServiceProvider.SOURCE.TableService.describe(tableName);
 
     await Promise.allSettled([DatabaseServiceProvider.TARGET.TableService.destroy(tableName)]);
@@ -105,6 +105,8 @@ export default class TableServiceProvider {
       await Promise.all(
         Items.map((item) => DatabaseServiceProvider.TARGET.ItemService.create(tableName, schema, item)),
       );
+
+      yield await DatabaseServiceProvider.compare(tableName);
 
       params.ExclusiveStartKey = LastEvaluatedKey;
     } while (params.ExclusiveStartKey);

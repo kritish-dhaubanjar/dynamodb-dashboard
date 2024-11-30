@@ -32,6 +32,7 @@ export async function stream(req, res, _next) {
   eventEmitter.on(EVENTS.SUCCESS, (id, payload) => emit(id, EVENTS.SUCCESS, payload));
   eventEmitter.on(EVENTS.FAILURE, (id, payload) => emit(id, EVENTS.FAILURE, payload));
   eventEmitter.on(EVENTS.END, (id, payload) => emit(id, EVENTS.END, payload));
+  eventEmitter.on(EVENTS.PROGRESS, (id, payload) => emit(id, EVENTS.PROGRESS, payload));
   eventEmitter.on(EVENTS.CLOSE, (id) => emit(id, EVENTS.CLOSE));
 
   res.writeHead(200, {
