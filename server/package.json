@@ -48,7 +48,7 @@
     "joi": "^17.6.0",
     "lodash": "^4.17.21",
     "morgan": "^1.10.0",
-    "open": "^8.4.0"
+    "open": "^10.1.0"
   },
   "repository": {
     "type": "git",
