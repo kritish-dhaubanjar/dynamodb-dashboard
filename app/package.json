@@ -19,7 +19,7 @@
     "@codemirror/theme-one-dark": "^6.1.2",
     "@popperjs/core": "^2.11.8",
     "axios": "^1.7.7",
-    "bootstrap": "5.2.3",
+    "bootstrap": "5.3.3",
     "bootstrap-icons": "^1.11.3",
     "codemirror": "^6.0.1",
     "darkreader": "^4.9.96",
@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.10.4",
-    "@types/bootstrap": "^5.2.6",
+    "@types/bootstrap": "^5.2.10",
     "@types/lodash": "^4.17.13",
     "@types/node": "^22.9.3",
     "@typescript-eslint/eslint-plugin": "^6.13.1",
