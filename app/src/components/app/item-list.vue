@@ -241,9 +241,6 @@
 
   const headers = computed(() => store.ui.state.table.headers ?? []);
 
-  // TODO: can we remove this as `hasMoreItems` is not being used.
-  const hasMoreItems = computed(() => store.dynamodb.state.ExclusiveStartKey ?? false);
-
   const items = computed(() => {
     // TODO: Fix this
     // eslint-disable-next-line vue/no-side-effects-in-computed-properties
