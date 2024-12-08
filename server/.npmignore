@@ -1,4 +1,6 @@
 .env
 
 src
+
 public/
+!build/public
