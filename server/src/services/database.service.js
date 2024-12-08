@@ -27,6 +27,19 @@ export default class DatabaseServiceProvider {
   }
 
   /**
+   * @param {object} credentials
+   */
+  async update(credentials) {
+    const { default: AWS } = await import("../config/aws");
+    AWS.initialize(credentials);
+  }
+
+  async reset() {
+    const { default: AWS } = await import("../config/aws");
+    AWS.initialize();
+  }
+
+  /**
    * @returns {Promise<Array<string>>}
    */
   async all() {

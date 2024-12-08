@@ -17,6 +17,29 @@ export async function index(req, res, next) {
   }
 }
 
+export async function connect(req, res, next) {
+  try {
+    const { credentials } = req.body;
+    const DatabaseService = new DatabaseServiceProvider();
+    const data = await DatabaseService.update(credentials);
+
+    res.json(data);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function disconnect(_req, res, next) {
+  try {
+    const DatabaseService = new DatabaseServiceProvider();
+    const data = await DatabaseService.reset();
+
+    res.json(data);
+  } catch (error) {
+    next(error);
+  }
+}
+
 export async function stream(req, res, _next) {
   const { uid } = req.params;
 
