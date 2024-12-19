@@ -79,7 +79,7 @@
           <!-- QUERY -->
           <div v-if="operation === 'QUERY'">
             <div class="row">
-              <div class="col-xl-6">
+              <div class="col-xl-7">
                 <div v-if="pk">{{ pk?.AttributeName }} (Partition key)</div>
                 <div class="input-group mb-3 mt-1">
                   <span class="input-group-text rounded-0">{{ pk?.AttributeType }}</span>
@@ -104,13 +104,14 @@
                 </div>
               </div>
             </div>
+
             <div
               class="row"
               v-if="sk"
             >
               <div v-if="sk">{{ sk?.AttributeName }} (Sort key)</div>
               <!-- https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Query.html -->
-              <div class="col-md-6 col-xl-1">
+              <div class="col-md-2 col-xl-1">
                 <select
                   class="form-select mt-1 rounded-0"
                   v-model="parameters.keys.sk.condition"
@@ -130,7 +131,7 @@
                   </option>
                 </select>
               </div>
-              <div class="col-md-6 col-xl-5">
+              <div class="col-md-6 col-xl-4">
                 <div class="row">
                   <div :class="parameters.keys.sk.condition === 'between' ? 'col-6' : 'col-12'">
                     <div class="input-group mb-3 mt-1">
@@ -158,6 +159,23 @@
                       />
                     </div>
                   </div>
+                </div>
+              </div>
+
+              <div class="col-md-3 col-xl-1">
+                <div class="text-nowrap mb-3 pt-1 mt-2">
+                  <input
+                    v-model="parameters.keys.sk.scanIndexForward"
+                    class="form-check-input me-1"
+                    type="checkbox"
+                    id="scanIndexForward"
+                  />
+                  <label
+                    class="form-check-label"
+                    for="scanIndexForward"
+                  >
+                    Sort ascending
+                  </label>
                 </div>
               </div>
             </div>
@@ -401,6 +419,7 @@
         value1: "",
         value2: "",
         condition: "=",
+        scanIndexForward: true,
       },
     },
     scan: [
@@ -494,7 +513,9 @@
   const resetParameters = (resetOperation = true) => {
     resetErrors();
 
-    if (resetOperation) operation.value = "SCAN";
+    if (resetOperation) {
+      operation.value = "SCAN";
+    }
 
     parameters.keys.pk = {
       value: "",
@@ -505,6 +526,7 @@
       value1: "",
       value2: "",
       condition: "=",
+      scanIndexForward: true,
     };
 
     parameters.scan = [
@@ -549,6 +571,7 @@
         value1: "",
         value2: "",
         condition: "=",
+        scanIndexForward: true,
       };
     }
 
@@ -607,6 +630,11 @@
 
     if (preview && route.query.operation === "SCAN") {
       delete preview["KeyConditionExpression"];
+      delete preview["ScanIndexForward"];
+    }
+
+    if (preview && preview["ScanIndexForward"]) {
+      delete preview["ScanIndexForward"];
     }
 
     return preview && Object.keys(preview).length ? preview : null;

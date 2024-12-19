@@ -67,7 +67,6 @@ export function generateDynamodbParameters({ table, indexName, parameters }) {
 
   if (!pk || !parameters?.keys) return;
 
-  const filterExpression = "";
   let skConditionExpression = "";
   let pkConditionExpression = "";
   const attributeNames: any = {};
@@ -155,7 +154,7 @@ export function generateDynamodbParameters({ table, indexName, parameters }) {
 
   const IndexName = indexName === table.TableName ? null : indexName;
 
-  return {
+  const params = {
     // IndexName
     ...(IndexName && { IndexName }),
 
@@ -182,7 +181,16 @@ export function generateDynamodbParameters({ table, indexName, parameters }) {
     ...(Object.keys(attributeValues).length && {
       ExpressionAttributeValues: attributeValues,
     }),
+
+    // ScanIndexForward
+    ScanIndexForward: Boolean(parameters.keys.sk.scanIndexForward),
   };
+
+  if (params.ScanIndexForward) {
+    delete params.ScanIndexForward;
+  }
+
+  return params;
 }
 
 export function generateDynamodbIndexParameters({ indices = [], deleteIndices = [] }) {

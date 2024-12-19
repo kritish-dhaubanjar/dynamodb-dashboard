@@ -10,6 +10,8 @@ const state = reactive({
   ExclusiveStartKey: null,
   ExpressionAttributeNames: null,
   ExpressionAttributeValues: null,
+  //
+  ScanIndexForward: null,
 });
 
 const setters = {
@@ -20,6 +22,7 @@ const setters = {
     KeyConditionExpression = null,
     ExpressionAttributeNames = null,
     ExpressionAttributeValues = null,
+    ScanIndexForward = null,
   }) => {
     state.IndexName = IndexName;
     state.FilterExpression = FilterExpression;
@@ -27,6 +30,7 @@ const setters = {
     state.KeyConditionExpression = KeyConditionExpression;
     state.ExpressionAttributeNames = ExpressionAttributeNames;
     state.ExpressionAttributeValues = ExpressionAttributeValues;
+    state.ScanIndexForward = ScanIndexForward;
   },
   setLimit: (limit: number) => {
     state.Limit = limit;
@@ -45,6 +49,7 @@ const setters = {
     state.KeyConditionExpression = null;
     state.ExpressionAttributeNames = null;
     state.ExpressionAttributeValues = null;
+    state.ScanIndexForward = null;
   },
 };
 

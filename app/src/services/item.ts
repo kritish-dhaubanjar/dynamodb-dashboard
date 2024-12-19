@@ -1,4 +1,5 @@
 import axios from "axios";
+import { isNil } from "lodash";
 import ROUTES from "../constants/routes";
 import { interpolate } from "../utils/string";
 
@@ -7,7 +8,9 @@ export async function queryItems(tableName: string, params: any) {
 
   const filteredParams: any = {};
   Object.keys(params).forEach((key) => {
-    if (params[key]) filteredParams[key] = params[key];
+    if (!isNil(params[key])) {
+      filteredParams[key] = params[key];
+    }
   });
 
   const { data } = await axios.post(url, filteredParams);
@@ -20,7 +23,9 @@ export async function scanItems(tableName: string, params: any) {
 
   const filteredParams: any = {};
   Object.keys(params).forEach((key) => {
-    if (params[key]) filteredParams[key] = params[key];
+    if (!isNil(params[key])) {
+      filteredParams[key] = params[key];
+    }
   });
 
   const { data } = await axios.post(url, filteredParams);
