@@ -23,6 +23,7 @@ export const query = Joi.object({
   IndexName: Joi.string().optional(),
   ExclusiveStartKey: Joi.any().optional(),
   FilterExpression: Joi.string().optional(),
+  ScanIndexForward: Joi.boolean().optional(),
 });
 
 export const destroy = Joi.array()
