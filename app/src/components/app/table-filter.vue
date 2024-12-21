@@ -500,7 +500,10 @@
   });
 
   //
-  const setOperation = (op) => (operation.value = op);
+  const setOperation = (op) => {
+    resetParameters();
+    operation.value = op;
+  };
 
   const resetErrors = () => {
     const errorKeys = Object.keys(defaultErrors) as Array<keyof typeof defaultErrors>;
@@ -620,7 +623,9 @@
   };
 
   const dynamodbParameters = computed(() => {
-    if (!table.value.TableName) return;
+    if (!table.value.TableName) {
+      return;
+    }
 
     const preview = generateDynamodbParameters({
       parameters,
@@ -628,7 +633,7 @@
       indexName: indexName.value,
     });
 
-    if (preview && route.query.operation === "SCAN") {
+    if (preview && operation.value === "SCAN") {
       delete preview["KeyConditionExpression"];
       delete preview["ScanIndexForward"];
     }
