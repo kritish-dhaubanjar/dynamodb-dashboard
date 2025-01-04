@@ -2,68 +2,98 @@
   <div class="sticky-top table-actions bg-white">
     <slot></slot>
 
-    <div
-      class="table-responsive mx-3 overflow-hidden position-sticky bg-white shadow-sm"
-      ref="tableHeaderContainer"
-    >
-      <table
-        ref="table"
-        class="mb-0 position-relative table table-hover table-bordered"
-      >
-        <thead ref="thead">
-          <tr class="shadow-sm border-top-0 border-bottom-0">
-            <th
-              scope="col"
-              :style="`min-width: ${widths[0]}px`"
-            >
-              <input
-                class="form-check-input mt-1"
-                type="checkbox"
-                value=""
-                aria-label="Checkbox for following text input"
-                :checked="selectedItems.length > 0"
-                @change="toggle"
-                :indeterminate="selectedItems.length > 0 && selectedItems.length < items.length"
-              />
-            </th>
-            <th
-              v-for="(key, index) in headers"
-              scope="col"
-              :key="key"
-              @click="setSort(key)"
-              :style="`min-width: ${widths[index + 1]}px`"
-            >
-              <span class="text-nowrap">
-                {{ key }}
-                <span v-if="sort.key === key">
-                  <i
-                    v-show="sort.order === SORT_ORDER.DESC"
-                    class="bi bi-arrow-down"
-                  ></i>
-                  <i
-                    v-show="sort.order === SORT_ORDER.ASC"
-                    class="bi bi-arrow-up"
-                  ></i>
+    <div class="d-flex">
+      <div class="ms-3 overflow-hidden shadow-sm min-width-min-content table-responsive">
+        <table
+          ref="table"
+          class="mb-0 position-relative table table-hover table-bordered"
+        >
+          <thead>
+            <tr class="shadow-sm border-top-0 border-bottom-0">
+              <th
+                scope="col"
+                :style="`min-width: ${widths[0]}px`"
+              >
+                <input
+                  class="form-check-input mt-1"
+                  type="checkbox"
+                  value=""
+                  aria-label="Checkbox for following text input"
+                  :checked="selectedItems.length > 0"
+                  @change="toggle"
+                  :indeterminate="selectedItems.length > 0 && selectedItems.length < items.length"
+                />
+              </th>
+              <th
+                scope="col"
+                :key="key"
+                @click="setSort(headers[0])"
+                :style="`min-width: ${widths[1]}px`"
+              >
+                <span class="text-nowrap">
+                  {{ headers[0] }}
+                  <span v-if="sort.key === headers[0]">
+                    <i
+                      v-show="sort.order === SORT_ORDER.DESC"
+                      class="bi bi-arrow-down"
+                    ></i>
+                    <i
+                      v-show="sort.order === SORT_ORDER.ASC"
+                      class="bi bi-arrow-up"
+                    ></i>
+                  </span>
                 </span>
-              </span>
-            </th>
-          </tr>
-        </thead>
-      </table>
+              </th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+
+      <div
+        class="table-responsive me-3 overflow-hidden shadow-sm w-100"
+        ref="tableHeaderContainer"
+      >
+        <table
+          ref="table"
+          class="mb-0 position-relative table table-hover table-bordered"
+        >
+          <thead>
+            <tr class="shadow-sm border-top-0 border-bottom-0">
+              <th
+                v-for="(key, index) in headers.slice(1)"
+                scope="col"
+                :key="key"
+                @click="setSort(key)"
+                :style="`min-width: ${widths[index + 2]}px`"
+              >
+                <span class="text-nowrap">
+                  {{ key }}
+                  <span v-if="sort.key === key">
+                    <i
+                      v-show="sort.order === SORT_ORDER.DESC"
+                      class="bi bi-arrow-down"
+                    ></i>
+                    <i
+                      v-show="sort.order === SORT_ORDER.ASC"
+                      class="bi bi-arrow-up"
+                    ></i>
+                  </span>
+                </span>
+              </th>
+            </tr>
+          </thead>
+        </table>
+      </div>
     </div>
   </div>
 
-  <section class="position-relative">
+  <section class="position-relative d-flex">
     <div
-      class="table-responsive mx-3"
-      ref="tableContainer"
-      @scroll="handleScrollbarPosition"
+      class="ms-3"
+      ref="twocolumns"
     >
-      <table
-        ref="table"
-        class="mb-0 position-relative table table-hover table-bordered"
-      >
-        <thead ref="thead">
+      <table class="mb-0 position-relative table table-hover table-bordered">
+        <thead>
           <tr class="shadow-sm border-top-0 border-bottom-0">
             <th scope="col">
               <input
@@ -77,14 +107,13 @@
               />
             </th>
             <th
-              v-for="key in headers"
               scope="col"
-              :key="key"
+              :key="headers[0]"
               @click="setSort(key)"
             >
               <span class="text-nowrap">
-                {{ key }}
-                <span v-if="sort.key === key">
+                {{ headers[0] }}
+                <span v-if="sort.key === headers[0]">
                   <i
                     v-show="sort.order === SORT_ORDER.DESC"
                     class="bi bi-arrow-down"
@@ -98,7 +127,7 @@
             </th>
           </tr>
         </thead>
-        <tbody ref="tbody">
+        <tbody ref="metatbody">
           <tr
             :class="{ 'table-primary': find(item) > -1 }"
             v-for="item in items"
@@ -117,99 +146,149 @@
             </td>
 
             <td
-              v-for="(key, index) in headers"
-              :key="key"
+              :key="headers[0]"
+              class="text-nowrap"
             >
-              <div v-if="index === 0">
-                <i
-                  class="bi bi-clipboard2 me-2"
-                  data-bs-toggle="tooltip"
-                  data-bs-placement="top"
-                  data-bs-title="Copy to clipboard"
-                  @click="copy(item[key])"
-                ></i>
-                <!--  -->
-                <RouterLink
-                  :to="handleItem(item)"
-                  class="card-link text-decoration-none"
-                >
-                  {{ item[key] }}
-                </RouterLink>
-              </div>
-              <div v-else>{{ item[key] }}</div>
+              <i
+                class="bi bi-clipboard2 me-2"
+                data-bs-toggle="tooltip"
+                data-bs-placement="top"
+                data-bs-title="Copy to clipboard"
+                @click="copy(item[headers[0]])"
+              ></i>
+              <!--  -->
+              <RouterLink
+                :to="handleItem(item)"
+                class="card-link text-decoration-none"
+              >
+                {{ item[headers[0]] }}
+              </RouterLink>
             </td>
           </tr>
         </tbody>
       </table>
+    </div>
 
-      <div class="hide-double-scrollbar position-absolute bg-white w-100"></div>
-
-      <!--  -->
-      <div
-        class="modal"
-        tabindex="-1"
-        ref="modalRef"
+    <div
+      class="table-responsive me-3 w-100"
+      ref="tableContainer"
+      @scroll="handleScrollbarPosition"
+    >
+      <table
+        ref="table"
+        class="mb-0 position-relative table table-hover table-bordered"
       >
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Delete {{ selectedItems.length }} items</h5>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div class="modal-body">
-              <p>
-                Delete
-                <b>{{ selectedItems.length }}</b>
-                item from the
-                <b>{{ store.table.state.Table.TableName }}</b>
-                table? This action cannot be reversed.
-              </p>
-            </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary rounded-0"
-                data-bs-dismiss="modal"
-              >
-                Cancel
-              </button>
+        <thead>
+          <tr class="shadow-sm border-top-0 border-bottom-0">
+            <th
+              v-for="key in headers.slice(1)"
+              scope="col"
+              :key="key"
+              @click="setSort(key)"
+            >
+              <span class="text-nowrap">
+                {{ key }}
+                <span v-if="sort.key === key">
+                  <i
+                    v-show="sort.order === SORT_ORDER.DESC"
+                    class="bi bi-arrow-down"
+                  ></i>
+                  <i
+                    v-show="sort.order === SORT_ORDER.ASC"
+                    class="bi bi-arrow-up"
+                  ></i>
+                </span>
+              </span>
+            </th>
+          </tr>
+        </thead>
 
-              <button
-                class="btn btn-danger rounded-0"
-                type="button"
-                :disabled="store.ui.state.isLoading"
-                @click="destroy"
-              >
-                <span
-                  v-if="store.ui.state.isLoading"
-                  class="spinner-grow spinner-grow-sm"
-                  role="status"
-                  aria-hidden="true"
-                ></span>
-                <span class="visually-hidden">Loading...</span>
-                Delete
-              </button>
-            </div>
-          </div>
+        <tbody ref="tbody">
+          <tr
+            :class="{ 'table-primary': find(item) > -1 }"
+            v-for="item in items"
+            :key="item[pk.AttributeName] + (sk ? item[sk.AttributeName] : '')"
+            @click="(e) => handleItemSelect(e, item)"
+          >
+            <td
+              v-for="(key, index) in headers.slice(1)"
+              :key="key"
+            >
+              <div>{{ item[key] }}</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <div
+    class="scrollbar-container overflow-x-scroll sticky-bottom me-3"
+    @scroll="handleScroll"
+    ref="scrollcontainer"
+  >
+    <hr
+      ref="scrollbar"
+      class="m-0"
+    />
+  </div>
+
+  <div class="hide-double-scrollbar bg-white w-100 position-relative"></div>
+
+  <!--  -->
+  <div
+    class="modal"
+    tabindex="-1"
+    ref="modalRef"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Delete {{ selectedItems.length }} items</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <p>
+            Delete
+            <b>{{ selectedItems.length }}</b>
+            item from the
+            <b>{{ store.table.state.Table.TableName }}</b>
+            table? This action cannot be reversed.
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary rounded-0"
+            data-bs-dismiss="modal"
+          >
+            Cancel
+          </button>
+
+          <button
+            class="btn btn-danger rounded-0"
+            type="button"
+            :disabled="store.ui.state.isLoading"
+            @click="destroy"
+          >
+            <span
+              v-if="store.ui.state.isLoading"
+              class="spinner-grow spinner-grow-sm"
+              role="status"
+              aria-hidden="true"
+            ></span>
+            <span class="visually-hidden">Loading...</span>
+            Delete
+          </button>
         </div>
       </div>
     </div>
-    <div
-      class="ms-3 scrollbar-container overflow-scroll sticky-bottom"
-      @scroll="handleScroll"
-      ref="scrollcontainer"
-    >
-      <hr
-        ref="scrollbar"
-        class="m-0"
-      />
-    </div>
-  </section>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -293,12 +372,14 @@
   /* SCROLL */
   const row = ref(null);
   const table = ref(null);
-  const thead = ref(null);
   const tbody = ref(null);
   const scrollbar = ref(null);
+  const twocolumns = ref(null);
   const tableContainer = ref(null);
   const scrollcontainer = ref(null);
   const tableHeaderContainer = ref(null);
+
+  const metatbody = ref(null);
 
   watch(
     () => items.value,
@@ -308,6 +389,7 @@
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         //@ts-ignore
         scrollbar.value.style.width = `${+table.value.scrollWidth}px`;
+        scrollcontainer.value.style.marginLeft = `${+twocolumns.value.scrollWidth + 14}px`;
       });
     },
   );
@@ -327,11 +409,14 @@
     () => items.value,
     async () => {
       await nextTick(() => {
+        const metarows = metatbody.value?.getElementsByTagName("tr")?.[0];
+        const metacells = metarows?.getElementsByTagName("td");
+
         const rows = tbody.value?.getElementsByTagName("tr")?.[0];
         const cells = rows?.getElementsByTagName("td");
 
-        if (cells) {
-          widths.value = [...cells].map((td) => td.getBoundingClientRect()?.width);
+        if (cells && metacells) {
+          widths.value = [...metacells, ...cells].map((td) => td.getBoundingClientRect()?.width);
         }
       });
     },
@@ -516,9 +601,9 @@
   }
 
   .hide-double-scrollbar {
-    height: 15px;
+    height: 48px;
     z-index: 2;
-    margin-left: -14px;
+    top: -48px;
   }
 
   .table-actions {

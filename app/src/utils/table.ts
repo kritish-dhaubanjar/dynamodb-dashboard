@@ -10,9 +10,9 @@ export function generateTableHeaders(items = [], { KeySchema = [] }) {
     Object.keys(item).forEach(allHeaders.add, allHeaders);
   });
 
-  const headers = Array.from(allHeaders).filter(
-    (key) => ![hashKey.AttributeName, rangeKey.AttributeName].includes(key),
-  );
+  const headers = Array.from(allHeaders)
+    .filter((key) => ![hashKey.AttributeName, rangeKey.AttributeName].includes(key))
+    .sort();
 
   if (rangeKey.AttributeName) {
     headers.unshift(rangeKey.AttributeName);
