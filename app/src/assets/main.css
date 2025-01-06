@@ -32,3 +32,7 @@ a {
 .vw-30 {
   width: 30vw !important;
 }
+
+.bg-codemirror {
+  background-color: #282c34;
+}

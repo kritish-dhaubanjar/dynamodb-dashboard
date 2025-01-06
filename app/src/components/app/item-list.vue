@@ -322,11 +322,10 @@
     id="offcanvas"
     ref="offcanvasRef"
   >
-    <div class="offcanvas-header">
-      <h5 class="offcanvas-title"></h5>
+    <div class="offcanvas-header bg-codemirror">
       <button
         type="button"
-        class="btn-close"
+        class="btn-close opacity-100"
         data-bs-dismiss="offcanvas"
         aria-label="Close"
       ></button>
