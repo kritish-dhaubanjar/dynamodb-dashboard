@@ -24,6 +24,7 @@
                   :indeterminate="selectedItems.length > 0 && selectedItems.length < items.length"
                 />
               </th>
+
               <th
                 scope="col"
                 :key="key"
@@ -43,6 +44,18 @@
                     ></i>
                   </span>
                 </span>
+              </th>
+
+              <th
+                scope="col"
+                :style="`min-width: ${widths[2]}px`"
+              >
+                <i
+                  class="bi bi-eye me-2 text-white"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="top"
+                  data-bs-title="Preview"
+                />
               </th>
             </tr>
           </thead>
@@ -64,7 +77,7 @@
                 scope="col"
                 :key="key"
                 @click="setSort(key)"
-                :style="`min-width: ${widths[index + 2]}px`"
+                :style="`min-width: ${widths[index + 3]}px`"
               >
                 <span class="text-nowrap">
                   {{ key }}
@@ -127,6 +140,7 @@
             </th>
           </tr>
         </thead>
+
         <tbody ref="metatbody">
           <tr
             :class="{ 'table-primary': find(item) > -1 }"
@@ -156,6 +170,7 @@
                 data-bs-title="Copy to clipboard"
                 @click="copy(item[headers[0]])"
               ></i>
+
               <!--  -->
               <RouterLink
                 :to="handleItem(item)"
@@ -163,6 +178,16 @@
               >
                 {{ item[headers[0]] }}
               </RouterLink>
+            </td>
+
+            <td>
+              <i
+                class="bi bi-eye me-2"
+                data-bs-toggle="tooltip"
+                data-bs-placement="top"
+                data-bs-title="Preview"
+                @click="offcanvas(item)"
+              ></i>
             </td>
           </tr>
         </tbody>
@@ -289,6 +314,32 @@
       </div>
     </div>
   </div>
+
+  <!-- Offcanvas -->
+  <div
+    class="offcanvas offcanvas-end vw-30"
+    tabindex="-1"
+    id="offcanvas"
+    ref="offcanvasRef"
+  >
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title"></h5>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="offcanvas"
+        aria-label="Close"
+      ></button>
+    </div>
+    <div class="offcanvas-body p-0">
+      <div class="h-100">
+        <textarea
+          readonly
+          ref="textAreaRef"
+        />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -296,6 +347,7 @@
   import * as bootstrap from "bootstrap";
   import { useRouter } from "vue-router";
   import { destroyItems } from "@/services/item";
+  import codeMirrorConfig from "@/views/items/codeMirrorConfig";
   import { computed, inject, onMounted, ref, watch, watchEffect, reactive, nextTick } from "vue";
 
   import { SORT_ORDER, SORTS } from "../../constants/sort";
@@ -451,9 +503,13 @@
 
   const modal = ref(null);
   const modalRef = ref(null);
+  const offcanvasRef = ref(null);
+  const textAreaRef = ref(null);
+  const codeMirrorRef = ref(null);
 
   onMounted(() => {
     modal.value = new bootstrap.Modal(modalRef.value, {});
+    codeMirrorRef.value = codeMirrorConfig(textAreaRef);
   });
 
   const handleItem = (item: object) => {
@@ -543,6 +599,20 @@
 
   const copy = (partitionKey) => {
     navigator.clipboard.writeText(partitionKey);
+  };
+
+  const offcanvas = (item) => {
+    const bsOffcanvas = new bootstrap.Offcanvas(offcanvasRef.value);
+
+    codeMirrorRef.value.dispatch({
+      changes: {
+        from: 0,
+        to: codeMirrorRef.value.state.doc.length,
+        insert: JSON.stringify(item, null, 2),
+      },
+    });
+
+    bsOffcanvas.show();
   };
 
   const handleItemSelect = (event, item) => {

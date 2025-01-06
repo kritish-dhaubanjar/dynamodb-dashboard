@@ -9,7 +9,10 @@
         You can add, remove, or edit the attributes of an item. You can nest attributes inside other attributes up to 32
         levels deep.
       </p>
-      <textarea ref="textAreaRef" />
+
+      <div class="vh-60">
+        <textarea ref="textAreaRef" />
+      </div>
 
       <div
         class="alert alert-danger rounded-0"

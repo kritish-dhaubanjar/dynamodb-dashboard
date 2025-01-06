@@ -24,3 +24,11 @@ a {
 .min-width-min-content {
   min-width: min-content;
 }
+
+.vh-60 {
+  height: 60vh !important;
+}
+
+.vw-30 {
+  width: 30vw !important;
+}
