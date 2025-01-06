@@ -509,7 +509,7 @@
 
   onMounted(() => {
     modal.value = new bootstrap.Modal(modalRef.value, {});
-    codeMirrorRef.value = codeMirrorConfig(textAreaRef);
+    codeMirrorRef.value = codeMirrorConfig(textAreaRef, {}, true);
   });
 
   const handleItem = (item: object) => {
@@ -603,6 +603,8 @@
 
   const offcanvas = (item) => {
     const bsOffcanvas = new bootstrap.Offcanvas(offcanvasRef.value);
+
+    const href = handleItem(item);
 
     codeMirrorRef.value.dispatch({
       changes: {

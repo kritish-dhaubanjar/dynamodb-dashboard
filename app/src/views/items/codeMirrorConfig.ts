@@ -37,7 +37,7 @@ const editorFromTextArea = (textarea: any, extensions: Extension[]) => {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const codeMirrorConfig = (textAreaRef: any, editItem: any) => {
+const codeMirrorConfig = (textAreaRef: any, editItem: any, isReadOnly: boolean = false) => {
   const instance = editorFromTextArea(textAreaRef.value, [
     CodeMirror.basicSetup,
     json(),
@@ -52,6 +52,7 @@ const codeMirrorConfig = (textAreaRef: any, editItem: any) => {
       }
     }),
     keymap.of([...defaultKeymap, indentWithTab]),
+    CodeMirror.EditorView.editable.of(!isReadOnly), // Set the editor to read-only
   ]);
 
   return instance;
