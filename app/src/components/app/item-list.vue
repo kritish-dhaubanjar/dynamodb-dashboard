@@ -322,14 +322,6 @@
     id="offcanvas"
     ref="offcanvasRef"
   >
-    <div class="offcanvas-header bg-codemirror">
-      <button
-        type="button"
-        class="btn-close opacity-100"
-        data-bs-dismiss="offcanvas"
-        aria-label="Close"
-      ></button>
-    </div>
     <div class="offcanvas-body p-0">
       <div class="h-100">
         <textarea
@@ -346,6 +338,7 @@
   import * as bootstrap from "bootstrap";
   import { useRouter } from "vue-router";
   import { destroyItems } from "@/services/item";
+  import { openSearchPanel } from "@codemirror/search";
   import codeMirrorConfig from "@/views/items/codeMirrorConfig";
   import { computed, inject, onMounted, ref, watch, watchEffect, reactive, nextTick } from "vue";
 
@@ -612,6 +605,8 @@
         insert: JSON.stringify(item, null, 2),
       },
     });
+
+    openSearchPanel(codeMirrorRef.value);
 
     bsOffcanvas.show();
   };
