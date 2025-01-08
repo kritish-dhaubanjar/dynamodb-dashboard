@@ -6,6 +6,7 @@ const routes = {
     DELETE: "/tables/:tableName",
     UPDATE: "/tables/:tableName",
     DESCRIBE: "/tables/:tableName/describe",
+    TTL: "/tables/:tableName/time-to-live",
   },
   DATABASE: {
     ALL: "/database/tables",

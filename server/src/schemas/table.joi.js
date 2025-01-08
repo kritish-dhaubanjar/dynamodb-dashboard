@@ -46,3 +46,15 @@ export const update = Joi.object({
     }),
   ),
 });
+
+// https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_UpdateTimeToLive.html
+export const updateTimeToLive = Joi.object({
+  TimeToLiveSpecification: Joi.object({
+    Enabled: Joi.boolean().required(),
+    AttributeName: Joi.when("Enabled", {
+      is: true,
+      then: Joi.required(),
+      otherwise: Joi.required().allow(""),
+    }),
+  }).required(),
+});

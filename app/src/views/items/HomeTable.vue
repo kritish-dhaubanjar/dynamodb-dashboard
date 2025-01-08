@@ -51,6 +51,17 @@
               >
                 View Table Schema
               </RouterLink>
+
+              <RouterLink
+                v-if="activeTableName"
+                class="dropdown-item"
+                :to="{
+                  name: 'table-ttl',
+                  params: { tableName: activeTableName },
+                }"
+              >
+                Time to Live (TTL)
+              </RouterLink>
             </li>
           </ul>
 

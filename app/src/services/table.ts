@@ -14,6 +14,20 @@ export async function getTable(tableName: string) {
   return data.Table;
 }
 
+export async function getTableTTL(tableName: string) {
+  const url = interpolate(ROUTES.TABLE.TTL, { tableName });
+  const { data } = await axios.get(url);
+
+  return data.TimeToLiveDescription;
+}
+
+export async function updateTableTTL(tableName: string, body: object) {
+  const url = interpolate(ROUTES.TABLE.TTL, { tableName });
+  const { data } = await axios.put(url, body);
+
+  return data.TimeToLiveDescription;
+}
+
 export async function createTable(body: object) {
   const url = ROUTES.TABLE.CREATE;
   const { data } = await axios.post(url, body);

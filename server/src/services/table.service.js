@@ -58,6 +58,55 @@ export default class TableServiceProvider {
    *
    * @returns {Promise<object>}
    */
+  async describeTimeToLive(tableName) {
+    const response = await this.AWS.dynamodb.describeTimeToLive({
+      TableName: tableName,
+    });
+
+    return response;
+  }
+
+  /**
+   * @param {string} tableName
+   *
+   * @returns {Promise<object>}
+   */
+  async disableTimeToLive(tableName) {
+    let response = await this.AWS.dynamodb.describeTimeToLive({ TableName: tableName });
+
+    if (response.TimeToLiveDescription.AttributeName) {
+      response = await this.AWS.dynamodb.updateTimeToLive({
+        TableName: tableName,
+        TimeToLiveSpecification: {
+          Enabled: false,
+          AttributeName: response.TimeToLiveDescription.AttributeName,
+        },
+      });
+    }
+
+    return response;
+  }
+
+  /**
+   * @param {string} tableName
+   * @param {object} params
+   *
+   * @returns {Promise<object>}
+   */
+  async updateTimeToLive(tableName, params) {
+    const response = await this.AWS.dynamodb.updateTimeToLive({
+      TableName: tableName,
+      ...params,
+    });
+
+    return response;
+  }
+
+  /**
+   * @param {string} tableName
+   *
+   * @returns {Promise<object>}
+   */
   async destroy(tableName) {
     const response = await this.AWS.dynamodb.deleteTable({
       TableName: tableName,

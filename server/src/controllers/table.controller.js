@@ -33,6 +33,39 @@ export async function describe(req, res, next) {
   }
 }
 
+export async function describeTimeToLive(req, res, next) {
+  try {
+    const { tableName } = req.params;
+    const data = await TableService.describeTimeToLive(tableName);
+
+    res.json(data);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function updateTimeToLive(req, res, next) {
+  try {
+    const { tableName } = req.params;
+    const { TimeToLiveSpecification } = req.body;
+
+    const isEnable = TimeToLiveSpecification.Enabled;
+
+    if (isEnable) {
+      await TableService.disableTimeToLive(tableName);
+      await TableService.updateTimeToLive(tableName, req.body);
+    } else {
+      await TableService.disableTimeToLive(tableName);
+    }
+
+    const data = await TableService.describeTimeToLive(tableName);
+
+    res.json(data);
+  } catch (error) {
+    next(error);
+  }
+}
+
 export async function destroy(req, res, next) {
   try {
     const { tableName } = req.params;

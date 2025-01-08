@@ -6,6 +6,7 @@ import EditTable from "@/views/table/EditTable.vue";
 import TableSchema from "@/views/table/TableSchema.vue";
 import CreateTable from "@/views/table/CreateTable.vue";
 import RestoreTables from "@/views/table/RestoreTables.vue";
+import TableTTL from "@/views/table/TableTTL.vue";
 
 import { createRouter, createWebHistory } from "vue-router";
 
@@ -56,6 +57,14 @@ const router = createRouter({
       path: "/table/:tableName/table-schema",
       name: "table-schema",
       component: TableSchema,
+      meta: {
+        name: "Tables",
+      },
+    },
+    {
+      path: "/table/:tableName/ttl",
+      name: "table-ttl",
+      component: TableTTL,
       meta: {
         name: "Tables",
       },

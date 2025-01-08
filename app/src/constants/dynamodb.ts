@@ -5,6 +5,13 @@ const DYNAMODB = {
   },
 };
 
+export const TTL = {
+  STATUS: {
+    DISABLED: "DISABLED",
+    ENABLED: "ENABLED",
+  },
+};
+
 export const AWS_REGIONS = [
   "us-east-2",
   "us-east-1",
