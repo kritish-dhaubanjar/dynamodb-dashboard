@@ -423,3 +423,9 @@
     modal.value = new bootstrap.Modal(modalRef.value, {});
   });
 </script>
+
+<style lang="scss" scoped>
+  .dropdown-menu {
+    z-index: 2048 !important;
+  }
+</style>
