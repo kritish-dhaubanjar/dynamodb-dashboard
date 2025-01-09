@@ -1,0 +1,29 @@
+{
+  "name": "dynamodb-dashboard",
+  "version": "1.0.0",
+  "description": "GUI Dashboard for local or remote DynamoDB",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --config electron-builder.config.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kritish Dhaubanjar",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^33.3.1",
+    "electron-builder": "^25.1.8"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.154.0",
+    "@aws-sdk/lib-dynamodb": "^3.154.0",
+    "commander": "^13.0.0",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "joi": "^17.6.0",
+    "lodash": "^4.17.21",
+    "morgan": "^1.10.0"
+  }
+}
