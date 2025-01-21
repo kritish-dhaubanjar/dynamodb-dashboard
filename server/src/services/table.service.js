@@ -2,6 +2,7 @@ import AWS from "../config/aws";
 import { OPERATIONS } from "../constants/dynamodb";
 import { constructSchema } from "../utils/dynamodb";
 import DatabaseServiceProvider from "./database.service";
+import { waitUntilTableExists } from "@aws-sdk/client-dynamodb";
 
 export default class TableServiceProvider {
   /**
@@ -140,7 +141,12 @@ export default class TableServiceProvider {
     const { Table } = await DatabaseServiceProvider.SOURCE.TableService.describe(tableName);
 
     await Promise.allSettled([DatabaseServiceProvider.TARGET.TableService.destroy(tableName)]);
-    await DatabaseServiceProvider.TARGET.TableService.create(constructSchema(Table));
+    await Promise.allSettled([DatabaseServiceProvider.TARGET.TableService.create(constructSchema(Table))]);
+
+    await waitUntilTableExists(
+      { client: DatabaseServiceProvider.TARGET.AWS.dynamodb, maxWaitTime: 60 },
+      { TableName: tableName },
+    );
 
     const params = { Limit: 100 };
     const schema = Table.KeySchema.map(({ AttributeName }) => AttributeName);
