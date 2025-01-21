@@ -1,6 +1,6 @@
 import { get, set, pick } from "lodash";
+import { BillingMode } from "@aws-sdk/client-dynamodb";
 import { create as TableSchema } from "../schemas/table.joi";
-import { ProvisionedThroughput } from "../constants/dynamodb";
 
 /**
  * @param {object} Table
@@ -11,14 +11,8 @@ export function constructSchema(Table) {
   const keys = Object.keys(TableSchema.describe().keys);
   const schema = pick(Table, keys);
 
-  schema.ProvisionedThroughput = ProvisionedThroughput;
-
-  if (schema.GlobalSecondaryIndexes) {
-    schema.GlobalSecondaryIndexes = schema.GlobalSecondaryIndexes.map((gsi) => ({
-      ...gsi,
-      ProvisionedThroughput,
-    }));
-  }
+  schema.ProvisionedThroughput = Table.ProvisionedThroughput;
+  schema.BillingMode = Table.BillingModeSummary?.BillingMode || BillingMode.PROVISIONED;
 
   return schema;
 }
