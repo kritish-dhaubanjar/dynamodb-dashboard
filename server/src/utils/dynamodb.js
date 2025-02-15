@@ -11,8 +11,11 @@ export function constructSchema(Table) {
   const keys = Object.keys(TableSchema.describe().keys);
   const schema = pick(Table, keys);
 
-  schema.ProvisionedThroughput = Table.ProvisionedThroughput;
   schema.BillingMode = Table.BillingModeSummary?.BillingMode || BillingMode.PROVISIONED;
+
+  if (schema.BillingMode === BillingMode.PAY_PER_REQUEST) {
+    delete schema.ProvisionedThroughput;
+  }
 
   return schema;
 }

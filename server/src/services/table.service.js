@@ -140,17 +140,21 @@ export default class TableServiceProvider {
   static async *restore(tableName, DatabaseServiceProvider) {
     const { Table } = await DatabaseServiceProvider.SOURCE.TableService.describe(tableName);
 
-    await Promise.allSettled([DatabaseServiceProvider.TARGET.TableService.destroy(tableName)]);
-    await waitUntilTableNotExists(
-      { client: DatabaseServiceProvider.TARGET.AWS.dynamodb, maxWaitTime: 60 },
-      { TableName: tableName },
-    );
+    await Promise.allSettled([
+      DatabaseServiceProvider.TARGET.TableService.destroy(tableName),
+      waitUntilTableNotExists(
+        { client: DatabaseServiceProvider.TARGET.AWS.dynamodb, maxWaitTime: 60 },
+        { TableName: tableName },
+      ),
+    ]);
 
-    await Promise.allSettled([DatabaseServiceProvider.TARGET.TableService.create(constructSchema(Table))]);
-    await waitUntilTableExists(
-      { client: DatabaseServiceProvider.TARGET.AWS.dynamodb, maxWaitTime: 60 },
-      { TableName: tableName },
-    );
+    await Promise.all([
+      DatabaseServiceProvider.TARGET.TableService.create(constructSchema(Table)),
+      waitUntilTableExists(
+        { client: DatabaseServiceProvider.TARGET.AWS.dynamodb, maxWaitTime: 60 },
+        { TableName: tableName },
+      ),
+    ]);
 
     const params = { Limit: 100 };
     const schema = Table.KeySchema.map(({ AttributeName }) => AttributeName);
