@@ -13,8 +13,14 @@ export function constructSchema(Table) {
 
   schema.BillingMode = Table.BillingModeSummary?.BillingMode || BillingMode.PROVISIONED;
 
-  if (schema.BillingMode === BillingMode.PAY_PER_REQUEST) {
-    delete schema.ProvisionedThroughput;
+  if (schema.BillingMode !== BillingMode.PAY_PER_REQUEST) {
+    return schema;
+  }
+
+  delete schema.ProvisionedThroughput;
+
+  if (schema.GlobalSecondaryIndexes) {
+    schema.GlobalSecondaryIndexes.forEach((gsi) => delete gsi.ProvisionedThroughput);
   }
 
   return schema;

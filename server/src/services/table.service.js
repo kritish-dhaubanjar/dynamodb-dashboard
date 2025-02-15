@@ -148,7 +148,7 @@ export default class TableServiceProvider {
       ),
     ]);
 
-    await Promise.all([
+    await Promise.allSettled([
       DatabaseServiceProvider.TARGET.TableService.create(constructSchema(Table)),
       waitUntilTableExists(
         { client: DatabaseServiceProvider.TARGET.AWS.dynamodb, maxWaitTime: 60 },
