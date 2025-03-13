@@ -49,14 +49,14 @@ export default class DatabaseServiceProvider {
   }
 
   /**
-   * @param {Array<string>} tableNames
+   * @param {Array<{source: string, target: string}>} tables
    * @param {string} uid
    * @param {EventEmitter} eventEmitter
    *
    * @returns {Array<string>}
    */
-  restore(tableNames = [], uid, eventEmitter) {
-    const queue = [...tableNames];
+  restore(tables = [], uid, eventEmitter) {
+    const queue = [...tables];
     const jobs = queue.splice(0, POOL_SIZE);
     let counter = jobs.length;
 
@@ -72,11 +72,13 @@ export default class DatabaseServiceProvider {
       }
     });
 
-    const run = async (tableName) => {
+    const run = async ({ source, target }) => {
+      const tableName = source;
+
       try {
         eventEmitter.emit(EVENTS.BEGIN, uid, { tableName });
 
-        const restore = TableServiceProvider.restore(tableName, this);
+        const restore = TableServiceProvider.restore(source, target, this);
 
         for await (const [ItemCount, TotalItemCount] of restore) {
           eventEmitter.emit(EVENTS.PROGRESS, uid, { tableName, data: [ItemCount, TotalItemCount] });
@@ -93,17 +95,18 @@ export default class DatabaseServiceProvider {
 
     jobs.map(run);
 
-    return tableNames;
+    return tables;
   }
 
   /*
-   * @param {string} tableName
+   * @param {string} sourceTableName
+   * @param {string} targetTableName
    * @return {Promise<Array<number>>}
    */
-  async compare(tableName) {
+  async compare(sourceTableName, targetTableName) {
     const [{ Table: TargetTable }, { Table: SourceTable }] = await Promise.all([
-      this.TARGET.TableService.describe(tableName),
-      this.SOURCE.TableService.describe(tableName),
+      this.TARGET.TableService.describe(targetTableName),
+      this.SOURCE.TableService.describe(sourceTableName),
     ]);
 
     const ItemCount = TargetTable.ItemCount;

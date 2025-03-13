@@ -220,27 +220,52 @@
                               >
                                 Export Tables
                               </th>
+                              <th
+                                scope="col"
+                                class="border-end-0"
+                              ></th>
+                              <th
+                                scope="col"
+                                class="border-end-0"
+                              ></th>
                             </tr>
                           </thead>
                           <tbody>
                             <tr
-                              @click="toggle(table)"
                               v-for="table in remoteTables.filter((t) =>
-                                t.toLowerCase().includes(remoteTableSearch.toLowerCase()),
+                                t.source.toLowerCase().includes(remoteTableSearch.toLowerCase()),
                               )"
                               :key="table"
                             >
                               <th
                                 scope="row"
                                 class="border-start-0"
+                                @click="toggle(table)"
                               >
                                 <input
                                   class="form-check-input mt-1"
                                   type="checkbox"
-                                  :checked="localTables.includes(table)"
+                                  :checked="Boolean(find(localTables, table))"
                                 />
                               </th>
-                              <td class="border-end-0">{{ table }}</td>
+                              <td
+                                @click="toggle(table)"
+                                class="border-end-0"
+                              >
+                                {{ table.source }}
+                              </td>
+
+                              <td class="border-end-0 w-30px">
+                                <i class="bi bi-arrow-right" />
+                              </td>
+
+                              <td class="border-end-0 p-0">
+                                <input
+                                  v-model="table.target"
+                                  type="text"
+                                  class="form-control rounded-0 border-0"
+                                />
+                              </td>
                             </tr>
                           </tbody>
                         </table>
@@ -292,7 +317,7 @@
                             <tr
                               @click="toggle(table)"
                               v-for="table in localTables.filter((t) =>
-                                t.toLowerCase().includes(localTableSearch.toLowerCase()),
+                                t.source.toLowerCase().includes(localTableSearch.toLowerCase()),
                               )"
                               :key="table"
                             >
@@ -306,14 +331,21 @@
                                   checked
                                 />
                               </th>
+                              <td>{{ table.source }}</td>
+
+                              <td class="border-end-0 w-30px">
+                                <i class="bi bi-arrow-right" />
+                              </td>
+
                               <td class="border-end-0">
                                 <div class="d-flex align-items-center">
                                   <div class="w-100">
-                                    {{ table }}
+                                    {{ table.target }}
 
                                     <div
                                       v-if="
-                                        progress.get(table) === EVENTS.BEGIN || Number.isFinite(progress.get(table))
+                                        progress.get(table.source) === EVENTS.BEGIN ||
+                                        Number.isFinite(progress.get(table.source))
                                       "
                                       class="progress mt-2 me-3"
                                       role="progressbar"
@@ -321,13 +353,13 @@
                                     >
                                       <div
                                         class="progress-bar"
-                                        :style="`width: ${progress.get(table)}%`"
+                                        :style="`width: ${progress.get(table.source)}%`"
                                       ></div>
                                     </div>
                                   </div>
 
                                   <div
-                                    v-if="progress.get(table) === false"
+                                    v-if="progress.get(table.source) === false"
                                     class="spinner-grow text-warning spinner-grow-sm float-end"
                                     role="status"
                                   >
@@ -335,7 +367,10 @@
                                   </div>
 
                                   <div
-                                    v-if="progress.get(table) === EVENTS.BEGIN || Number.isFinite(progress.get(table))"
+                                    v-if="
+                                      progress.get(table.source) === EVENTS.BEGIN ||
+                                      Number.isFinite(progress.get(table.source))
+                                    "
                                     class="spinner-border spinner-border-sm float-end"
                                     role="status"
                                   >
@@ -344,11 +379,11 @@
 
                                   <i
                                     class="bi bi-check-circle float-end text-success"
-                                    v-if="progress.get(table) === EVENTS.SUCCESS"
+                                    v-if="progress.get(table.source) === EVENTS.SUCCESS"
                                   ></i>
                                   <i
                                     class="bi bi-exclamation-circle float-end text-danger"
-                                    v-if="progress.get(table) === EVENTS.FAILURE"
+                                    v-if="progress.get(table.source) === EVENTS.FAILURE"
                                   ></i>
                                 </div>
                               </td>
@@ -420,6 +455,7 @@
 
 <script lang="ts" setup>
   import axios from "axios";
+  import { find } from "lodash";
   import * as bootstrap from "bootstrap";
   import { useRouter } from "vue-router";
   import ROUTES from "@/constants/routes";
@@ -462,7 +498,9 @@
     progress.value = new Map();
 
     try {
-      remoteTables.value = await getRemoteTables({ credentials });
+      const tables = await getRemoteTables({ credentials });
+
+      remoteTables.value = tables.map((name) => ({ source: name, target: name }));
       localTables.value = [];
     } catch (error) {
       toast.className = "text-bg-danger";
@@ -482,7 +520,7 @@
 
       (async () => {
         try {
-          await restoreTables(uid, { credentials, tableNames: localTables.value });
+          await restoreTables(uid, { credentials, tables: localTables.value });
         } catch (error) {
           toast.className = "text-bg-danger";
           toast.message = error.response?.data?.message ?? error.message;
@@ -527,7 +565,7 @@
   };
 
   const restore = async () => {
-    Object.values(localTables.value).map((tableName) => progress.value.set(tableName, false));
+    Object.values(localTables.value).map((table) => progress.value.set(table.source, false));
 
     const uid = generateString(32);
     const eventSourceURL = interpolate(`${axios.defaults.baseURL}${ROUTES.DATABASE.STREAM}`, { uid });
@@ -539,8 +577,11 @@
   };
 
   const toggle = (table) => {
-    const shouldRestore = localTables.value.includes(table);
-    localTables.value = shouldRestore ? localTables.value.filter((t) => t !== table) : [...localTables.value, table];
+    const shouldRestore = Boolean(find(localTables.value, table));
+
+    localTables.value = shouldRestore
+      ? localTables.value.filter((t) => t.source !== table.source)
+      : [...localTables.value, table];
   };
 
   const cancel = () => {
@@ -587,5 +628,10 @@
     max-height: 512px;
     overflow-y: scroll;
     overflow-x: hidden;
+  }
+
+  .w-30px {
+    width: 30px;
+    max-width: 30px;
   }
 </style>

@@ -132,27 +132,28 @@ export default class TableServiceProvider {
   }
 
   /**
-   * @param {string} tableName
+   * @param {string} sourceTableName
+   * @param {string} targetTableName
    * @param {DatabaseServiceProvider} DatabaseServiceProvider
    *
    * @returns {Promise}
    */
-  static async *restore(tableName, DatabaseServiceProvider) {
-    const { Table } = await DatabaseServiceProvider.SOURCE.TableService.describe(tableName);
+  static async *restore(sourceTableName, targetTableName, DatabaseServiceProvider) {
+    const { Table } = await DatabaseServiceProvider.SOURCE.TableService.describe(sourceTableName);
 
     await Promise.allSettled([
-      DatabaseServiceProvider.TARGET.TableService.destroy(tableName),
+      DatabaseServiceProvider.TARGET.TableService.destroy(targetTableName),
       waitUntilTableNotExists(
         { client: DatabaseServiceProvider.TARGET.AWS.dynamodb, maxWaitTime: 60 },
-        { TableName: tableName },
+        { TableName: targetTableName },
       ),
     ]);
 
     await Promise.allSettled([
-      DatabaseServiceProvider.TARGET.TableService.create(constructSchema(Table)),
+      DatabaseServiceProvider.TARGET.TableService.create({ ...constructSchema(Table), TableName: targetTableName }),
       waitUntilTableExists(
         { client: DatabaseServiceProvider.TARGET.AWS.dynamodb, maxWaitTime: 60 },
-        { TableName: tableName },
+        { TableName: targetTableName },
       ),
     ]);
 
@@ -161,15 +162,15 @@ export default class TableServiceProvider {
 
     do {
       // eslint-disable-next-line no-await-in-loop
-      const response = await DatabaseServiceProvider.SOURCE.ItemService.fetch(OPERATIONS.SCAN, tableName, params);
+      const response = await DatabaseServiceProvider.SOURCE.ItemService.fetch(OPERATIONS.SCAN, sourceTableName, params);
 
       const { Items = [], LastEvaluatedKey = null } = response;
       // eslint-disable-next-line no-await-in-loop
       await Promise.all(
-        Items.map((item) => DatabaseServiceProvider.TARGET.ItemService.create(tableName, schema, item)),
+        Items.map((item) => DatabaseServiceProvider.TARGET.ItemService.create(targetTableName, schema, item)),
       );
 
-      yield await DatabaseServiceProvider.compare(tableName);
+      yield await DatabaseServiceProvider.compare(sourceTableName, targetTableName);
 
       params.ExclusiveStartKey = LastEvaluatedKey;
     } while (params.ExclusiveStartKey);
