@@ -1055,10 +1055,10 @@
     "@babel/plugin-transform-typescript" "^7.25.9"
     "@vue/babel-plugin-jsx" "^1.2.5"
 
-"@vitejs/plugin-vue@^5.2.1":
-  version "5.2.1"
-  resolved "https://registry.yarnpkg.com/@vitejs/plugin-vue/-/plugin-vue-5.2.1.tgz#d1491f678ee3af899f7ae57d9c21dc52a65c7133"
-  integrity sha512-cxh314tzaWwOLqVes2gnnCtvBDcM1UMdn+iFR+UjAn411dPT3tOmqrJjbMd7koZpMAmBM/GqeV4n9ge7JSiJJQ==
+"@vitejs/plugin-vue@^5.2.2":
+  version "5.2.2"
+  resolved "https://registry.yarnpkg.com/@vitejs/plugin-vue/-/plugin-vue-5.2.2.tgz#001dda4e6229ea17972f4a1fb04090674523c6ad"
+  integrity sha512-IY0aPonWZI2huxrWjoSBUQX14GThitmr1sc2OUJymcgnY5RlUI7HoXGAnFEoVNRsck/kS6inGvxCN6CoHu86yQ==
 
 "@volar/language-core@2.4.11", "@volar/language-core@~2.4.11":
   version "2.4.11"
