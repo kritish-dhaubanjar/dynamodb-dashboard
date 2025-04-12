@@ -17,6 +17,8 @@ app.use(cors({ origin: "*" }));
 app.use(morgan("dev"));
 app.use(express.json());
 
+app.set('json replacer', (_key, value) => typeof value === 'bigint' ? value.toString() : value);
+
 // api
 app.use("/dynamodb/api", routes);
 
