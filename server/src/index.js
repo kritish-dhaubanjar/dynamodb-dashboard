@@ -28,7 +28,7 @@ app.get("/dynamodb/*file", (_req, res) => {
   res.sendFile(path.resolve(__dirname, "..", "public", "index.html"));
 });
 
-app.get("{*file}", (_req, res)  => {
+app.get("{*file}", (_req, res) => {
   res.redirect("/dynamodb");
 });
 

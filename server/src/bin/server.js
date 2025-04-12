@@ -22,7 +22,7 @@ export default ({ port, host, debug, prefix }) => {
   }
 
   // eg: /dynamodb/api
-  const SPA = `/${prefix}/*`;
+  const SPA = `/${prefix}/{*file}`;
   const ASSETS = `/${prefix}`;
   const API = `/${prefix}/api`;
 
@@ -37,7 +37,7 @@ export default ({ port, host, debug, prefix }) => {
     res.sendFile(path.resolve(__dirname, "..", "public", "index.html"));
   });
 
-  app.get("*", (_req, res) => {
+  app.get("*file", (_req, res) => {
     res.redirect(ASSETS);
   });
 
