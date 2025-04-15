@@ -1,4 +1,5 @@
 import { get, set, pick } from "lodash";
+import { NumberValue } from "@aws-sdk/lib-dynamodb";
 import { BillingMode } from "@aws-sdk/client-dynamodb";
 import { create as TableSchema } from "../schemas/table.joi";
 
@@ -60,6 +61,12 @@ export function serialize(Item, path = "", callback = () => {}) {
       return;
     }
 
+    if (typeof value === "bigint") {
+      callback(currentPath);
+      output[key] = String(value);
+      return;
+    }
+
     if (value instanceof Array) {
       output[key] = value.map((item, index) => serialize(item, `${currentPath}[${index}]`, callback));
       return;
@@ -92,6 +99,10 @@ export function deserialize(source = {}, object = {}) {
 
     if (value instanceof Array) {
       set(object, path, new Set(value));
+    }
+
+    if (typeof value === "string") {
+      set(object, path, new NumberValue(value));
     }
   });
 
