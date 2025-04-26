@@ -89,7 +89,6 @@
           <br />
           <RetrieveNext
             :disabled="store.ui.state.isLoading"
-            v-if="store.dynamodb.state.ExclusiveStartKey"
             @next="fetchHandler"
           />
 
@@ -240,7 +239,7 @@
       }
 
       store.dynamodb.setters.init({ ...dynamodb, ...data });
-      store.ui.setters.setTable(table, [...rows, ...data.Items]);
+      store.ui.setters.setTable(table, [...rows, ...data.Items], data.Count, data.ScannedCount);
     } catch (error: any) {
       toast.className = "text-bg-danger";
       toast.message = error.response.data.message ?? error.message;
