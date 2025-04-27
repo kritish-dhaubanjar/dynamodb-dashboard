@@ -25,7 +25,7 @@ app.use("/dynamodb", express.static(path.join(__dirname, "..", "public")));
 
 // spa
 app.get("/dynamodb/*file", (_req, res) => {
-  res.sendFile(path.resolve(__dirname, "..", "public", "index.html"));
+  res.sendFile("index.html", { root: path.resolve(__dirname, "..", "public") });
 });
 
 app.get("{*file}", (_req, res) => {

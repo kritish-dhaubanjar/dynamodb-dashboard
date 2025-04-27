@@ -34,7 +34,7 @@ export default ({ port, host, debug, prefix }) => {
 
   // spa
   app.get(SPA, (_req, res) => {
-    res.sendFile(path.resolve(__dirname, "..", "public", "index.html"));
+    res.sendFile("index.html", { root: path.resolve(__dirname, "..", "public") });
   });
 
   app.get("*file", (_req, res) => {
