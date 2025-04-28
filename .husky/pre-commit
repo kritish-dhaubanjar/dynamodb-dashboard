@@ -1,0 +1,2 @@
+yarn app:prettify
+yarn server:prettify

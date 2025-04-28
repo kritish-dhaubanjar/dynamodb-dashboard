@@ -10,7 +10,8 @@
     "server:lint": "cd app && yarn lint",
     "server:lint:fix": "cd app && yarn lint:fix",
     "app:lint": "cd app && yarn lint",
-    "app:lint:fix": "cd app && yarn lint:fix"
+    "app:lint:fix": "cd app && yarn lint:fix",
+    "prepare": "husky"
   },
   "devDependencies": {
     "husky": "^9.1.7",
