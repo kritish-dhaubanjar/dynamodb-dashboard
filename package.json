@@ -13,6 +13,7 @@
     "app:lint:fix": "cd app && yarn lint:fix"
   },
   "devDependencies": {
+    "husky": "^9.1.7",
     "prettier": "^3.0.3"
   }
 }
