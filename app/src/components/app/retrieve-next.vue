@@ -14,7 +14,13 @@
       • Items scanned:
       <strong>{{ store.ui.state.table.scannedCount }}</strong>
       • Efficiency:
-      <strong>{{ Number((store.ui.state.table.count / store.ui.state.table.scannedCount) * 100).toFixed(2) }}</strong>
+      <strong>
+        {{
+          store.ui.state.table.scannedCount
+            ? Number((store.ui.state.table.count / store.ui.state.table.scannedCount) * 100).toFixed(2)
+            : "100.00"
+        }}
+      </strong>
       %
     </p>
 
