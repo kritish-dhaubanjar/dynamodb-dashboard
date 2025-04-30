@@ -26,7 +26,7 @@ clean:
 	rm -rf ./server/node_modules
 
 start: all
-	$(NODE) ./server/build/bin/cli.js start -o
+	$(NODE) ./server/build/bin/cli.js start
 
 publish: all
 	rm ./server/README.md
