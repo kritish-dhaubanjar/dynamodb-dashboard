@@ -311,6 +311,14 @@
                               >
                                 Import Tables
                               </th>
+                              <th
+                                scope="col"
+                                class="border-end-0"
+                              ></th>
+                              <th
+                                scope="col"
+                                class="border-end-0"
+                              ></th>
                             </tr>
                           </thead>
                           <tbody>
