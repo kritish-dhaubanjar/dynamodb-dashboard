@@ -1,5 +1,6 @@
 {
   "name": "dynamodb-dashboard-app",
+  "type": "module",
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
