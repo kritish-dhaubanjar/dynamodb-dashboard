@@ -177,7 +177,6 @@
               </small>
             </div>
             <div class="card-body border-0 table-list">
-
               <div class="row">
                 <div class="col-6">
                   <ul class="list-group rounded-0">
@@ -261,7 +260,7 @@
                               <input
                                 v-model="table.target"
                                 type="text"
-                                class="form-control rounded-0 border-0"
+                                class="form-control rounded-0 border-0 min-w-max-content"
                               />
                             </td>
                           </tr>
@@ -426,7 +425,6 @@
                 </button>
               </div>
             </div>
-
           </div>
         </div>
       </div>
@@ -636,5 +634,9 @@
   .w-30px {
     width: 30px;
     max-width: 30px;
+  }
+
+  .min-w-max-content {
+    min-width: max-content;
   }
 </style>
