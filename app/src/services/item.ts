@@ -7,6 +7,7 @@ export async function queryItems(tableName: string, params: any) {
   const url = interpolate(ROUTES.ITEM.QUERY, { tableName });
 
   const filteredParams: any = {};
+
   Object.keys(params).forEach((key) => {
     if (!isNil(params[key])) {
       filteredParams[key] = params[key];
@@ -22,6 +23,7 @@ export async function scanItems(tableName: string, params: any) {
   const url = interpolate(ROUTES.ITEM.SCAN, { tableName });
 
   const filteredParams: any = {};
+
   Object.keys(params).forEach((key) => {
     if (!isNil(params[key])) {
       filteredParams[key] = params[key];
@@ -29,6 +31,44 @@ export async function scanItems(tableName: string, params: any) {
   });
 
   const { data } = await axios.post(url, filteredParams);
+
+  return data;
+}
+
+export async function countItems(tableName: string, params: any) {
+  const url = interpolate(ROUTES.ITEM.COUNT, { tableName });
+
+  const filteredParams: any = {};
+
+  Object.keys(params).forEach((key) => {
+    if (!isNil(params[key])) {
+      filteredParams[key] = params[key];
+    }
+  });
+
+  delete filteredParams.Limit;
+  delete filteredParams.ExclusiveStartKey;
+
+  const { data } = await axios.post(url, filteredParams);
+
+  return data;
+}
+
+export async function truncateItems(tableName: string, params: any) {
+  const url = interpolate(ROUTES.ITEM.TRUNCATE, { tableName });
+
+  const filteredParams: any = {};
+
+  Object.keys(params).forEach((key) => {
+    if (!isNil(params[key])) {
+      filteredParams[key] = params[key];
+    }
+  });
+
+  delete filteredParams.Limit;
+  delete filteredParams.ExclusiveStartKey;
+
+  const { data } = await axios.put(url, filteredParams);
 
   return data;
 }

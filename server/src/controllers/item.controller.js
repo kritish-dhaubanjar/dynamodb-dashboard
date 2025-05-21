@@ -39,6 +39,26 @@ export async function query(req, res, next) {
   }
 }
 
+export async function count(req, res, next) {
+  try {
+    const { tableName } = req.params;
+    const data = await ItemService.count(tableName, req.body);
+    res.json(data);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function truncate(req, res, next) {
+  try {
+    const { tableName } = req.params;
+    const data = await ItemService.truncate(tableName, req.schema, req.body);
+    res.json(data);
+  } catch (error) {
+    next(error);
+  }
+}
+
 export async function destroy(req, res, next) {
   try {
     const { tableName } = req.params;

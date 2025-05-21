@@ -22,6 +22,8 @@ const routes = {
     UPDATE: "/tables/:tableName/items",
     SCAN: "/tables/:tableName/items/scan",
     QUERY: "/tables/:tableName/items/query",
+    COUNT: "/tables/:tableName/items/count",
+    TRUNCATE: "/tables/:tableName/items/truncate",
     DELETE: "/tables/:tableName/items/delete",
   },
 };

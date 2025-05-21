@@ -26,6 +26,11 @@ export const query = Joi.object({
   ScanIndexForward: Joi.boolean().optional(),
 });
 
+export const count = Joi.alternatives().try(
+  scan.keys({ Limit: Joi.forbidden(), ExclusiveStartKey: Joi.forbidden() }),
+  query.keys({ Limit: Joi.forbidden(), ExclusiveStartKey: Joi.forbidden() }),
+);
+
 export const destroy = Joi.array()
   .items(
     Joi.object({

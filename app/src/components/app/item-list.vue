@@ -269,7 +269,7 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Delete {{ selectedItems.length }} items</h5>
+          <h5 class="modal-title">Delete {{ count || selectedItems.length }} items</h5>
           <button
             type="button"
             class="btn-close"
@@ -280,7 +280,7 @@
         <div class="modal-body">
           <p>
             Delete
-            <b>{{ selectedItems.length }}</b>
+            <b>{{ count || selectedItems.length }}</b>
             item from the
             <b>{{ store.table.state.Table.TableName }}</b>
             table? This action cannot be reversed.
@@ -337,7 +337,7 @@
   import { throttle } from "lodash";
   import * as bootstrap from "bootstrap";
   import { useRouter } from "vue-router";
-  import { destroyItems } from "@/services/item";
+  import { destroyItems, truncateItems } from "@/services/item";
   import { openSearchPanel } from "@codemirror/search";
   import codeMirrorConfig from "@/views/items/codeMirrorConfig";
   import { computed, inject, onMounted, ref, watch, watchEffect, reactive, nextTick } from "vue";
@@ -346,11 +346,13 @@
 
   const props = defineProps({
     action: String,
+    isSelected: Boolean,
+    count: Number,
   });
 
   const router = useRouter();
   const store: any = inject("store");
-  const emit = defineEmits(["reset"]);
+  const emit = defineEmits(["reset", "unselect"]);
 
   const sort = reactive({
     key: null,
@@ -424,6 +426,12 @@
   const tableHeaderContainer = ref(null);
 
   const metatbody = ref(null);
+
+  watchEffect(() => {
+    if (props.isSelected) {
+      selectedItems.value = [...items.value];
+    }
+  });
 
   watch(
     () => items.value,
@@ -535,6 +543,8 @@
   };
 
   const select = (item: any) => {
+    emit("unselect");
+
     const index = find(item);
 
     if (index > -1) {
@@ -545,8 +555,14 @@
   };
 
   const toggle = () => {
+    emit("unselect");
+
     if (selectedItems.value.length) selectedItems.value = [];
     else selectedItems.value = [...items.value];
+  };
+
+  const clear = () => {
+    selectedItems.value = [];
   };
 
   watchEffect(() => {
@@ -569,22 +585,29 @@
   const destroy = async () => {
     const table = store.table.state.Table;
     const tableName = table.TableName;
+    const dynamodb = store.dynamodb.state;
 
-    const payload = [];
+    if (props.isSelected) {
+      await truncateItems(tableName, dynamodb);
 
-    selectedItems.value.forEach((item) => {
-      const { query } = handleItem(item);
-      payload.push(query);
-    });
+      location.reload();
+    } else {
+      const payload = [];
 
-    await destroyItems(tableName, payload);
+      selectedItems.value.forEach((item) => {
+        const { query } = handleItem(item);
+        payload.push(query);
+      });
 
-    const filteredRows = store.ui.state.table.rows.filter((item) => {
-      const index = find(item);
-      return index === -1;
-    });
+      await destroyItems(tableName, payload);
 
-    store.ui.setters.setTable(table, [...filteredRows]);
+      const filteredRows = store.ui.state.table.rows.filter((item) => {
+        const index = find(item);
+        return index === -1;
+      });
+
+      store.ui.setters.setTable(table, [...filteredRows]);
+    }
 
     modal.value.hide();
   };
@@ -618,6 +641,8 @@
       window.getSelection()?.empty() && window.getSelection()?.removeAllRanges();
     }
   };
+
+  defineExpose({ clear });
 </script>
 
 <style scoped lang="scss">

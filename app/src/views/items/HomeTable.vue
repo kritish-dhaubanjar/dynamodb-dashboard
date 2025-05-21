@@ -92,8 +92,15 @@
 
       <div class="table-container bg-white shadow-sm">
         <ItemList
+          ref="clearRef"
           :action="action"
           @reset="action = ''"
+          :count="selection.count"
+          :isSelected="selection.isSelected"
+          @unselect="
+            selection.count = 0;
+            selection.isSelected = false;
+          "
         >
           <br />
           <RetrieveNext
@@ -104,15 +111,35 @@
           <TableActions @action="(type) => (action = type)" />
 
           <div class="d-flex justify-content-between align-items-center px-4 py-3">
-            <div>
+            <div class="d-flex">
               <div v-if="store.ui.state.table.selectedRows > 0">
-                <strong>{{ `${store.ui.state.table.selectedRows} ` }}</strong>
+                <strong>
+                  {{ selection.isSelected ? `${selection.count} ` : `${store.ui.state.table.selectedRows} ` }}
+                </strong>
 
                 <span v-if="store.ui.state.table.selectedRows > 1">items</span>
                 <span v-else>item</span>
                 selected
               </div>
+
+              <div
+                class="ms-3"
+                v-if="
+                  store.ui.state.table.selectedRows > 0 &&
+                  (store.ui.state.table.count !== store.ui.state.table.selectedRows ||
+                    store.dynamodb.state.ExclusiveStartKey)
+                "
+              >
+                <button
+                  class="btn btn-outline-primary py-0 px-2"
+                  @click="selectAll"
+                >
+                  <span v-if="selection.isSelected">Clear selection</span>
+                  <span v-else>Select all items</span>
+                </button>
+              </div>
             </div>
+
             <TablePaginate @next="fetchHandler" />
           </div>
         </ItemList>
@@ -257,7 +284,7 @@
   import { computed, inject, onBeforeMount, onMounted, reactive, ref, watch } from "vue";
 
   import { deleteTable, truncateTable, getTable, getTables } from "@/services/table";
-  import { scanItems, queryItems } from "@/services/item";
+  import { scanItems, queryItems, countItems } from "@/services/item";
   import { generateDynamodbParameters } from "@/utils/table";
 
   import type table from "@/store/table";
@@ -279,6 +306,9 @@
     message: "",
   });
 
+  const clearRef = ref(null);
+  const selection = reactive({ count: 0, isSelected: false });
+
   const activeTableName = ref("");
 
   const rows = computed(() => store.ui.state.table.rows);
@@ -287,6 +317,9 @@
   const prefetchedPageCount = computed(() => Math.ceil(rows.value.length / limit.value));
 
   const fetchHandler = async () => {
+    selection.count - 0;
+    selection.isSelected = false;
+
     const dynamodb = store.dynamodb.state;
     const table = store.table.state.Table;
     const rows = store.ui.state.table.rows;
@@ -377,6 +410,9 @@
     ],
 
     async ([tableName, _limit, _page, _parameters, _indexName, requestId], oldValues) => {
+      selection.count - 0;
+      selection.isSelected = false;
+
       if (!tableName) return;
 
       // @TABLE
@@ -486,6 +522,31 @@
       await truncateTable(activeTableName.value);
       modal.value?.hide();
       window.location.href = "/";
+    } catch (error) {
+      toast.className = "text-bg-danger";
+      toast.message = error.response.data.message ?? error.message;
+      const toastEl = new bootstrap.Toast(toastRef.value, { delay: 5000 });
+      setTimeout(() => toastEl.show(), 0);
+    }
+  };
+
+  const selectAll = async () => {
+    if (selection.isSelected) {
+      selection.count = 0;
+      selection.isSelected = false;
+      clearRef.value.clear();
+
+      return;
+    }
+
+    const table = store.table.state.Table;
+    const dynamodb = store.dynamodb.state;
+
+    try {
+      const data = await countItems(table.TableName, dynamodb);
+
+      selection.count = data.Count;
+      selection.isSelected = true;
     } catch (error) {
       toast.className = "text-bg-danger";
       toast.message = error.response.data.message ?? error.message;

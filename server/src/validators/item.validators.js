@@ -1,5 +1,5 @@
 import Joi from "joi";
-import { scan, destroy, query } from "../schemas/item.joi";
+import { scan, destroy, query, count } from "../schemas/item.joi";
 import TableServiceProvider from "../services/table.service";
 
 const TableService = new TableServiceProvider();
@@ -26,6 +26,45 @@ export function validateQuery(req, _res, next) {
   }
 
   next();
+}
+
+export function validateCount(req, _res, next) {
+  const { error } = count.validate(req.body);
+
+  if (error) {
+    next(error);
+
+    return;
+  }
+
+  next();
+}
+
+export async function validateTruncate(req, _res, next) {
+  const { tableName } = req.params;
+
+  try {
+    const { Table } = await TableService.describe(tableName);
+
+    const schema = {};
+
+    Table.KeySchema.forEach(({ AttributeName }) => {
+      schema[AttributeName] = Joi.any().required();
+    });
+
+    const { error } = count.validate(req.body);
+
+    if (error) {
+      next(error);
+      return;
+    }
+
+    req.schema = Object.keys(schema);
+
+    next();
+  } catch (error) {
+    next(error);
+  }
 }
 
 export function validateDelete(req, _res, next) {

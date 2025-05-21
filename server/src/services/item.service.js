@@ -2,6 +2,7 @@ import { chunk, pick } from "lodash";
 
 import AWS from "../config/aws";
 import { deserialize, serialize } from "../utils/dynamodb";
+import { OPERATIONS } from "../constants/dynamodb";
 
 export default class ItemServiceProvider {
   /**
@@ -115,6 +116,39 @@ export default class ItemServiceProvider {
 
   /**
    * @param {string} tableName
+   * @param {object} conditions
+   * @param {function} callback
+   *
+   * @returns {Promise<{ Count: number, ScannedCount: number }>}
+   */
+  async all(tableName, conditions, callback = async () => {}) {
+    let count = 0;
+    let scannedCount = 0;
+
+    const params = {
+      ...conditions,
+      Limit: 10000,
+      TableName: tableName,
+    };
+
+    const operation = Boolean(params.KeyConditionExpression) ? OPERATIONS.QUERY : OPERATIONS.SCAN;
+
+    do {
+      const response = await this.AWS.document[operation](params);
+
+      await callback(tableName, response.Items);
+
+      count += response.Items.length;
+      scannedCount += response.ScannedCount;
+
+      params.ExclusiveStartKey = response.LastEvaluatedKey;
+    } while (params.ExclusiveStartKey);
+
+    return { Count: count, ScannedCount: scannedCount };
+  }
+
+  /**
+   * @param {string} tableName
    * @param {object} schema
    * @param {object} body
    *
@@ -188,6 +222,37 @@ export default class ItemServiceProvider {
         },
       ],
     });
+
+    return response;
+  }
+
+  /**
+   * @param {string} tableName
+   * @param {object} conditions
+   *
+   * @returns {Promise<{ Count: number, ScannedCount: number }>}
+   */
+  async count(tableName, conditions) {
+    const response = await this.all(tableName, conditions);
+
+    return response;
+  }
+
+  /**
+   * @param {string} tableName
+   * @param {object} conditions
+   *
+   * @returns {Promise<{ Count: number, ScannedCount: number }>}
+   */
+  async truncate(tableName, schema, conditions) {
+    const destroyer = async (tableName, items) => {
+      const requests = items.map((item) => ({ DeleteRequest: { Key: pick(item, schema) } }));
+      const response = await this.destroy(tableName, requests);
+
+      return response;
+    };
+
+    const response = await this.all(tableName, conditions, destroyer);
 
     return response;
   }
