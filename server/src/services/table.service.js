@@ -125,7 +125,7 @@ export default class TableServiceProvider {
     const response = await this.describe(tableName);
 
     await this.destroy(tableName);
-    await this.create(response.Table);
+    await this.create(constructSchema(response.Table));
 
     return response;
   }
