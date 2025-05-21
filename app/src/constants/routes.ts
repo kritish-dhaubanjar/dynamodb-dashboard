@@ -5,6 +5,7 @@ const routes = {
     GET: "/tables/:tableName",
     DELETE: "/tables/:tableName",
     UPDATE: "/tables/:tableName",
+    TRUNCATE: "/tables/:tableName/truncate",
     DESCRIBE: "/tables/:tableName/describe",
     TTL: "/tables/:tableName/time-to-live",
   },

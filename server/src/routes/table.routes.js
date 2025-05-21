@@ -12,6 +12,7 @@ router.put("/:tableName/time-to-live", [validateUpdateTimeToLive], TableControll
 
 router.delete("/:tableName", TableController.destroy);
 router.post("/", [validateCreate], TableController.create);
+router.put("/:tableName/truncate", TableController.truncate);
 router.put("/:tableName", [validateUpdate], TableController.update);
 
 export default router;

@@ -31,6 +31,15 @@
               >
                 Delete Table
               </a>
+              <a
+                href="#"
+                class="dropdown-item"
+                @click.prevent
+                data-bs-toggle="modal"
+                data-bs-target="#truncate-table-modal"
+              >
+                Truncate Table
+              </a>
               <RouterLink
                 v-if="activeTableName"
                 class="dropdown-item"
@@ -107,6 +116,60 @@
             <TablePaginate @next="fetchHandler" />
           </div>
         </ItemList>
+      </div>
+    </div>
+
+    <!--  -->
+    <div
+      id="truncate-table-modal"
+      class="modal"
+      tabindex="-1"
+      ref="modalRef"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Truncate table</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p class="mb-0">
+              You are about to truncate
+              <b>{{ activeTableName }}</b>
+              table.
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary rounded-0"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+
+            <button
+              class="btn btn-danger rounded-0"
+              type="button"
+              :disabled="store.ui.state.isLoading"
+              @click="truncate"
+            >
+              <span
+                v-if="store.ui.state.isLoading"
+                class="spinner-grow spinner-grow-sm"
+                role="status"
+                aria-hidden="true"
+              ></span>
+              <span class="visually-hidden">Loading...</span>
+              Truncate Table
+            </button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -193,7 +256,7 @@
   import { useRoute, useRouter } from "vue-router";
   import { computed, inject, onBeforeMount, onMounted, reactive, ref, watch } from "vue";
 
-  import { deleteTable, getTable, getTables } from "@/services/table";
+  import { deleteTable, truncateTable, getTable, getTables } from "@/services/table";
   import { scanItems, queryItems } from "@/services/item";
   import { generateDynamodbParameters } from "@/utils/table";
 
@@ -408,6 +471,19 @@
   const destroy = async () => {
     try {
       await deleteTable(activeTableName.value);
+      modal.value?.hide();
+      window.location.href = "/";
+    } catch (error) {
+      toast.className = "text-bg-danger";
+      toast.message = error.response.data.message ?? error.message;
+      const toastEl = new bootstrap.Toast(toastRef.value, { delay: 5000 });
+      setTimeout(() => toastEl.show(), 0);
+    }
+  };
+
+  const truncate = async () => {
+    try {
+      await truncateTable(activeTableName.value);
       modal.value?.hide();
       window.location.href = "/";
     } catch (error) {

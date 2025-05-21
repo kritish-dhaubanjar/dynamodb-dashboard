@@ -77,6 +77,17 @@ export async function destroy(req, res, next) {
   }
 }
 
+export async function truncate(req, res, next) {
+  try {
+    const { tableName } = req.params;
+    const data = await TableService.truncate(tableName);
+
+    res.json(data);
+  } catch (error) {
+    next(error);
+  }
+}
+
 export async function update(req, res, next) {
   try {
     const { tableName } = req.params;

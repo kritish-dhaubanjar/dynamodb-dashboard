@@ -118,6 +118,20 @@ export default class TableServiceProvider {
 
   /**
    * @param {string} tableName
+   *
+   * @returns {Promise<object>}
+   */
+  async truncate(tableName) {
+    const response = await this.describe(tableName);
+
+    await this.destroy(tableName);
+    await this.create(response.Table);
+
+    return response;
+  }
+
+  /**
+   * @param {string} tableName
    * @param {object} params
    *
    * @returns {Promise<object>}

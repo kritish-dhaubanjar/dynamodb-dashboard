@@ -42,6 +42,13 @@ export async function deleteTable(tableName: string) {
   return data;
 }
 
+export async function truncateTable(tableName: string) {
+  const url = interpolate(ROUTES.TABLE.TRUNCATE, { tableName });
+  const { data } = await axios.put(url);
+
+  return data;
+}
+
 export async function updateTable(tableName: string, body: object) {
   const url = interpolate(ROUTES.TABLE.UPDATE, { tableName });
   const { data } = await axios.put(url, body);
