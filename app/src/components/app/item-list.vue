@@ -590,7 +590,7 @@
     if (props.isSelected) {
       await truncateItems(tableName, dynamodb);
 
-      location.reload();
+      store.ui.setters.setTable(table, []);
     } else {
       const payload = [];
 
