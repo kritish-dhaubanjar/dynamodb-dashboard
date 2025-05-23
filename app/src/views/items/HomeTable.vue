@@ -151,7 +151,7 @@
       id="truncate-table-modal"
       class="modal"
       tabindex="-1"
-      ref="modalRef"
+      ref="truncateModalRef"
     >
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -205,7 +205,7 @@
       id="delete-table-modal"
       class="modal"
       tabindex="-1"
-      ref="modalRef"
+      ref="deleteModalRef"
     >
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -501,13 +501,16 @@
   //
   const action = ref("");
 
-  const modal = ref(null);
-  const modalRef = ref(null);
+  const deleteModal = ref(null);
+  const truncateModal = ref(null);
+
+  const deleteModalRef = ref(null);
+  const truncateModalRef = ref(null);
 
   const destroy = async () => {
     try {
       await deleteTable(activeTableName.value);
-      modal.value?.hide();
+      deleteModal.value?.hide();
       window.location.href = "/";
     } catch (error) {
       toast.className = "text-bg-danger";
@@ -520,8 +523,22 @@
   const truncate = async () => {
     try {
       await truncateTable(activeTableName.value);
-      modal.value?.hide();
-      window.location.href = "/";
+
+      const table = await getTable(activeTableName.value);
+      store.table.setters.setTable(table);
+
+      truncateModal.value?.hide();
+
+      router.push({
+        name: "home",
+        query: {
+          limit: store.dynamodb.state.Limit,
+          tableName: activeTableName.value,
+          page: 1,
+          operation: "SCAN",
+          indexName: activeTableName.value,
+        },
+      });
     } catch (error) {
       toast.className = "text-bg-danger";
       toast.message = error.response.data.message ?? error.message;
@@ -556,7 +573,8 @@
   };
 
   onMounted(() => {
-    modal.value = new bootstrap.Modal(modalRef.value, {});
+    deleteModal.value = new bootstrap.Modal(deleteModalRef.value, {});
+    truncateModal.value = new bootstrap.Modal(truncateModalRef.value, {});
   });
 </script>
 
