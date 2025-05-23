@@ -521,7 +521,20 @@
     try {
       await truncateTable(activeTableName.value);
       modal.value?.hide();
-      window.location.href = "/";
+
+      const table = await getTable(activeTableName.value);
+      store.table.setters.setTable(table);
+
+      router.push({
+        name: "home",
+        query: {
+          limit: store.dynamodb.state.Limit,
+          tableName: activeTableName.value,
+          page: 1,
+          operation: "SCAN",
+          indexName: activeTableName.value,
+        },
+      });
     } catch (error) {
       toast.className = "text-bg-danger";
       toast.message = error.response.data.message ?? error.message;
