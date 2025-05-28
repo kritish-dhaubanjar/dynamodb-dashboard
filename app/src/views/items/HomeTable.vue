@@ -526,19 +526,14 @@
 
       const table = await getTable(activeTableName.value);
       store.table.setters.setTable(table);
+      store.ui.setters.setTable({}, []); // Clear the current table data
+
+      // Reset pagination and fetch new data
+      store.ui.setters.setPage(1);
+      store.dynamodb.setters.setExclusiveStartKey(null);
+      await fetchHandler();
 
       truncateModal.value?.hide();
-
-      router.push({
-        name: "home",
-        query: {
-          limit: store.dynamodb.state.Limit,
-          tableName: activeTableName.value,
-          page: 1,
-          operation: "SCAN",
-          indexName: activeTableName.value,
-        },
-      });
     } catch (error) {
       toast.className = "text-bg-danger";
       toast.message = error.response.data.message ?? error.message;

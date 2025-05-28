@@ -142,7 +142,7 @@
   import * as bootstrap from "bootstrap";
 
   const store: any = inject("store");
-  const emit = defineEmits(["action"]);
+  const emit = defineEmits(["action", "reload"]);
   const route = useRoute();
 
   const rows = computed(() => store.ui.state.table.rows);
@@ -154,7 +154,7 @@
   const downloadSize = ref("");
   const isComplete = ref(false);
 
-  const reload = () => window.location.reload();
+  const reload = () => emit("reload");
 
   const tableName = computed(() => {
     return store.table?.Table?.TableName || route.query.tableName?.toString();
