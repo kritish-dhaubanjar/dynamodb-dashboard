@@ -145,6 +145,13 @@
   const emit = defineEmits(["action", "reload"]);
   const route = useRoute();
 
+  const props = defineProps({
+    tableRef: {
+      type: Object,
+      required: true
+    }
+  });
+
   const rows = computed(() => store.ui.state.table.rows);
   const selectedRows = computed(() => store.ui.state.table.selectedRows);
   const downloadToastRef = ref<HTMLElement | null>(null);
@@ -194,9 +201,9 @@
     }, 100);
 
     try {
-      // If there are selected rows, use them; otherwise use all rows
-      const dataToDownload =
-        selectedRows.value > 0 ? rows.value.filter((_: any, index: number) => index < selectedRows.value) : rows.value;
+      // Get the actual selected items from the item-list component
+      const selectedItems = props.tableRef.selectedItems || [];
+      const dataToDownload = selectedItems.length > 0 ? selectedItems : rows.value;
 
       const dataStr = JSON.stringify(dataToDownload, null, 2);
       const dataUri = "data:application/json;charset=utf-8," + encodeURIComponent(dataStr);

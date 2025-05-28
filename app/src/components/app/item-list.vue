@@ -642,7 +642,7 @@
     }
   };
 
-  defineExpose({ clear });
+  defineExpose({ clear, selectedItems });
 </script>
 
 <style scoped lang="scss">
