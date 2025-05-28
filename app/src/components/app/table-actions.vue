@@ -148,8 +148,8 @@
   const props = defineProps({
     tableRef: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   });
 
   const rows = computed(() => store.ui.state.table.rows);

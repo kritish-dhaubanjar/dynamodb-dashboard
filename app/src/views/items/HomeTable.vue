@@ -108,8 +108,8 @@
             @next="fetchHandler"
           />
 
-          <TableActions 
-            @action="(type) => (action = type)" 
+          <TableActions
+            @action="(type) => (action = type)"
             :table-ref="tableRef"
           />
 
@@ -314,7 +314,7 @@
     selectedItem: Array<object>;
   }>({
     clear: () => {},
-    selectedItem: []
+    selectedItem: [],
   });
   const selection = reactive({ count: 0, isSelected: false });
 
