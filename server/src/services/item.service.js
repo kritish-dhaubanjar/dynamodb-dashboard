@@ -131,11 +131,13 @@ export default class ItemServiceProvider {
       TableName: tableName,
     };
 
-    const operation = Boolean(params.KeyConditionExpression) ? OPERATIONS.QUERY : OPERATIONS.SCAN;
+    const operation = params.KeyConditionExpression ? OPERATIONS.QUERY : OPERATIONS.SCAN;
 
     do {
+      // eslint-disable-next-line no-await-in-loop
       const response = await this.AWS.document[operation](params);
 
+      // eslint-disable-next-line no-await-in-loop
       await callback(tableName, response.Items);
 
       count += response.Items.length;
@@ -245,9 +247,9 @@ export default class ItemServiceProvider {
    * @returns {Promise<{ Count: number, ScannedCount: number }>}
    */
   async truncate(tableName, schema, conditions) {
-    const destroyer = async (tableName, items) => {
+    const destroyer = async (tableNameParam, items) => {
       const requests = items.map((item) => ({ DeleteRequest: { Key: pick(item, schema) } }));
-      const response = await this.destroy(tableName, requests);
+      const response = await this.destroy(tableNameParam, requests);
 
       return response;
     };

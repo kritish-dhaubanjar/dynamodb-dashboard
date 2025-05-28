@@ -1,5 +1,5 @@
 import { OPERATIONS } from "../constants/dynamodb";
-import { isPartialMatchWith } from "../utils/object";
+import isPartialMatchWith from "../utils/object";
 import ItemServiceProvider from "../services/item.service";
 
 const ItemService = new ItemServiceProvider();

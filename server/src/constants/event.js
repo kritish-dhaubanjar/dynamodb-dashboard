@@ -1,4 +1,4 @@
-export const EVENTS = {
+const EVENTS = {
   BEGIN: "BEGIN",
   SUCCESS: "SUCCESS",
   FAILURE: "FAILURE",
@@ -7,3 +7,5 @@ export const EVENTS = {
   ACK: "ACK",
   PROGRESS: "PROGRESS",
 };
+
+export default EVENTS;

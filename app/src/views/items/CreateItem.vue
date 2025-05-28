@@ -88,8 +88,6 @@
 <script lang="ts">
   import * as bootstrap from "bootstrap";
 
-  import * as CodeMirror from "codemirror";
-
   import { useRoute, useRouter } from "vue-router";
   import { inject, onMounted, reactive, ref, watch } from "vue";
 

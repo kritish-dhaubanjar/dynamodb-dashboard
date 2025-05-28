@@ -11,10 +11,20 @@
     "server:lint:fix": "cd app && yarn lint:fix",
     "app:lint": "cd app && yarn lint",
     "app:lint:fix": "cd app && yarn lint:fix",
-    "prepare": "husky"
+    "prepare": "husky",
+    "lint-staged": "lint-staged"
+  },
+  "lint-staged": {
+    "app/**/*.{js,jsx,ts,tsx}": [
+      "yarn app:prettify"
+    ],
+    "server/**/*.{js,jsx,ts,tsx}": [
+      "yarn server:prettify"
+    ]
   },
   "devDependencies": {
     "husky": "^9.1.7",
+    "lint-staged": "^16.1.0",
     "prettier": "^3.0.3"
   }
 }

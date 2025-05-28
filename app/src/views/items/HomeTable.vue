@@ -290,8 +290,6 @@
   import { scanItems, queryItems, countItems } from "@/services/item";
   import { generateDynamodbParameters } from "@/utils/table";
 
-  import type table from "@/store/table";
-
   import ItemList from "@/components/app/item-list.vue";
   import TableList from "@/components/app/table-list.vue";
   import TableFilter from "@/components/app/table-filter.vue";
@@ -301,7 +299,7 @@
 
   const route = useRoute();
   const router = useRouter();
-  const store: any = inject("store");
+  const store = inject("store") as any;
 
   const toastRef = ref(null);
   const toast = reactive({
@@ -345,9 +343,10 @@
 
       store.dynamodb.setters.init({ ...dynamodb, ...data });
       store.ui.setters.setTable(table, [...rows, ...data.Items], data.Count, data.ScannedCount);
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const err = error as any;
       toast.className = "text-bg-danger";
-      toast.message = error.response.data.message ?? error.message;
+      toast.message = err.response?.data?.message ?? err.message;
       const toastEl = new bootstrap.Toast(toastRef.value, { delay: 5000 });
       setTimeout(() => toastEl.show(), 0);
     }
@@ -425,7 +424,7 @@
       if (!tableName) return;
 
       // @TABLE
-      const [old_tableName, old_limit, old_page, old_parameters, old_indexName, old_requestId] = oldValues ?? [];
+      const [old_tableName, , , old_parameters, old_indexName, old_requestId] = oldValues ?? [];
 
       {
         if (tableName !== old_tableName) {
@@ -450,8 +449,6 @@
 
       if (old_parameters !== _parameters || old_indexName !== _indexName || old_requestId !== requestId) {
         const parameters = JSON.parse(decodeURIComponent(_parameters?.toString() ?? "{}"));
-
-        const dynamodb = { ...store.dynamodb.state };
 
         const dynamodbParameters = generateDynamodbParameters({
           parameters,

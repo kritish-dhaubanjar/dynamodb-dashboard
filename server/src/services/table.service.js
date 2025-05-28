@@ -1,8 +1,7 @@
+import { waitUntilTableExists, waitUntilTableNotExists } from "@aws-sdk/client-dynamodb";
 import AWS from "../config/aws";
 import { OPERATIONS } from "../constants/dynamodb";
 import { constructSchema } from "../utils/dynamodb";
-import DatabaseServiceProvider from "./database.service";
-import { waitUntilTableExists, waitUntilTableNotExists } from "@aws-sdk/client-dynamodb";
 
 export default class TableServiceProvider {
   /**
@@ -152,21 +151,21 @@ export default class TableServiceProvider {
    *
    * @returns {Promise}
    */
-  static async *restore(sourceTableName, targetTableName, DatabaseServiceProvider) {
-    const { Table } = await DatabaseServiceProvider.SOURCE.TableService.describe(sourceTableName);
+  static async *restore(sourceTableName, targetTableName, databaseServiceProvider) {
+    const { Table } = await databaseServiceProvider.SOURCE.TableService.describe(sourceTableName);
 
     await Promise.allSettled([
-      DatabaseServiceProvider.TARGET.TableService.destroy(targetTableName),
+      databaseServiceProvider.TARGET.TableService.destroy(targetTableName),
       waitUntilTableNotExists(
-        { client: DatabaseServiceProvider.TARGET.AWS.dynamodb, maxWaitTime: 60 },
+        { client: databaseServiceProvider.TARGET.AWS.dynamodb, maxWaitTime: 60 },
         { TableName: targetTableName },
       ),
     ]);
 
     await Promise.allSettled([
-      DatabaseServiceProvider.TARGET.TableService.create({ ...constructSchema(Table), TableName: targetTableName }),
+      databaseServiceProvider.TARGET.TableService.create({ ...constructSchema(Table), TableName: targetTableName }),
       waitUntilTableExists(
-        { client: DatabaseServiceProvider.TARGET.AWS.dynamodb, maxWaitTime: 60 },
+        { client: databaseServiceProvider.TARGET.AWS.dynamodb, maxWaitTime: 60 },
         { TableName: targetTableName },
       ),
     ]);
@@ -176,15 +175,16 @@ export default class TableServiceProvider {
 
     do {
       // eslint-disable-next-line no-await-in-loop
-      const response = await DatabaseServiceProvider.SOURCE.ItemService.fetch(OPERATIONS.SCAN, sourceTableName, params);
+      const response = await databaseServiceProvider.SOURCE.ItemService.fetch(OPERATIONS.SCAN, sourceTableName, params);
 
       const { Items = [], LastEvaluatedKey = null } = response;
       // eslint-disable-next-line no-await-in-loop
       await Promise.all(
-        Items.map((item) => DatabaseServiceProvider.TARGET.ItemService.create(targetTableName, schema, item)),
+        Items.map((item) => databaseServiceProvider.TARGET.ItemService.create(targetTableName, schema, item)),
       );
 
-      yield await DatabaseServiceProvider.compare(sourceTableName, targetTableName);
+      // eslint-disable-next-line no-await-in-loop
+      yield await databaseServiceProvider.compare(sourceTableName, targetTableName);
 
       params.ExclusiveStartKey = LastEvaluatedKey;
     } while (params.ExclusiveStartKey);
