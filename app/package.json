@@ -10,6 +10,7 @@
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit",
     "prettify": "prettier --write 'src/**/*.{js,ts,vue,css}'",
+    "prettier": "prettier --list-different 'src/**/*.{js,ts,vue,css}'",
     "lint": "eslint src/**/*.{ts,vue}",
     "lint:fix": "eslint src/**/*.{ts,vue} --fix"
   },
