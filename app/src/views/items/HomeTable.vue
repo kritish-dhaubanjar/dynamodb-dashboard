@@ -92,7 +92,7 @@
 
       <div class="table-container bg-white shadow-sm">
         <ItemList
-          ref="clearRef"
+          ref="tableRef"
           :action="action"
           @reset="action = ''"
           :count="selection.count"
@@ -108,7 +108,10 @@
             @next="fetchHandler"
           />
 
-          <TableActions @action="(type) => (action = type)" />
+          <TableActions 
+            @action="(type) => (action = type)" 
+            :table-ref="tableRef"
+          />
 
           <div class="d-flex justify-content-between align-items-center px-4 py-3">
             <div class="d-flex">
@@ -306,7 +309,13 @@
     message: "",
   });
 
-  const clearRef = ref(null);
+  const tableRef = ref<{
+    clear: () => void;
+    selectedItem: Array<object>;
+  }>({
+    clear: () => {},
+    selectedItem: []
+  });
   const selection = reactive({ count: 0, isSelected: false });
 
   const activeTableName = ref("");
@@ -546,7 +555,7 @@
     if (selection.isSelected) {
       selection.count = 0;
       selection.isSelected = false;
-      clearRef.value.clear();
+      tableRef.value.clear();
 
       return;
     }
