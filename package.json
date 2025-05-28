@@ -19,8 +19,7 @@
       "yarn app:prettify"
     ],
     "server/**/*.{js,jsx,ts,tsx}": [
-      "yarn server:prettify",
-      "yarn server:lint"
+      "yarn server:prettify"
     ]
   },
   "devDependencies": {

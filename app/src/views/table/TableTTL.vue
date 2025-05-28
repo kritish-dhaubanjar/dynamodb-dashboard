@@ -107,11 +107,11 @@
   import { TTL } from "@/constants/dynamodb";
   import { useRoute, useRouter } from "vue-router";
   import { getTableTTL, updateTableTTL } from "@/services/table";
-  import { computed, inject, onBeforeMount, reactive, ref } from "vue";
+  import { inject, onBeforeMount, reactive, ref } from "vue";
 
   const route = useRoute();
   const router = useRouter();
-  const store: any = inject("store");
+  const store = inject("store") as any;
 
   const ttl = reactive({
     TimeToLiveSpecification: {
@@ -138,8 +138,6 @@
       router.push({ name: "home" });
     }
   };
-
-  const reset = () => {};
 
   const toastRef = ref();
   const toast = reactive({ className: "", message: "" });

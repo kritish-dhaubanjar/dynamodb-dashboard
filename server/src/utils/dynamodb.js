@@ -21,7 +21,11 @@ export function constructSchema(Table) {
   delete schema.ProvisionedThroughput;
 
   if (schema.GlobalSecondaryIndexes) {
-    schema.GlobalSecondaryIndexes.forEach((gsi) => delete gsi.ProvisionedThroughput);
+    schema.GlobalSecondaryIndexes.forEach((gsi) => {
+      const updatedGsi = { ...gsi };
+      delete updatedGsi.ProvisionedThroughput;
+      return updatedGsi;
+    });
   }
 
   return schema;

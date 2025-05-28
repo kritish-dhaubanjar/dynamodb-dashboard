@@ -5,7 +5,7 @@
  *
  * @returns {boolean}
  */
-export function isPartialMatchWith(object = {}, source = {}, keys = []) {
+function isPartialMatchWith(object = {}, source = {}, keys = []) {
   let match = true;
 
   // TODO: Refactor this to make it simple
@@ -16,3 +16,5 @@ export function isPartialMatchWith(object = {}, source = {}, keys = []) {
 
   return match;
 }
+
+export default isPartialMatchWith;

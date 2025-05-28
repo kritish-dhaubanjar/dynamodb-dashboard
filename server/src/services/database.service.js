@@ -1,5 +1,5 @@
 import { AWS } from "../config/aws";
-import { EVENTS } from "../constants/event";
+import EVENTS from "../constants/event";
 
 import ItemServiceProvider from "./item.service";
 import TableServiceProvider from "./table.service";
@@ -29,14 +29,14 @@ export default class DatabaseServiceProvider {
   /**
    * @param {object} credentials
    */
-  async update(credentials) {
-    const { default: AWS } = await import("../config/aws");
-    AWS.initialize(credentials);
+  static async update(credentials) {
+    const { default: AWSConfig } = await import("../config/aws");
+    AWSConfig.initialize(credentials);
   }
 
-  async reset() {
-    const { default: AWS } = await import("../config/aws");
-    AWS.initialize();
+  static async reset() {
+    const { default: AWSConfig } = await import("../config/aws");
+    AWSConfig.initialize();
   }
 
   /**
@@ -55,10 +55,32 @@ export default class DatabaseServiceProvider {
    *
    * @returns {Array<string>}
    */
-  restore(tables = [], uid, eventEmitter) {
+  restore(uid, eventEmitter, tables = []) {
     const queue = [...tables];
     const jobs = queue.splice(0, POOL_SIZE);
     let counter = jobs.length;
+
+    const run = async ({ source, target }) => {
+      const tableName = source;
+      try {
+        eventEmitter.emit(EVENTS.BEGIN, uid, tableName);
+
+        const restore = TableServiceProvider.restore(tableName, target, this);
+
+        // eslint-disable-next-line no-restricted-syntax
+        for await (const [ItemCount, TotalItemCount] of restore) {
+          eventEmitter.emit(EVENTS.PROGRESS, uid, { tableName, data: [ItemCount, TotalItemCount] });
+        }
+
+        eventEmitter.emit(EVENTS.SUCCESS, uid, tableName);
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error(error);
+        eventEmitter.emit(EVENTS.FAILURE, uid, tableName);
+      }
+
+      eventEmitter.emit(EVENTS.END, uid, tableName);
+    };
 
     eventEmitter.on(EVENTS.END, () => {
       if (queue.length) {
@@ -67,31 +89,11 @@ export default class DatabaseServiceProvider {
         return;
       }
 
-      if (--counter === 0) {
+      counter -= 1;
+      if (counter === 0) {
         eventEmitter.emit(EVENTS.CLOSE, uid);
       }
     });
-
-    const run = async ({ source, target }) => {
-      const tableName = source;
-
-      try {
-        eventEmitter.emit(EVENTS.BEGIN, uid, { tableName });
-
-        const restore = TableServiceProvider.restore(source, target, this);
-
-        for await (const [ItemCount, TotalItemCount] of restore) {
-          eventEmitter.emit(EVENTS.PROGRESS, uid, { tableName, data: [ItemCount, TotalItemCount] });
-        }
-
-        eventEmitter.emit(EVENTS.SUCCESS, uid, { tableName });
-      } catch (error) {
-        eventEmitter.emit(EVENTS.FAILURE, uid, { tableName, error });
-        console.error(error);
-      } finally {
-        eventEmitter.emit(EVENTS.END, uid, { tableName });
-      }
-    };
 
     jobs.map(run);
 
@@ -109,8 +111,8 @@ export default class DatabaseServiceProvider {
       this.SOURCE.TableService.describe(sourceTableName),
     ]);
 
-    const ItemCount = TargetTable.ItemCount;
-    const TotalItemCount = SourceTable.ItemCount;
+    const { ItemCount } = TargetTable;
+    const { ItemCount: TotalItemCount } = SourceTable;
 
     return [ItemCount, TotalItemCount];
   }

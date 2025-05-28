@@ -1,7 +1,7 @@
 import EventEmitter from "events";
 import AWS from "../config/aws";
 import DatabaseServiceProvider from "../services/database.service";
-import { EVENTS } from "../constants/event";
+import EVENTS from "../constants/event";
 
 const eventEmitter = new EventEmitter();
 

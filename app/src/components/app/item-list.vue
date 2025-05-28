@@ -103,7 +103,7 @@
   <section class="position-relative d-flex">
     <div
       class="ms-3"
-      ref="twocolumns"
+      ref="twoColumns"
     >
       <table class="mb-0 position-relative table table-hover table-bordered">
         <thead>
@@ -141,7 +141,7 @@
           </tr>
         </thead>
 
-        <tbody ref="metatbody">
+        <tbody ref="metaTableBody">
           <tr
             :class="{ 'table-primary': find(item) > -1 }"
             v-for="item in items"
@@ -236,7 +236,7 @@
             @click="(e) => handleItemSelect(e, item)"
           >
             <td
-              v-for="(key, index) in headers.slice(1)"
+              v-for="key in headers.slice(1)"
               :key="key"
             >
               <div>{{ item[key] }}</div>
@@ -250,7 +250,7 @@
   <div
     class="scrollbar-container overflow-x-scroll sticky-bottom me-3"
     @scroll="handleScroll"
-    ref="scrollcontainer"
+    ref="scrollContainer"
   >
     <hr
       ref="scrollbar"
@@ -351,7 +351,7 @@
   });
 
   const router = useRouter();
-  const store: any = inject("store");
+  const store = inject("store") as any;
   const emit = defineEmits(["reset", "unselect"]);
 
   const sort = reactive({
@@ -403,7 +403,7 @@
     });
   };
 
-  const setSort = (key: any) => {
+  const setSort = (key: string) => {
     const index = SORTS.findIndex((order) => order === sort.order);
 
     if (sort.key === key) {
@@ -416,16 +416,15 @@
   /* SORT */
 
   /* SCROLL */
-  const row = ref(null);
   const table = ref(null);
   const tbody = ref(null);
   const scrollbar = ref(null);
-  const twocolumns = ref(null);
+  const twoColumns = ref(null);
   const tableContainer = ref(null);
-  const scrollcontainer = ref(null);
+  const scrollContainer = ref(null);
   const tableHeaderContainer = ref(null);
 
-  const metatbody = ref(null);
+  const metaTableBody = ref(null);
 
   watchEffect(() => {
     if (props.isSelected) {
@@ -441,7 +440,7 @@
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         //@ts-ignore
         scrollbar.value.style.width = `${+table.value.scrollWidth}px`;
-        scrollcontainer.value.style.marginLeft = `${+twocolumns.value.scrollWidth + 14}px`;
+        scrollContainer.value.style.marginLeft = `${+twoColumns.value.scrollWidth + 14}px`;
       });
     },
   );
@@ -461,14 +460,14 @@
     () => items.value,
     async () => {
       await nextTick(() => {
-        const metarows = metatbody.value?.getElementsByTagName("tr")?.[0];
-        const metacells = metarows?.getElementsByTagName("td");
+        const metaRows = metaTableBody.value?.getElementsByTagName("tr")?.[0];
+        const metaCells = metaRows?.getElementsByTagName("td");
 
         const rows = tbody.value?.getElementsByTagName("tr")?.[0];
         const cells = rows?.getElementsByTagName("td");
 
-        if (cells && metacells) {
-          widths.value = [...metacells, ...cells].map((td) => td.getBoundingClientRect()?.width);
+        if (cells && metaCells) {
+          widths.value = [...metaCells, ...cells].map((td) => td.getBoundingClientRect()?.width);
         }
       });
     },
@@ -476,7 +475,7 @@
   /* RESIZE */
 
   const handleScrollbarPosition = throttle((event) => {
-    scrollcontainer.value?.scroll({ left: event.target.scrollLeft });
+    scrollContainer.value?.scroll({ left: event.target.scrollLeft });
     tableHeaderContainer.value?.scroll({ left: event.target.scrollLeft });
   }, 0.5);
 
@@ -530,7 +529,7 @@
     };
   };
 
-  const find = (item: any) => {
+  const find = (item: Record<string, any>) => {
     const index = selectedItems.value.findIndex((_item) => {
       const pkMatch = pk.value ? _item[pk.value.AttributeName] === item[pk.value.AttributeName] : true;
 
@@ -542,7 +541,7 @@
     return index;
   };
 
-  const select = (item: any) => {
+  const select = (item: Record<string, any>) => {
     emit("unselect");
 
     const index = find(item);
@@ -618,8 +617,6 @@
 
   const offcanvas = (item) => {
     const bsOffcanvas = new bootstrap.Offcanvas(offcanvasRef.value);
-
-    const href = handleItem(item);
 
     codeMirrorRef.value.dispatch({
       changes: {
