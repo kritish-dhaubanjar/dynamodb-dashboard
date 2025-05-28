@@ -16,6 +16,7 @@ all: clean install
 	cp -r ./app/dist ./server/build/public
 
 install:
+	${YARN}
 	cd ./app && $(YARN)
 	cd ./server && $(YARN)
 
