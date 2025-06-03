@@ -1,7 +1,7 @@
 NPM=npm
 YARN=yarn
 NODE=node
-VERSION=1.22.1
+VERSION=1.22.2
 APP=dynamodb-dashboard
 # hub.docker.com
 USERNAME=kritishdhaubanjar
