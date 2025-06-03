@@ -37,3 +37,15 @@ app.use(errorHandler);
 const server = app.listen(4567, () => {
   console.info(`dynamodb-dashboard started at: http://127.0.0.1:4567/dynamodb\n`);
 });
+
+process.on("SIGTERM", () => {
+  server.close(() => {
+    process.exit(0);
+  });
+});
+
+process.on("SIGINT", () => {
+  server.close(() => {
+    process.exit(0);
+  });
+});
