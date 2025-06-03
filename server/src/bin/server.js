@@ -43,7 +43,19 @@ export default ({ port, host, debug, prefix }) => {
 
   app.use(errorHandler);
 
-  app.listen(port, host, () => {
+  const server = app.listen(port, host, () => {
     console.info(`dynamodb-dashboard started at: ${URL}\n`);
+  });
+
+  process.on("SIGTERM", () => {
+    server.close(() => {
+      process.exit(0);
+    });
+  });
+
+  process.on("SIGINT", () => {
+    server.close(() => {
+      process.exit(0);
+    });
   });
 };
