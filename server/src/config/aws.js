@@ -2,6 +2,7 @@ import http from "http";
 import https from "https";
 import { DynamoDB } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocument } from "@aws-sdk/lib-dynamodb";
+import { NodeHttpHandler } from "@smithy/node-http-handler";
 import config from "../constants/config";
 
 export class AWS {
@@ -41,6 +42,7 @@ export class AWS {
     const requestHandler = new NodeHttpHandler({ httpsAgent, httpAgent });
 
     this.dynamodb = new DynamoDB({
+      requestHandler,
       region: AWS_REGION,
       endpoint: AWS_ENDPOINT,
       credentials: {
