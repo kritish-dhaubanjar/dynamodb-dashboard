@@ -1,3 +1,5 @@
+import http from "http";
+import https from "https";
 import { DynamoDB } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocument } from "@aws-sdk/lib-dynamodb";
 import config from "../constants/config";
@@ -32,6 +34,11 @@ export class AWS {
     this.AWS_ACCESS_KEY_ID = AWS_ACCESS_KEY_ID;
     this.AWS_SESSION_TOKEN = AWS_SESSION_TOKEN;
     this.AWS_SECRET_ACCESS_KEY = AWS_SECRET_ACCESS_KEY;
+
+    const httpAgent = new http.Agent({ keepAlive: true, maxSockets: 1000 });
+    const httpsAgent = new https.Agent({ keepAlive: true, maxSockets: 1000 });
+
+    const requestHandler = new NodeHttpHandler({ httpsAgent, httpAgent });
 
     this.dynamodb = new DynamoDB({
       region: AWS_REGION,
