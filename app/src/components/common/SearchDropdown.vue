@@ -61,7 +61,7 @@
 
   const filteredItems = computed(() => {
     if (!searchQuery.value) return props.items;
-    return props.items.filter((item) => item.toLowerCase().includes(searchQuery.value.toLowerCase()));
+    return props.items.filter((item) => item?.toLowerCase()?.includes(searchQuery.value.toLowerCase()));
   });
 
   // Watch for changes in filtered items to close dropdown if empty
