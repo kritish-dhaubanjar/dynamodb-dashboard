@@ -220,6 +220,7 @@
                     <div class="col-6 col-xl-2">
                       <label class="mb-1">Attribute Name</label>
                       <SearchDropdown
+                        ref="searchDropdownRefs"
                         v-model="filter.name"
                         :items="store.ui.state.table.headers"
                         placeholder="Enter attribute name"
@@ -359,6 +360,8 @@
   const router = useRouter();
   const store: any = inject("store");
   const table = computed(() => store.table.state.Table);
+
+  const searchDropdownRefs = ref<[{ clear: () => void }]>([]);
 
   const KeySchema = computed(() => table.value.KeySchema ?? []);
   const TableName = computed(() => table.value.TableName ?? route.query.tableName);
@@ -512,6 +515,8 @@
         condition: "=",
       },
     ];
+
+    searchDropdownRefs.value.forEach((searchDropdownRef) => searchDropdownRef.clear());
   };
 
   const updateIndexName = (e: any) => {

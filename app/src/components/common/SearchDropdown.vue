@@ -98,6 +98,10 @@
     }
   };
 
+  const clear = () => {
+    searchQuery.value = "";
+  };
+
   onMounted(() => {
     document.addEventListener("click", handleClickOutside);
   });
@@ -105,6 +109,8 @@
   onUnmounted(() => {
     document.removeEventListener("click", handleClickOutside);
   });
+
+  defineExpose({ clear });
 </script>
 
 <style lang="scss" scoped>
