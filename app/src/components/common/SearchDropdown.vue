@@ -2,6 +2,7 @@
   <div class="dropdown">
     <input
       type="text"
+      autocomplete="off"
       class="form-control rounded-0 mb-2"
       :placeholder="placeholder"
       :value="modelValue"
