@@ -171,7 +171,7 @@ export default class TableServiceProvider {
       ),
     ]);
 
-    const params = { Limit: 300 };
+    const params = { Limit: 500 };
     const schema = Table.KeySchema.map(({ AttributeName }) => AttributeName);
 
     do {
