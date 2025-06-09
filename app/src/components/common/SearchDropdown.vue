@@ -112,6 +112,7 @@
     z-index: 1028 !important;
     max-height: 200px;
     overflow-y: auto;
+    margin-top: -8px;
   }
 
   .dropdown-item {
@@ -119,6 +120,12 @@
     &:hover {
       background-color: #f8f9fa;
     }
+
+    &:active {
+      background-color: #e7f1ff;
+      color: #0d6efd;
+    }
+
     &.active {
       background-color: #e7f1ff;
       color: #0d6efd;
