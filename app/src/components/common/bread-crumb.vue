@@ -110,36 +110,13 @@
                       <br />
                     </label>
 
-                    <div class="dropdown">
-                      <input
-                        required
-                        type="text"
-                        class="form-control rounded-0"
-                        placeholder="eg: us-west-2"
-                        v-model="credentials.AWS_REGION"
-                        data-bs-toggle="dropdown"
-                        @click="handleOnClick"
-                        @keyup="handleOnClick"
-                        id="dropdown-input-toggle-aws-region"
-                      />
-
-                      <ul
-                        class="dropdown-menu rounded-0"
-                        :class="{ 'p-0 border-0': !filteredAWSRegions(credentials.AWS_REGION).length }"
-                      >
-                        <li
-                          v-for="region in filteredAWSRegions(credentials.AWS_REGION)"
-                          v-bind:key="region"
-                        >
-                          <a
-                            class="dropdown-item"
-                            @click.prevent="credentials.AWS_REGION = region"
-                          >
-                            {{ region }}
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
+                    <SearchDropdown
+                      v-model="credentials.AWS_REGION"
+                      :items="AWS_REGIONS"
+                      placeholder="eg: us-west-2"
+                      id="dropdown-input-toggle-aws-region"
+                      @select="(value) => (credentials.AWS_REGION = value)"
+                    />
                   </div>
                 </div>
 
@@ -150,38 +127,13 @@
                       <br />
                     </label>
 
-                    <div class="dropdown">
-                      <input
-                        required
-                        type="text"
-                        class="form-control rounded-0"
-                        placeholder="eg: https://dynamodb.us-west-2.amazonaws.com"
-                        v-model="credentials.AWS_ENDPOINT"
-                        data-bs-toggle="dropdown"
-                        @click="handleOnClick"
-                        @keyup="handleOnClick"
-                        id="dropdown-input-toggle-aws-dynamodb"
-                      />
-
-                      <ul
-                        class="dropdown-menu rounded-0"
-                        :class="{
-                          'p-0 border-0': !filteredAWSDynamoDBEndpoints(credentials.AWS_ENDPOINT).length,
-                        }"
-                      >
-                        <li
-                          v-for="endpoint in filteredAWSDynamoDBEndpoints(credentials.AWS_ENDPOINT)"
-                          v-bind:key="endpoint"
-                        >
-                          <a
-                            class="dropdown-item"
-                            @click.prevent="credentials.AWS_ENDPOINT = endpoint"
-                          >
-                            {{ endpoint }}
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
+                    <SearchDropdown
+                      v-model="credentials.AWS_ENDPOINT"
+                      :items="AWS_DYNAMODB_ENDPOINTS"
+                      placeholder="eg: https://dynamodb.us-west-2.amazonaws.com"
+                      id="dropdown-input-toggle-aws-dynamodb"
+                      @select="(value) => (credentials.AWS_ENDPOINT = value)"
+                    />
                   </div>
                 </div>
 
@@ -259,6 +211,7 @@
   import * as bootstrap from "bootstrap";
   import { useRoute, useRouter } from "vue-router";
   import * as DatabaseService from "@/services/database";
+  import SearchDropdown from "@/components/common/SearchDropdown.vue";
   import { inject, onBeforeMount, ref, reactive, computed } from "vue";
   import { AWS_REGIONS, AWS_DYNAMODB_ENDPOINTS } from "@/constants/dynamodb";
   import { setFetchMethod, enable as enableDarkReader, disable as disableDarkMode } from "darkreader";
@@ -281,21 +234,6 @@
     AWS_SESSION_TOKEN: "",
     AWS_SECRET_ACCESS_KEY: "",
   });
-
-  const handleOnClick = (e) => {
-    const dropdownElement = document.getElementById(e.target.id);
-    const dropdown = new bootstrap.Dropdown(dropdownElement);
-    dropdown.show();
-  };
-
-  const filteredAWSRegions = computed(
-    () => (q: string) => AWS_REGIONS.filter((region: string) => region?.includes(q)) || AWS_REGIONS || [],
-  );
-
-  const filteredAWSDynamoDBEndpoints = computed(
-    () => (q: string) =>
-      AWS_DYNAMODB_ENDPOINTS.filter((endpoint: string) => endpoint?.includes(q)) || AWS_DYNAMODB_ENDPOINTS || [],
-  );
 
   const cancel = () => {
     if (window.history.length > 1) {
