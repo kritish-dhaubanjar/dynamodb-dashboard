@@ -219,34 +219,13 @@
                   >
                     <div class="col-6 col-xl-2">
                       <label class="mb-1">Attribute Name</label>
-                      <div class="dropdown">
-                        <input
-                          type="text"
-                          class="form-control rounded-0 mb-2"
-                          placeholder="Enter attribute name"
-                          v-model="filter.name"
-                          data-bs-toggle="dropdown"
-                          @click="handleOnClick"
-                          @keyup="handleOnClick"
-                          :id="`dropdown-input-toggle-${i}`"
-                        />
-                        <ul
-                          class="dropdown-menu rounded-0"
-                          :class="{ 'p-0 border-0': !filteredHeaders(filter.name).length }"
-                        >
-                          <li
-                            v-for="header in filteredHeaders(filter.name)"
-                            v-bind:key="header"
-                          >
-                            <a
-                              class="dropdown-item"
-                              @click.prevent="filter.name = header"
-                            >
-                              {{ header }}
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
+                      <SearchDropdown
+                        v-model="filter.name"
+                        :items="store.ui.state.table.headers"
+                        placeholder="Enter attribute name"
+                        :id="`dropdown-input-toggle-${i}`"
+                        @select="(value) => (filter.name = value)"
+                      />
                     </div>
                     <div class="col-6 col-xl-2">
                       <label class="mb-1">Type</label>
@@ -374,20 +353,12 @@
   import { generateDynamodbParameters } from "@/utils/table";
   import FILTER_CONDITIONS_BY_TYPE from "@/constants/conditions";
   import { computed, inject, onMounted, reactive, ref, watch, watchEffect } from "vue";
+  import SearchDropdown from "@/components/common/SearchDropdown.vue";
 
   const route = useRoute();
   const router = useRouter();
   const store: any = inject("store");
   const table = computed(() => store.table.state.Table);
-
-  const filteredHeaders = computed(() => {
-    return (filterName) => {
-      const headers = store.ui.state.table.headers;
-      const filteredHeaders = headers?.filter((header) => header?.includes(filterName)) || headers || [];
-
-      return filteredHeaders;
-    };
-  });
 
   const KeySchema = computed(() => table.value.KeySchema ?? []);
   const TableName = computed(() => table.value.TableName ?? route.query.tableName);
@@ -644,32 +615,19 @@
 
     return preview && Object.keys(preview).length ? preview : null;
   });
-
-  const handleOnClick = (e) => {
-    const dropdownElement = document.getElementById(e.target.id);
-    const dropdown = new bootstrap.Dropdown(dropdownElement);
-    dropdown.show();
-  };
-
-  watch(
-    () => parameters.keys.pk.value,
-    async () => {
-      const hasError = Boolean(Object.keys(errors.keys.pk.value).length);
-
-      if (!hasError) {
-        return;
-      }
-
-      if (parameters.keys.pk.value) {
-        errors.keys.pk.value = structuredClone(defaultErrors.keys.pk.value);
-      }
-    },
-    { immediate: true },
-  );
 </script>
 
 <style lang="scss" scoped>
   .dropdown-menu {
     z-index: 1028 !important;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+
+  .dropdown-item {
+    cursor: pointer;
+    &:hover {
+      background-color: #f8f9fa;
+    }
   }
 </style>
