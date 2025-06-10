@@ -1,4 +1,4 @@
-import { chunk, pick } from "lodash";
+import { chunk, fromPairs, pick } from "lodash";
 
 import AWS from "../config/aws";
 import { deserialize, serialize } from "../utils/dynamodb";
@@ -159,10 +159,7 @@ export default class ItemServiceProvider {
       Item: body,
       TableName: tableName,
       ConditionExpression: schema.map((key) => `attribute_not_exists(#${key})`).join(" AND "),
-      ExpressionAttributeNames: schema.reduce((acc, key) => {
-        acc[`#${key}`] = key;
-        return acc;
-      }, {}),
+      ExpressionAttributeNames: fromPairs(schema.map((key) => [`#${key}`, key])),
     };
 
     const response = await this.AWS.document.put(params);
@@ -188,10 +185,7 @@ export default class ItemServiceProvider {
       TableName: tableName,
       Item: deserialize(Item, body),
       ConditionExpression: schema.map((key) => `attribute_exists(#${key})`).join(" AND "),
-      ExpressionAttributeNames: schema.reduce((acc, key) => {
-        acc[`#${key}`] = key;
-        return acc;
-      }, {}),
+      ExpressionAttributeNames: fromPairs(schema.map((key) => [`#${key}`, key])),
     };
 
     const response = await this.AWS.document.put(params);
@@ -226,10 +220,7 @@ export default class ItemServiceProvider {
             TableName: tableName,
             Key: pick(body, schema),
             ConditionExpression: schema.map((key) => `attribute_not_exists(#${key})`).join(" AND "),
-            ExpressionAttributeNames: schema.reduce((acc, key) => {
-              acc[`#${key}`] = key;
-              return acc;
-            }, {}),
+            ExpressionAttributeNames: fromPairs(schema.map((key) => [`#${key}`, key])),
           },
         },
       ],
