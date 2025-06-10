@@ -158,7 +158,11 @@ export default class ItemServiceProvider {
     const params = {
       Item: body,
       TableName: tableName,
-      ConditionExpression: schema.map((key) => `attribute_not_exists(${key})`).join(" AND "),
+      ConditionExpression: schema.map((key) => `attribute_not_exists(#${key})`).join(" AND "),
+      ExpressionAttributeNames: schema.reduce((acc, key) => {
+        acc[`#${key}`] = key;
+        return acc;
+      }, {}),
     };
 
     const response = await this.AWS.document.put(params);
@@ -183,7 +187,11 @@ export default class ItemServiceProvider {
       Key: ref,
       TableName: tableName,
       Item: deserialize(Item, body),
-      ConditionExpression: schema.map((key) => `attribute_exists(${key})`).join(" AND "),
+      ConditionExpression: schema.map((key) => `attribute_exists(#${key})`).join(" AND "),
+      ExpressionAttributeNames: schema.reduce((acc, key) => {
+        acc[`#${key}`] = key;
+        return acc;
+      }, {}),
     };
 
     const response = await this.AWS.document.put(params);
@@ -217,7 +225,11 @@ export default class ItemServiceProvider {
             Item: deserialize(Item, body),
             TableName: tableName,
             Key: pick(body, schema),
-            ConditionExpression: schema.map((key) => `attribute_not_exists(${key})`).join(" AND "),
+            ConditionExpression: schema.map((key) => `attribute_not_exists(#${key})`).join(" AND "),
+            ExpressionAttributeNames: schema.reduce((acc, key) => {
+              acc[`#${key}`] = key;
+              return acc;
+            }, {}),
           },
         },
       ],
