@@ -16,14 +16,6 @@
     <div class="d-flex">
       <div class="dropdown ms-3">
         <button
-          class="btn btn-outline-primary btn-sm rounded-0"
-          type="button"
-          @click="reload"
-        >
-          <i class="bi bi-arrow-clockwise"></i>
-        </button>
-
-        <button
           class="ms-3 btn btn-outline-primary dropdown-toggle btn-sm rounded-0"
           type="button"
           data-bs-toggle="dropdown"
@@ -142,7 +134,7 @@
   import * as bootstrap from "bootstrap";
 
   const store: any = inject("store");
-  const emit = defineEmits(["action", "reload"]);
+  const emit = defineEmits(["action"]);
   const route = useRoute();
 
   const props = defineProps({
@@ -160,8 +152,6 @@
   const downloadProgress = ref(0);
   const downloadSize = ref("");
   const isComplete = ref(false);
-
-  const reload = () => emit("reload");
 
   const tableName = computed(() => {
     return store.table?.Table?.TableName || route.query.tableName?.toString();
