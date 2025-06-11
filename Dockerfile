@@ -12,7 +12,7 @@ COPY ./server ./
 ENV NODE_ENV=production
 RUN yarn build
 RUN rm -rf node_modules
-RUN yarn
+RUN yarn install --production --frozen-lockfile
 
 # Stage II [app-builder]
 FROM node:22-alpine AS app-builder
