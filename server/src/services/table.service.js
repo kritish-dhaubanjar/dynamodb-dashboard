@@ -158,7 +158,7 @@ export default class TableServiceProvider {
     await Promise.allSettled([
       DatabaseServiceProvider.TARGET.TableService.destroy(targetTableName),
       waitUntilTableNotExists(
-        { client: DatabaseServiceProvider.TARGET.AWS.dynamodb, maxWaitTime: 60, maxDelay: 5, minDelay: 1 },
+        { client: DatabaseServiceProvider.TARGET.AWS.dynamodb, maxWaitTime: 60 },
         { TableName: targetTableName },
       ),
     ]);
@@ -166,7 +166,7 @@ export default class TableServiceProvider {
     await Promise.allSettled([
       DatabaseServiceProvider.TARGET.TableService.create({ ...constructSchema(Table), TableName: targetTableName }),
       waitUntilTableExists(
-        { client: DatabaseServiceProvider.TARGET.AWS.dynamodb, maxWaitTime: 60, maxDelay: 5, minDelay: 1 },
+        { client: DatabaseServiceProvider.TARGET.AWS.dynamodb, maxWaitTime: 60 },
         { TableName: targetTableName },
       ),
     ]);
