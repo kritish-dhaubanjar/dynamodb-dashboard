@@ -541,12 +541,18 @@
   };
 
   const cancel = () => {
+    navigator.sendBeacon(`${axios.defaults.baseURL}${ROUTES.DATABASE.ABORT}`);
+
     if (window.history.length > 1) {
       router.back();
     } else {
       router.push({ name: "home" });
     }
   };
+
+  window.addEventListener("beforeunload", () => {
+    navigator.sendBeacon(`${axios.defaults.baseURL}${ROUTES.DATABASE.ABORT}`);
+  });
 </script>
 
 <style scoped>

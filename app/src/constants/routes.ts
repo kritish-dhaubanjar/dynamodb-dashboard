@@ -15,6 +15,7 @@ const routes = {
     STREAM: "/database/stream/:uid",
     CONNECT: "/database/connect",
     DISCONNECT: "/database/disconnect",
+    ABORT: "/database/restore/abort",
   },
   ITEM: {
     CREATE: "/tables/:tableName/items",

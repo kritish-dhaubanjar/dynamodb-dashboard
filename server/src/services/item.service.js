@@ -22,7 +22,7 @@ export default class ItemServiceProvider {
    *
    * @returns {Promise<object>}
    */
-  async fetch(operation, tableName, conditions) {
+  async fetch(operation, tableName, conditions, options = {}) {
     const params = {
       TableName: tableName,
       ...conditions,
@@ -36,7 +36,7 @@ export default class ItemServiceProvider {
 
     do {
       // eslint-disable-next-line no-await-in-loop
-      const response = await this.AWS.document[operation](params); // AWS.document.scan(...), AWS.document.query(...)
+      const response = await this.AWS.document[operation](params, options); // AWS.document.scan(...), AWS.document.query(...)
       scannedCount += response.ScannedCount;
 
       items.push(...response.Items);
@@ -154,7 +154,7 @@ export default class ItemServiceProvider {
    *
    * @returns {Promise<object>}
    */
-  async create(tableName, schema, body) {
+  async create(tableName, schema, body, options = {}) {
     const params = {
       Item: body,
       TableName: tableName,
@@ -162,7 +162,7 @@ export default class ItemServiceProvider {
       ExpressionAttributeNames: fromPairs(schema.map((key) => [`#${key}`, key])),
     };
 
-    const response = await this.AWS.document.put(params);
+    const response = await this.AWS.document.put(params, options);
 
     return response;
   }

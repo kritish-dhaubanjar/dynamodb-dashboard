@@ -4,6 +4,7 @@ import DatabaseServiceProvider from "../services/database.service";
 import { EVENTS } from "../constants/event";
 
 const eventEmitter = new EventEmitter();
+let abortController = new AbortController();
 
 export async function index(req, res, next) {
   try {
@@ -72,10 +73,23 @@ export async function restore(req, res, next) {
     const { uid } = req.params;
     const { credentials, tables } = req.body;
 
+    abortController = new AbortController();
+
     const DatabaseService = new DatabaseServiceProvider(AWS, credentials);
-    const data = DatabaseService.restore(tables, uid, eventEmitter);
+    const data = DatabaseService.restore(tables, uid, eventEmitter, abortController);
 
     res.json(data);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export function abort(req, res, next) {
+  try {
+    eventEmitter.removeAllListeners();
+    abortController.abort();
+
+    res.json({}).status(200);
   } catch (error) {
     next(error);
   }

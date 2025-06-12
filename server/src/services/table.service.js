@@ -35,8 +35,8 @@ export default class TableServiceProvider {
    *
    * @returns {Promise<object>}
    */
-  async create(params) {
-    const response = await this.AWS.dynamodb.createTable(params);
+  async create(params, options = {}) {
+    const response = await this.AWS.dynamodb.createTable(params, options);
 
     return response;
   }
@@ -46,10 +46,13 @@ export default class TableServiceProvider {
    *
    * @returns {Promise<object>}
    */
-  async describe(tableName) {
-    const response = await this.AWS.dynamodb.describeTable({
-      TableName: tableName,
-    });
+  async describe(tableName, options) {
+    const response = await this.AWS.dynamodb.describeTable(
+      {
+        TableName: tableName,
+      },
+      options,
+    );
 
     return response;
   }
@@ -108,10 +111,13 @@ export default class TableServiceProvider {
    *
    * @returns {Promise<object>}
    */
-  async destroy(tableName) {
-    const response = await this.AWS.dynamodb.deleteTable({
-      TableName: tableName,
-    });
+  async destroy(tableName, options = {}) {
+    const response = await this.AWS.dynamodb.deleteTable(
+      {
+        TableName: tableName,
+      },
+      options,
+    );
 
     return response;
   }
@@ -152,21 +158,32 @@ export default class TableServiceProvider {
    *
    * @returns {Promise}
    */
-  static async *restore(sourceTableName, targetTableName, DatabaseServiceProvider) {
-    const { Table } = await DatabaseServiceProvider.SOURCE.TableService.describe(sourceTableName);
+  static async *restore(sourceTableName, targetTableName, DatabaseServiceProvider, AbortController) {
+    const abortSignal = AbortController.signal;
+
+    const { Table } = await DatabaseServiceProvider.SOURCE.TableService.describe(sourceTableName, { abortSignal });
 
     await Promise.allSettled([
-      DatabaseServiceProvider.TARGET.TableService.destroy(targetTableName),
+      DatabaseServiceProvider.TARGET.TableService.destroy(targetTableName, { abortSignal }),
       waitUntilTableNotExists(
-        { client: DatabaseServiceProvider.TARGET.AWS.dynamodb, maxWaitTime: 60 },
+        { client: DatabaseServiceProvider.TARGET.AWS.dynamodb, maxWaitTime: 60, abortSignal, maxDelay: 5, minDelay: 1 },
         { TableName: targetTableName },
       ),
     ]);
 
     await Promise.allSettled([
-      DatabaseServiceProvider.TARGET.TableService.create({ ...constructSchema(Table), TableName: targetTableName }),
+      DatabaseServiceProvider.TARGET.TableService.create(
+        { ...constructSchema(Table), TableName: targetTableName },
+        { abortSignal },
+      ),
       waitUntilTableExists(
-        { client: DatabaseServiceProvider.TARGET.AWS.dynamodb, maxWaitTime: 60 },
+        {
+          client: DatabaseServiceProvider.TARGET.AWS.dynamodb,
+          maxWaitTime: 60,
+          abortSignal: abortSignal,
+          maxDelay: 5,
+          minDelay: 1,
+        },
         { TableName: targetTableName },
       ),
     ]);
@@ -176,12 +193,19 @@ export default class TableServiceProvider {
 
     do {
       // eslint-disable-next-line no-await-in-loop
-      const response = await DatabaseServiceProvider.SOURCE.ItemService.fetch(OPERATIONS.SCAN, sourceTableName, params);
+      const response = await DatabaseServiceProvider.SOURCE.ItemService.fetch(
+        OPERATIONS.SCAN,
+        sourceTableName,
+        params,
+        { abortSignal },
+      );
 
       const { Items = [], LastEvaluatedKey = null } = response;
       // eslint-disable-next-line no-await-in-loop
       await Promise.all(
-        Items.map((item) => DatabaseServiceProvider.TARGET.ItemService.create(targetTableName, schema, item)),
+        Items.map((item) =>
+          DatabaseServiceProvider.TARGET.ItemService.create(targetTableName, schema, item, { abortSignal }),
+        ),
       );
 
       yield await DatabaseServiceProvider.compare(sourceTableName, targetTableName);
