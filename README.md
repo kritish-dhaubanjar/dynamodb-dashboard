@@ -193,6 +193,8 @@ server
 ### Demo:
 https://user-images.githubusercontent.com/25634165/192109458-a621bc06-788d-4d54-9dc2-9064380ee837.mp4
 
+[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20me%20a%20coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/kritishdhaubanjar)
+
 ## Contributors ✨
 
 Thanks goes to these wonderful people:
