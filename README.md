@@ -1,4 +1,4 @@
-![icons8-database-administrator-96](https://user-images.githubusercontent.com/25634165/204095372-d6d8362f-3a33-4ab7-8b97-330fe712c404.png)
+<img width="80" height="78" alt="dynamodb-dashboard" src="https://github.com/user-attachments/assets/2d236911-32bb-4fc1-9af5-ee494da076e8" />
 
 ## DynamoDB Dashboard
 
