@@ -41,14 +41,14 @@
     tslib "^2.6.2"
 
 "@aws-sdk/client-dynamodb@^3.154.0":
-  version "3.911.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.911.0.tgz#ea7826d2efcde4e1c6184e68b5d92c1df80e6047"
-  integrity sha512-5+VdV+e19auVtJMBT8AYab6my27ze+DM4hVfIZ1xD5wTM8B6ig9JiIQzpHNk4hkSG3w317y6GBb0mEObVRbMqw==
+  version "3.913.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.913.0.tgz#5840bba96c7b68979178d3a3e89db7b2492c9d25"
+  integrity sha512-J9qRCKknNwdUyGJWZUFHhWbYaZZ3r5auY8VxaVtiRc08PhQXTCZd6yFg0dr6uNp3HtHt2inQu5/NQnrJekXp1w==
   dependencies:
     "@aws-crypto/sha256-browser" "5.2.0"
     "@aws-crypto/sha256-js" "5.2.0"
     "@aws-sdk/core" "3.911.0"
-    "@aws-sdk/credential-provider-node" "3.911.0"
+    "@aws-sdk/credential-provider-node" "3.913.0"
     "@aws-sdk/middleware-endpoint-discovery" "3.910.0"
     "@aws-sdk/middleware-host-header" "3.910.0"
     "@aws-sdk/middleware-logger" "3.910.0"
@@ -178,10 +178,10 @@
     "@smithy/util-stream" "^4.5.2"
     tslib "^2.6.2"
 
-"@aws-sdk/credential-provider-ini@3.911.0":
-  version "3.911.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/credential-provider-ini/-/credential-provider-ini-3.911.0.tgz#f629e44879840cbfa71ce9cf3fa9801ae84d7480"
-  integrity sha512-bQ86kWAZ0Imn7uWl7uqOYZ2aqlkftPmEc8cQh+QyhmUXbia8II4oYKq/tMek6j3M5UOMCiJVxzJoxemJZA6/sw==
+"@aws-sdk/credential-provider-ini@3.913.0":
+  version "3.913.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/credential-provider-ini/-/credential-provider-ini-3.913.0.tgz#ef62c145588889d43c03f47042c5dfe60be2681b"
+  integrity sha512-iR4c4NQ1OSRKQi0SxzpwD+wP1fCy+QNKtEyCajuVlD0pvmoIHdrm5THK9e+2/7/SsQDRhOXHJfLGxHapD74WJw==
   dependencies:
     "@aws-sdk/core" "3.911.0"
     "@aws-sdk/credential-provider-env" "3.911.0"
@@ -197,14 +197,14 @@
     "@smithy/types" "^4.7.1"
     tslib "^2.6.2"
 
-"@aws-sdk/credential-provider-node@3.911.0":
-  version "3.911.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/credential-provider-node/-/credential-provider-node-3.911.0.tgz#a114448a1bb59a22105c0ded49cc60ae2ff974df"
-  integrity sha512-4oGpLwgQCKNtVoJROztJ4v7lZLhCqcUMX6pe/DQ2aU0TktZX7EczMCIEGjVo5b7yHwSNWt2zW0tDdgVUTsMHPw==
+"@aws-sdk/credential-provider-node@3.913.0":
+  version "3.913.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/credential-provider-node/-/credential-provider-node-3.913.0.tgz#5eb4242f671a889869cba4c571adb832daf7b615"
+  integrity sha512-HQPLkKDxS83Q/nZKqg9bq4igWzYQeOMqhpx5LYs4u1GwsKeCsYrrfz12Iu4IHNWPp9EnGLcmdfbfYuqZGrsaSQ==
   dependencies:
     "@aws-sdk/credential-provider-env" "3.911.0"
     "@aws-sdk/credential-provider-http" "3.911.0"
-    "@aws-sdk/credential-provider-ini" "3.911.0"
+    "@aws-sdk/credential-provider-ini" "3.913.0"
     "@aws-sdk/credential-provider-process" "3.911.0"
     "@aws-sdk/credential-provider-sso" "3.911.0"
     "@aws-sdk/credential-provider-web-identity" "3.911.0"
