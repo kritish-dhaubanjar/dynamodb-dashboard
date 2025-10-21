@@ -7,6 +7,7 @@ const config = {
       sessionToken: process.env.AWS_SESSION_TOKEN,
       secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY ?? "fakeSecretAccessKey",
     },
+    useNodeProviderChain: process.env.AWS_USE_NODE_PROVIDER_CHAIN,
   },
 };
 

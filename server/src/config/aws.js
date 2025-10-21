@@ -29,20 +29,21 @@ export class AWS {
     AWS_ACCESS_KEY_ID = config.aws.credentials.accessKeyId,
     AWS_SESSION_TOKEN = config.aws.credentials.sessionToken,
     AWS_SECRET_ACCESS_KEY = config.aws.credentials.secretAccessKey,
+    AWS_USE_NODE_PROVIDER_CHAIN = config.aws.useNodeProviderChain,
   } = {}) {
     this.AWS_REGION = AWS_REGION;
     this.AWS_ENDPOINT = AWS_ENDPOINT;
     this.AWS_ACCESS_KEY_ID = AWS_ACCESS_KEY_ID;
     this.AWS_SESSION_TOKEN = AWS_SESSION_TOKEN;
     this.AWS_SECRET_ACCESS_KEY = AWS_SECRET_ACCESS_KEY;
+    this.AWS_USE_NODE_PROVIDER_CHAIN = AWS_USE_NODE_PROVIDER_CHAIN;
 
     const httpAgent = new http.Agent({ keepAlive: true, maxSockets: 1000 });
     const httpsAgent = new https.Agent({ keepAlive: true, maxSockets: 1000 });
 
     const requestHandler = new NodeHttpHandler({ httpsAgent, httpAgent });
 
-    this.dynamodb = new DynamoDB({
-      requestHandler,
+    const userProvidedConfig = {
       region: AWS_REGION,
       endpoint: AWS_ENDPOINT,
       credentials: {
@@ -51,6 +52,15 @@ export class AWS {
         ...(AWS_SESSION_TOKEN && { sessionToken: AWS_SESSION_TOKEN }),
       },
       logger: null,
+    };
+
+    const clientConfig = AWS_USE_NODE_PROVIDER_CHAIN ? {} : userProvidedConfig;
+
+    console.log("client config: ", clientConfig);
+
+    this.dynamodb = new DynamoDB({
+      requestHandler,
+      ...clientConfig,
     });
 
     this.document = DynamoDBDocument.from(this.dynamodb);
