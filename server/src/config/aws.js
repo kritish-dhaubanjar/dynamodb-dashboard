@@ -1,5 +1,6 @@
 import http from "http";
 import https from "https";
+import { fromNodeProviderChain } from "@aws-sdk/credential-providers";
 import { DynamoDB } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocument } from "@aws-sdk/lib-dynamodb";
 import { NodeHttpHandler } from "@smithy/node-http-handler";
@@ -45,11 +46,7 @@ export class AWS {
       requestHandler,
       region: AWS_REGION,
       endpoint: AWS_ENDPOINT,
-      credentials: {
-        accessKeyId: AWS_ACCESS_KEY_ID,
-        secretAccessKey: AWS_SECRET_ACCESS_KEY,
-        ...(AWS_SESSION_TOKEN && { sessionToken: AWS_SESSION_TOKEN }),
-      },
+      credentials: fromNodeProviderChain(),
       logger: null,
     });
 
