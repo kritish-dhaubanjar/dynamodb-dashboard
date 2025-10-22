@@ -3,6 +3,8 @@ import https from "https";
 import { DynamoDB } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocument } from "@aws-sdk/lib-dynamodb";
 import { NodeHttpHandler } from "@smithy/node-http-handler";
+import { defaultProvider } from "@aws-sdk/credential-provider-node";
+
 import config from "../constants/config";
 
 export class AWS {
@@ -13,6 +15,18 @@ export class AWS {
   initializeFromDynamoDB({ dynamodb }) {
     this.dynamodb = dynamodb;
     this.document = DynamoDBDocument.from(this.dynamodb);
+  }
+
+  credentials() {
+    if (!this.AWS_ACCESS_KEY_ID || !this.AWS_SECRET_ACCESS_KEY) {
+      return defaultProvider();
+    }
+
+    return () => ({
+      accessKeyId: this.AWS_ACCESS_KEY_ID,
+      secretAccessKey: this.AWS_SECRET_ACCESS_KEY,
+      ...(this.AWS_SESSION_TOKEN && { sessionToken: this.AWS_SESSION_TOKEN }),
+    });
   }
 
   /**
@@ -45,11 +59,7 @@ export class AWS {
       requestHandler,
       region: AWS_REGION,
       endpoint: AWS_ENDPOINT,
-      credentials: {
-        accessKeyId: AWS_ACCESS_KEY_ID,
-        secretAccessKey: AWS_SECRET_ACCESS_KEY,
-        ...(AWS_SESSION_TOKEN && { sessionToken: AWS_SESSION_TOKEN }),
-      },
+      credentials: this.credentials(),
       logger: null,
     });
 
