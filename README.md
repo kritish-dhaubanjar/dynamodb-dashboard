@@ -73,6 +73,9 @@ dynamodb-dashboard start
   *Environment Variables:*
   - `AWS_REGION` (default: `us-west-2`)
   - `AWS_ENDPOINT` (default: `http://127.0.0.1:8000`)
+  - `AWS_ACCESS_KEY_ID` (optional)
+  - `AWS_SECRET_ACCESS_KEY` (optional)
+  - `AWS_SESSION_TOKEN` (optional)
 </details>
 <details>
   <summary><h4>Build Docker image and run a container (from source & Dockerfile)</h4></summary>
@@ -103,6 +106,9 @@ dynamodb-dashboard start
   *Environment Variables:*
   - `AWS_REGION` (default: `us-west-2`)
   - `AWS_ENDPOINT` (default: `http://127.0.0.1:8000`)
+  - `AWS_ACCESS_KEY_ID` (optional)
+  - `AWS_SECRET_ACCESS_KEY` (optional)
+  - `AWS_SESSION_TOKEN` (optional)
   
   *NOTE: For dynamodb running in the host machine, use flag `--network=host` for running dynamodb-dashboard container.*
 </details>
