@@ -21,6 +21,11 @@ Start `dynamodb-dashboard` instance:
 dynamodb-dashboard start
 ```
 
+##### Options
+- `-d, --debug` : show log output of running application (default: false)
+- `-p, --port <port>` : port to run app (default: 4567)
+- `-h, --host <host>` : host to run app (default: 127.0.0.1)
+
 #### Setting Environment variables
 Currently, following environment variables are supported:
 - `AWS_REGION`
@@ -50,11 +55,6 @@ export AWS_SECRET_ACCESS_KEY=fakeSecretAccessKey
 
 dynamodb-dashboard start
 ```
-
-##### Options
-- `-d, --debug` : show log output of running application (default: false)
-- `-p, --port <port>` : port to run app (default: 4567)
-- `-h, --host <host>` : host to run app (default: 127.0.0.1)
 
 ### Development Setup
 1. [Setup Vue.js App](https://github.com/kritish-dhaubanjar/dynamodb-dashboard/tree/main/app)
