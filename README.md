@@ -61,10 +61,21 @@ dynamodb-dashboard start
 
 ## Docker
 
-### Dockerfile
-
 <details>
-  <summary><h4>1. Build Docker image & run a container (from source & Dockerfile)</h4></summary>
+  <summary><h4>Run a container (<a href="https://hub.docker.com/r/kritishdhaubanjar/dynamodb-dashboard">from Docker Hub</a>)</h4></summary>
+
+  1. ```shell
+     docker pull kritishdhaubanjar/dynamodb-dashboard:latest
+     ```
+  2. ```shell
+     docker run -p 8080:4567 kritishdhaubanjar/dynamodb-dashboard:latest
+     ```
+  *Environment Variables:*
+  - `AWS_REGION` (default: `us-west-2`)
+  - `AWS_ENDPOINT` (default: `http://127.0.0.1:8000`)
+</details>
+<details>
+  <summary><h4>Build Docker image and run a container (from source & Dockerfile)</h4></summary>
   
   **a. Clone Repository**
   1. ```shell
@@ -92,69 +103,8 @@ dynamodb-dashboard start
   *Environment Variables:*
   - `AWS_REGION` (default: `us-west-2`)
   - `AWS_ENDPOINT` (default: `http://127.0.0.1:8000`)
-  - `AWS_ACCESS_KEY_ID` (default: `fakeAccessKeyId`)
-  - `AWS_SECRET_ACCESS_KEY` (default: `fakeSecretAccessKey`)
-  - `AWS_SESSION_TOKEN` (optional)
   
   *NOTE: For dynamodb running in the host machine, use flag `--network=host` for running dynamodb-dashboard container.*
-</details>
-<details>
-  <summary><h4>2. Run a container (<a href="https://hub.docker.com/r/kritishdhaubanjar/dynamodb-dashboard">from Docker Hub</a>)</h4></summary>
-  
-  1. ```shell
-     docker pull kritishdhaubanjar/dynamodb-dashboard:latest
-     ```
-  2. ```shell
-     docker run -p 8080:4567 kritishdhaubanjar/dynamodb-dashboard:latest
-     ```
-  
-  *Environment Variables:*
-  - `AWS_REGION` (default: `us-west-2`)
-  - `AWS_ENDPOINT` (default: `http://127.0.0.1:8000`)
-  - `AWS_ACCESS_KEY_ID` (default: `fakeAccessKeyId`)
-  - `AWS_SECRET_ACCESS_KEY` (default: `fakeSecretAccessKey`)
-  - `AWS_SESSION_TOKEN` (optional)
-  
-  *NOTE: For dynamodb running in the host machine, use flag `--network=host` for running dynamodb-dashboard container.*
-</details>
-
-### docker-compose
-
-<details>
-  <summary><h4>1. Build Docker image & run a container (from <a href="https://github.com/kritish-dhaubanjar/dynamodb-dashboard/blob/main/docker-compose.build.yml">docker-compose.build.yml</a>)</h4></summary>
-  
-  *dynamoDB image (from docker hub) + dynamodb-dashboard image (built from source)*
-  
-  **a. Clone Repository**
-  1. ```shell
-     git clone https://github.com/kritish-dhaubanjar/dynamodb-dashboard.git
-     ```
-  2. ```shell
-     cd dynamodb-dashboard
-     ```
-    
-  **b. Build & Run Docker Image**
-  ```shell
-  docker-compose -f docker-compose.build.yml up
-  ```
-</details>
-<details>
-  <summary><h4>2. Run a container (from <a href="https://github.com/kritish-dhaubanjar/dynamodb-dashboard/blob/main/docker-compose.yml">docker-compose.yml</a>)</h4></summary>
-  
-  *dynamoDB image (from docker hub) + dynamodb-dashboard image (from docker hub)*
-  
-  ```shell
-  docker-compose up
-  ```
-</details>
-<details>
-  <summary><h4>3. Run a container (from <a href="https://github.com/kritish-dhaubanjar/dynamodb-dashboard/blob/main/docker-compose.host.yml">docker-compose.host.yml</a>) using host networking</h4></summary>
-  
-  *dynamoDB (host network) + dynamodb-dashboard image (from docker hub)*
-  
-  ```shell
-  docker-compose -f docker-compose.host.yml up
-  ```
 </details>
 
 ## NGINX Config
