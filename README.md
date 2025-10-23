@@ -16,11 +16,18 @@ Install application globally:
 npm install --global dynamodb-dashboard
 ```
 
-#### Setting Environment variables
-Currently, following environment variables are supported, with default values:
+Start `dynamodb-dashboard` instance:
+```shell
+dynamodb-dashboard start
+```
 
-- `AWS_REGION` (default: us-west-2)
-- `AWS_ENDPOINT` (default: http://127.0.0.1:8000)
+#### Setting Environment variables
+Currently, following environment variables are supported:
+- `AWS_REGION`
+- `AWS_ENDPOINT`
+- `AWS_ACCESS_KEY_ID`
+- `AWS_SECRET_ACCESS_KEY`
+- `AWS_SESSION_TOKEN`
 
 To configure, set the AWS environment variables in the terminal session before launching `dynamodb-dashboard`, example in `.bashrc` file.
 
@@ -33,8 +40,14 @@ Explicitly passed environment variables
 - `AWS_SESSION_TOKEN` (optional)
 > These take highest priority if provided.
 
-Start `dynamodb-dashboard` instance:
+Set environment variables and start `dynamodb-dashboard` instance:
+
 ```shell
+export AWS_REGION=us-west-2
+export AWS_ENDPOINT=http://localhost:8000
+export AWS_ACCESS_KEY_ID=fakeAccessKeyId
+export AWS_SECRET_ACCESS_KEY=fakeSecretAccessKey
+
 dynamodb-dashboard start
 ```
 
@@ -71,8 +84,8 @@ dynamodb-dashboard start
      docker run -p 8080:4567 kritishdhaubanjar/dynamodb-dashboard:latest
      ```
   *Environment Variables:*
-  - `AWS_REGION` (default: `us-west-2`)
-  - `AWS_ENDPOINT` (default: `http://127.0.0.1:8000`)
+  - `AWS_REGION`
+  - `AWS_ENDPOINT`
   - `AWS_ACCESS_KEY_ID` (optional)
   - `AWS_SECRET_ACCESS_KEY` (optional)
   - `AWS_SESSION_TOKEN` (optional)
@@ -104,8 +117,8 @@ dynamodb-dashboard start
   ```
   
   *Environment Variables:*
-  - `AWS_REGION` (default: `us-west-2`)
-  - `AWS_ENDPOINT` (default: `http://127.0.0.1:8000`)
+  - `AWS_REGION`
+  - `AWS_ENDPOINT`
   - `AWS_ACCESS_KEY_ID` (optional)
   - `AWS_SECRET_ACCESS_KEY` (optional)
   - `AWS_SESSION_TOKEN` (optional)
