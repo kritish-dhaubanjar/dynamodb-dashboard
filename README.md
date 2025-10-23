@@ -16,6 +16,23 @@ Install application globally:
 npm install --global dynamodb-dashboard
 ```
 
+#### Setting Environment variables
+Currently, following environment variables are supported, with default values:
+
+- `AWS_REGION` (default: us-west-2)
+- `AWS_ENDPOINT` (default: http://127.0.0.1:8000)
+
+To configure, set the AWS environment variables in the terminal session before launching `dynamodb-dashboard`, example in `.bashrc` file.
+
+#### AWS Credentials Resolution
+The application uses the AWS SDK for [JavaScript (v2)](https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/setting-credentials-node.html), which supports multiple ways to load credentials automatically through the default credential provider chain.
+
+Explicitly passed environment variables
+- `AWS_ACCESS_KEY_ID`
+- `AWS_SECRET_ACCESS_KEY`
+- `AWS_SESSION_TOKEN` (optional)
+> These take highest priority if provided.
+
 Start `dynamodb-dashboard` instance:
 ```shell
 dynamodb-dashboard start
@@ -25,17 +42,6 @@ dynamodb-dashboard start
 - `-d, --debug` : show log output of running application (default: false)
 - `-p, --port <port>` : port to run app (default: 4567)
 - `-h, --host <host>` : host to run app (default: 127.0.0.1)
-
-#### Setting Environment variables
-Currently, following environment variables are supported, with default values:
-
-- `AWS_REGION` (default: us-west-2)
-- `AWS_ENDPOINT` (default: http://127.0.0.1:8000)
-- `AWS_ACCESS_KEY_ID` (default: fakeAccessKeyId)
-- `AWS_SECRET_ACCESS_KEY` (default: fakeSecretAccessKey)
-- `AWS_SESSION_TOKEN` (optional)
-
-To configure, set the AWS environment variables in the terminal session before launching `dynamodb-dashboard`, example in `.bashrc` file.
 
 ### Development Setup
 1. [Setup Vue.js App](https://github.com/kritish-dhaubanjar/dynamodb-dashboard/tree/main/app)
