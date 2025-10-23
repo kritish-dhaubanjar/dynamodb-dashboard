@@ -3,7 +3,6 @@ import https from "https";
 import { DynamoDB } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocument } from "@aws-sdk/lib-dynamodb";
 import { NodeHttpHandler } from "@smithy/node-http-handler";
-import { defaultProvider } from "@aws-sdk/credential-provider-node";
 
 import config from "../constants/config";
 
@@ -17,16 +16,42 @@ export class AWS {
     this.document = DynamoDBDocument.from(this.dynamodb);
   }
 
-  credentials() {
-    if (!this.AWS_ACCESS_KEY_ID || !this.AWS_SECRET_ACCESS_KEY) {
-      return defaultProvider();
+  configuration() {
+    const httpAgent = new http.Agent({ keepAlive: true, maxSockets: 1000 });
+    const httpsAgent = new https.Agent({ keepAlive: true, maxSockets: 1000 });
+
+    const requestHandler = new NodeHttpHandler({ httpsAgent, httpAgent });
+
+    const configuration = {
+      logger: null,
+      requestHandler,
+    };
+
+    if (this.AWS_REGION) {
+      configuration.region = this.AWS_REGION;
     }
 
-    return () => ({
-      accessKeyId: this.AWS_ACCESS_KEY_ID,
-      secretAccessKey: this.AWS_SECRET_ACCESS_KEY,
-      ...(this.AWS_SESSION_TOKEN && { sessionToken: this.AWS_SESSION_TOKEN }),
-    });
+    if (this.AWS_ENDPOINT) {
+      configuration.endpoint = this.AWS_ENDPOINT;
+    }
+
+    if ([this.AWS_ACCESS_KEY_ID, this.AWS_SECRET_ACCESS_KEY, this.AWS_SESSION_TOKEN].some(Boolean)) {
+      configuration.credentials = {};
+    }
+
+    if (this.AWS_ACCESS_KEY_ID) {
+      configuration.credentials.accessKeyId = this.AWS_ACCESS_KEY_ID;
+    }
+
+    if (this.AWS_SECRET_ACCESS_KEY) {
+      configuration.credentials.secretAccessKey = this.AWS_SECRET_ACCESS_KEY;
+    }
+
+    if (this.AWS_SESSION_TOKEN) {
+      configuration.credentials.sessionToken = this.AWS_SESSION_TOKEN;
+    }
+
+    return configuration;
   }
 
   /**
@@ -50,18 +75,9 @@ export class AWS {
     this.AWS_SESSION_TOKEN = AWS_SESSION_TOKEN;
     this.AWS_SECRET_ACCESS_KEY = AWS_SECRET_ACCESS_KEY;
 
-    const httpAgent = new http.Agent({ keepAlive: true, maxSockets: 1000 });
-    const httpsAgent = new https.Agent({ keepAlive: true, maxSockets: 1000 });
+    const configuration = this.configuration();
 
-    const requestHandler = new NodeHttpHandler({ httpsAgent, httpAgent });
-
-    this.dynamodb = new DynamoDB({
-      requestHandler,
-      region: AWS_REGION,
-      endpoint: AWS_ENDPOINT,
-      credentials: this.credentials(),
-      logger: null,
-    });
+    this.dynamodb = new DynamoDB(configuration);
 
     this.document = DynamoDBDocument.from(this.dynamodb);
   }
