@@ -39,11 +39,17 @@ To configure, set the AWS environment variables in the terminal session before l
 #### AWS Credentials Resolution
 The application uses the AWS SDK for [JavaScript (v2)](https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/setting-credentials-node.html), which supports multiple ways to load credentials automatically through the default credential provider chain.
 
-Explicitly passed environment variables
-- `AWS_ACCESS_KEY_ID`
-- `AWS_SECRET_ACCESS_KEY`
-- `AWS_SESSION_TOKEN` (optional)
-> These take highest priority if provided.
+- Explicit environment variables
+    - `AWS_ACCESS_KEY_ID`
+    - `AWS_SECRET_ACCESS_KEY`
+    - `AWS_SESSION_TOKEN` (optional)
+    > These take highest priority if provided.
+- `~/.aws/credentials`
+- AWS SSO sessions
+- EC2/ECS instance metadata
+- Other AWS SDK-supported sources
+
+
 
 Set environment variables and start `dynamodb-dashboard` instance:
 
@@ -73,58 +79,21 @@ dynamodb-dashboard start
    ```
 
 ## Docker
-
-<details>
-  <summary><h4>Run a container (<a href="https://hub.docker.com/r/kritishdhaubanjar/dynamodb-dashboard">from Docker Hub</a>)</h4></summary>
+Run a container (<a href="https://hub.docker.com/r/kritishdhaubanjar/dynamodb-dashboard">from Docker Hub</a>)
 
   1. ```shell
      docker pull kritishdhaubanjar/dynamodb-dashboard:latest
      ```
   2. ```shell
-     docker run -p 8080:4567 kritishdhaubanjar/dynamodb-dashboard:latest
+     docker run \
+     --name dynamodb-dashboard \
+      -p 8080:4567 \
+      -e AWS_REGION=us-west-2 \
+      -e AWS_ENDPOINT=http://host.docker.internal:8000 \
+      -e AWS_ACCESS_KEY_ID=fakeAccessKeyId \
+      -e AWS_SECRET_ACCESS_KEY=fakeSecretAccessKey \
+      kritishdhaubanjar/dynamodb-dashboard:latest
      ```
-  *Environment Variables:*
-  - `AWS_REGION`
-  - `AWS_ENDPOINT`
-  - `AWS_ACCESS_KEY_ID` (optional)
-  - `AWS_SECRET_ACCESS_KEY` (optional)
-  - `AWS_SESSION_TOKEN` (optional)
-</details>
-<details>
-  <summary><h4>Build Docker image and run a container (from source & Dockerfile)</h4></summary>
-  
-  **a. Clone Repository**
-  1. ```shell
-     git clone https://github.com/kritish-dhaubanjar/dynamodb-dashboard.git
-     ```
-  2. ```shell
-     cd dynamodb-dashboard
-     ```
-  
-  **b. Build Docker Image**
-  ```shell
-  docker build . -t dynamodb-dashboard:local
-  ```
-  
-  *Build Arguments:*
-  - `PORT_ARG` (default: `4567`)
-  - `HOST_ARG` (default: `0.0.0.0`)
-  - `PREFIX_ARG` (default: `dynamodb`, prefix of route URIs)
-  
-  **c. Run Docker Container**
-  ```shell
-  docker run -p 8080:4567 dynamodb-dashboard:local
-  ```
-  
-  *Environment Variables:*
-  - `AWS_REGION`
-  - `AWS_ENDPOINT`
-  - `AWS_ACCESS_KEY_ID` (optional)
-  - `AWS_SECRET_ACCESS_KEY` (optional)
-  - `AWS_SESSION_TOKEN` (optional)
-  
-  *NOTE: For dynamodb running in the host machine, use flag `--network=host` for running dynamodb-dashboard container.*
-</details>
 
 ## NGINX Config
 To configure Nginx to serve dynamodb-dashboard with (EventSource (Server-Sent Events or SSE) event stream), you need to ensure Nginx is correctly set up to handle long-lived HTTP connections and provide appropriate headers. Here's a basic example configuration:
