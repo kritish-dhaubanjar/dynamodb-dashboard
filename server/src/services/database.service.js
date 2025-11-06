@@ -86,7 +86,7 @@ export default class DatabaseServiceProvider {
 
         eventEmitter.emit(EVENTS.SUCCESS, uid, { tableName });
       } catch (error) {
-        eventEmitter.emit(EVENTS.FAILURE, uid, { tableName, error });
+        eventEmitter.emit(EVENTS.FAILURE, uid, { tableName, error: { message: error.message } });
         console.error(error);
       } finally {
         eventEmitter.emit(EVENTS.END, uid, { tableName });
