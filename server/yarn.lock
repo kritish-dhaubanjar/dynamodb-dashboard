@@ -131,25 +131,6 @@
     "@smithy/util-utf8" "^4.2.0"
     tslib "^2.6.2"
 
-"@aws-sdk/core@3.934.0":
-  version "3.934.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/core/-/core-3.934.0.tgz#044c3bfac438769ff2936192242ee7d4ff2300fa"
-  integrity sha512-b6k916ZxSrBwQPzeirncTIQXGnhps0HFOUakFt0ZEzjksePYUiEoU/SQ7VeY1j9JeAdJ24ejqddCiyLt99/3lg==
-  dependencies:
-    "@aws-sdk/types" "3.930.0"
-    "@aws-sdk/xml-builder" "3.930.0"
-    "@smithy/core" "^3.18.2"
-    "@smithy/node-config-provider" "^4.3.5"
-    "@smithy/property-provider" "^4.2.5"
-    "@smithy/protocol-http" "^5.3.5"
-    "@smithy/signature-v4" "^5.3.5"
-    "@smithy/smithy-client" "^4.9.5"
-    "@smithy/types" "^4.9.0"
-    "@smithy/util-base64" "^4.3.0"
-    "@smithy/util-middleware" "^4.2.5"
-    "@smithy/util-utf8" "^4.2.0"
-    tslib "^2.6.2"
-
 "@aws-sdk/core@3.936.0":
   version "3.936.0"
   resolved "https://registry.yarnpkg.com/@aws-sdk/core/-/core-3.936.0.tgz#410b26b85ad019495d21d9e14d6446b0119caa31"
@@ -296,14 +277,14 @@
     tslib "^2.6.2"
 
 "@aws-sdk/lib-dynamodb@^3.154.0":
-  version "3.934.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.934.0.tgz#8cc468ddbd9c617d836a1cf0069f0ed725929777"
-  integrity sha512-CMWbkcL06M6YzLDbrcxsH+X/tE77Hr1+FUuk1DqS/6AN/jHNLg9z7hFThDI951aRYvImgEUbt/gtzhboPjYgLg==
+  version "3.936.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.936.0.tgz#09f51a40a5272d391464685514f8cfe7f1d78ffc"
+  integrity sha512-lERBgEe3y1MaPDOF5CDSlZcrHvqkF19hajo5urs4J2helXCS8zq5X9FSdZnZOT4b1wNQo4EtyzxKRRlQjAxm2Q==
   dependencies:
-    "@aws-sdk/core" "3.934.0"
-    "@aws-sdk/util-dynamodb" "3.934.0"
-    "@smithy/core" "^3.18.2"
-    "@smithy/smithy-client" "^4.9.5"
+    "@aws-sdk/core" "3.936.0"
+    "@aws-sdk/util-dynamodb" "3.936.0"
+    "@smithy/core" "^3.18.5"
+    "@smithy/smithy-client" "^4.9.8"
     "@smithy/types" "^4.9.0"
     tslib "^2.6.2"
 
@@ -430,14 +411,6 @@
     "@smithy/types" "^4.9.0"
     tslib "^2.6.2"
 
-"@aws-sdk/types@3.930.0":
-  version "3.930.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/types/-/types-3.930.0.tgz#4bde6d6b11fd6b17190e64a62d6f4b49b3f5e263"
-  integrity sha512-we/vaAgwlEFW7IeftmCLlLMw+6hFs3DzZPJw7lVHbj/5HJ0bz9gndxEsS2lQoeJ1zhiiLqAqvXxmM43s0MBg0A==
-  dependencies:
-    "@smithy/types" "^4.9.0"
-    tslib "^2.6.2"
-
 "@aws-sdk/types@3.936.0", "@aws-sdk/types@^3.222.0":
   version "3.936.0"
   resolved "https://registry.yarnpkg.com/@aws-sdk/types/-/types-3.936.0.tgz#ecd3a4bec1a1bd4df834ab21fe52a76e332dc27a"
@@ -446,10 +419,10 @@
     "@smithy/types" "^4.9.0"
     tslib "^2.6.2"
 
-"@aws-sdk/util-dynamodb@3.934.0":
-  version "3.934.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/util-dynamodb/-/util-dynamodb-3.934.0.tgz#6ce1232e71337a13826d5e0e6bc9d4718f9968c2"
-  integrity sha512-lJVCr+kDw5qHj9mFaWvb0a8cRzPRkzMrbGGFjAg+aWYEkXy6IqvpdmPGhaPGmx7oKvcmt4Hycmp48LZvLEFk7Q==
+"@aws-sdk/util-dynamodb@3.936.0":
+  version "3.936.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/util-dynamodb/-/util-dynamodb-3.936.0.tgz#12663103068f6b6d973b4b6655241e1e3a1f939b"
+  integrity sha512-XrrjcAxnZlsorr0a1UXL7M2r2BHUJlbhzJLFv2bOolTUP6XklzKfyWvdIx/bEYx0FyTSJ7T7hgNnz0LMXTNk5A==
   dependencies:
     tslib "^2.6.2"
 
@@ -1569,7 +1542,7 @@
     "@smithy/util-middleware" "^4.2.5"
     tslib "^2.6.2"
 
-"@smithy/core@^3.18.2", "@smithy/core@^3.18.5":
+"@smithy/core@^3.18.5":
   version "3.18.5"
   resolved "https://registry.yarnpkg.com/@smithy/core/-/core-3.18.5.tgz#c304d185e2335cbef9b39431a53a67c84972c27f"
   integrity sha512-6gnIz3h+PEPQGDj8MnRSjDvKBah042jEoPgjFGJ4iJLBE78L4lY/n98x14XyPF4u3lN179Ub/ZKFY5za9GeLQw==
@@ -1777,7 +1750,7 @@
     "@smithy/util-utf8" "^4.2.0"
     tslib "^2.6.2"
 
-"@smithy/smithy-client@^4.9.5", "@smithy/smithy-client@^4.9.8":
+"@smithy/smithy-client@^4.9.8":
   version "4.9.8"
   resolved "https://registry.yarnpkg.com/@smithy/smithy-client/-/smithy-client-4.9.8.tgz#a6845215c982cd6331f485c5d7f23bc0b4f498f3"
   integrity sha512-8xgq3LgKDEFoIrLWBho/oYKyWByw9/corz7vuh1upv7ZBm0ZMjGYBhbn6v643WoIqA9UTcx5A5htEp/YatUwMA==
