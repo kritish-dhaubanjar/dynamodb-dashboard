@@ -20,7 +20,7 @@ export class AWS {
     const httpAgent = new http.Agent({ keepAlive: true, maxSockets: 256 });
     const httpsAgent = new https.Agent({ keepAlive: true, maxSockets: 256 });
 
-    const requestHandler = new NodeHttpHandler({ httpsAgent, httpAgent });
+    const requestHandler = new NodeHttpHandler({ httpsAgent, httpAgent, socketAcquisitionWarningTimeout: 10_000 });
 
     const configuration = {
       logger: null,
