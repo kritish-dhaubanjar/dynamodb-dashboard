@@ -17,8 +17,8 @@ export class AWS {
   }
 
   configuration() {
-    const httpAgent = new http.Agent({ keepAlive: true, maxSockets: 1000 });
-    const httpsAgent = new https.Agent({ keepAlive: true, maxSockets: 1000 });
+    const httpAgent = new http.Agent({ keepAlive: true, maxSockets: 256 });
+    const httpsAgent = new https.Agent({ keepAlive: true, maxSockets: 256 });
 
     const requestHandler = new NodeHttpHandler({ httpsAgent, httpAgent });
 
