@@ -191,6 +191,8 @@ export default class TableServiceProvider {
     const params = { Limit: 500 };
     const schema = Table.KeySchema.map(({ AttributeName }) => AttributeName);
 
+    let restoredItemCount = 0;
+
     do {
       // eslint-disable-next-line no-await-in-loop
       const response = await DatabaseServiceProvider.SOURCE.ItemService.fetch(
@@ -208,7 +210,11 @@ export default class TableServiceProvider {
         ),
       );
 
-      yield await DatabaseServiceProvider.compare(sourceTableName, targetTableName);
+      restoredItemCount += Items.length;
+
+      const [ItemCount, TotalItemCount] = await DatabaseServiceProvider.compare(sourceTableName, targetTableName);
+
+      yield [ItemCount || restoredItemCount, TotalItemCount];
 
       params.ExclusiveStartKey = LastEvaluatedKey;
     } while (params.ExclusiveStartKey);
