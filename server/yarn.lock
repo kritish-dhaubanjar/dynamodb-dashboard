@@ -41,14 +41,14 @@
     tslib "^2.6.2"
 
 "@aws-sdk/client-dynamodb@^3.154.0":
-  version "3.958.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.958.0.tgz#3f7eebacb8313e79bc2ace8a8bccb0208bea084b"
-  integrity sha512-R3G5cxf3fsL0CEcTbY1VkSwU1FJtImrhA5I9Eepd8nEO6isZ6C99qVKZtDG9eG7qVNK6zTzUigXac/GFrn6hYA==
+  version "3.962.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.962.0.tgz#200101d4d7a990517ec8b72f8abfb8863c4caea6"
+  integrity sha512-q2pI7t3Jdwi+sOWdfZSTtnQVUbgEP+Lg0IbU6f6zhPRKDz8UWWYpKHaImRTbiSILN6UlPhIll8odfpxWxFUiwg==
   dependencies:
     "@aws-crypto/sha256-browser" "5.2.0"
     "@aws-crypto/sha256-js" "5.2.0"
     "@aws-sdk/core" "3.957.0"
-    "@aws-sdk/credential-provider-node" "3.958.0"
+    "@aws-sdk/credential-provider-node" "3.962.0"
     "@aws-sdk/dynamodb-codec" "3.957.0"
     "@aws-sdk/middleware-endpoint-discovery" "3.957.0"
     "@aws-sdk/middleware-host-header" "3.957.0"
@@ -178,15 +178,15 @@
     "@smithy/util-stream" "^4.5.8"
     tslib "^2.6.2"
 
-"@aws-sdk/credential-provider-ini@3.958.0":
-  version "3.958.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/credential-provider-ini/-/credential-provider-ini-3.958.0.tgz#35ed4282688f58995e8783779385e1824fded0ab"
-  integrity sha512-u7twvZa1/6GWmPBZs6DbjlegCoNzNjBsMS/6fvh5quByYrcJr/uLd8YEr7S3UIq4kR/gSnHqcae7y2nL2bqZdg==
+"@aws-sdk/credential-provider-ini@3.962.0":
+  version "3.962.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/credential-provider-ini/-/credential-provider-ini-3.962.0.tgz#243c5bb15143d649bfb66d6dc12bc1e1233fe9e1"
+  integrity sha512-h0kVnXLW2d3nxbcrR/Pfg3W/+YoCguasWz7/3nYzVqmdKarGrpJzaFdoZtLgvDSZ8VgWUC4lWOTcsDMV0UNqUQ==
   dependencies:
     "@aws-sdk/core" "3.957.0"
     "@aws-sdk/credential-provider-env" "3.957.0"
     "@aws-sdk/credential-provider-http" "3.957.0"
-    "@aws-sdk/credential-provider-login" "3.958.0"
+    "@aws-sdk/credential-provider-login" "3.962.0"
     "@aws-sdk/credential-provider-process" "3.957.0"
     "@aws-sdk/credential-provider-sso" "3.958.0"
     "@aws-sdk/credential-provider-web-identity" "3.958.0"
@@ -198,10 +198,10 @@
     "@smithy/types" "^4.11.0"
     tslib "^2.6.2"
 
-"@aws-sdk/credential-provider-login@3.958.0":
-  version "3.958.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/credential-provider-login/-/credential-provider-login-3.958.0.tgz#b2e1bf09ebe76360d650b3fd5109464b2dad4320"
-  integrity sha512-sDwtDnBSszUIbzbOORGh5gmXGl9aK25+BHb4gb1aVlqB+nNL2+IUEJA62+CE55lXSH8qXF90paivjK8tOHTwPA==
+"@aws-sdk/credential-provider-login@3.962.0":
+  version "3.962.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/credential-provider-login/-/credential-provider-login-3.962.0.tgz#510c7950549d141fcc3405201a4f988e00769550"
+  integrity sha512-kHYH6Av2UifG3mPkpPUNRh/PuX6adaAcpmsclJdHdxlixMCRdh8GNeEihq480DC0GmfqdpoSf1w2CLmLLPIS6w==
   dependencies:
     "@aws-sdk/core" "3.957.0"
     "@aws-sdk/nested-clients" "3.958.0"
@@ -212,14 +212,14 @@
     "@smithy/types" "^4.11.0"
     tslib "^2.6.2"
 
-"@aws-sdk/credential-provider-node@3.958.0":
-  version "3.958.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/credential-provider-node/-/credential-provider-node-3.958.0.tgz#f3fd4941f7649aeae88ce9289c1b7a95303b78d2"
-  integrity sha512-vdoZbNG2dt66I7EpN3fKCzi6fp9xjIiwEA/vVVgqO4wXCGw8rKPIdDUus4e13VvTr330uQs2W0UNg/7AgtquEQ==
+"@aws-sdk/credential-provider-node@3.962.0":
+  version "3.962.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/credential-provider-node/-/credential-provider-node-3.962.0.tgz#860e545fafc0c9bd585c9284a477298fea0d841c"
+  integrity sha512-CS78NsWRxLa+nWqeWBEYMZTLacMFIXs1C5WJuM9kD05LLiWL32ksljoPsvNN24Bc7rCSQIIMx/U3KGvkDVZMVg==
   dependencies:
     "@aws-sdk/credential-provider-env" "3.957.0"
     "@aws-sdk/credential-provider-http" "3.957.0"
-    "@aws-sdk/credential-provider-ini" "3.958.0"
+    "@aws-sdk/credential-provider-ini" "3.962.0"
     "@aws-sdk/credential-provider-process" "3.957.0"
     "@aws-sdk/credential-provider-sso" "3.958.0"
     "@aws-sdk/credential-provider-web-identity" "3.958.0"
