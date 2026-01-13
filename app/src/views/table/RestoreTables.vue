@@ -354,6 +354,39 @@
                 </div>
               </div>
 
+              <!-- Prefix Update Section -->
+              <div class="row mt-3">
+                <div class="col-6">
+                  <div class="d-flex align-items-center gap-2 p-2 bg-light border rounded-0">
+                    <small class="text-muted me-2">Update prefix:</small>
+                    <input
+                      type="text"
+                      class="form-control form-control-sm rounded-0"
+                      placeholder="Old prefix"
+                      v-model="prefixUpdate.oldPrefix"
+                      style="flex: 1"
+                    />
+                    <i class="bi bi-arrow-right text-muted"></i>
+                    <input
+                      type="text"
+                      class="form-control form-control-sm rounded-0"
+                      placeholder="New prefix"
+                      v-model="prefixUpdate.newPrefix"
+                      style="flex: 1"
+                    />
+                    <button
+                      type="button"
+                      class="btn btn-sm btn-primary rounded-0 px-2"
+                      @click="updateTablePrefixes"
+                      :disabled="!prefixUpdate.oldPrefix || !prefixUpdate.newPrefix || localTables.length === 0"
+                      title="Update table prefixes"
+                    >
+                      <i class="bi bi-arrow-repeat"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
               <div class="d-flex justify-content-end mt-5">
                 <button
                   type="button"
@@ -433,6 +466,11 @@
   const localTables = ref([]);
 
   const progress = ref(new Map());
+
+  const prefixUpdate = reactive({
+    oldPrefix: "",
+    newPrefix: "",
+  });
 
   const credentials = reactive({
     AWS_REGION: "",
@@ -540,6 +578,32 @@
       : [...localTables.value, table];
   };
 
+  const updateTablePrefixes = () => {
+    const { oldPrefix, newPrefix } = prefixUpdate;
+
+    if (!oldPrefix || !newPrefix) return;
+
+    localTables.value.forEach((table) => {
+      if (table.target.startsWith(oldPrefix)) {
+        table.target = newPrefix + table.target.substring(oldPrefix.length);
+      }
+    });
+
+    // Also update the corresponding remote tables
+    remoteTables.value.forEach((table) => {
+      const localTable = find(localTables.value, { source: table.source });
+      if (localTable && table.target.startsWith(oldPrefix)) {
+        table.target = newPrefix + table.target.substring(oldPrefix.length);
+      }
+    });
+
+    // Show success message
+    toast.className = "text-bg-success";
+    toast.message = `Updated prefixes from "${oldPrefix}" to "${newPrefix}" for ${localTables.value.length} selected tables`;
+    const toastEl = new bootstrap.Toast(toastRef.value, { delay: 2000 });
+    setTimeout(() => toastEl.show(), 0);
+  };
+
   const cancel = () => {
     navigator.sendBeacon(`${axios.defaults.baseURL}${ROUTES.DATABASE.ABORT}`);
 
@@ -557,8 +621,8 @@
 
 <style scoped>
   .table-list {
-    min-height: 523px;
-    max-height: 523px;
+    min-height: 600px;
+    max-height: 600px;
   }
 
   .table-container {
