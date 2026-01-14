@@ -358,11 +358,11 @@
               <div class="row mt-3">
                 <div class="col-6">
                   <div class="d-flex align-items-center gap-2 p-2 bg-light border rounded-0">
-                    <small class="text-muted me-2">Update prefix:</small>
+                    <small class="text-muted me-2">Update Table Prefix:</small>
                     <input
                       type="text"
                       class="form-control form-control-sm rounded-0"
-                      placeholder="Old prefix"
+                      placeholder="Source Prefix (eg: dev_)"
                       v-model="prefixUpdate.oldPrefix"
                       style="flex: 1"
                     />
@@ -370,7 +370,7 @@
                     <input
                       type="text"
                       class="form-control form-control-sm rounded-0"
-                      placeholder="New prefix"
+                      placeholder="Target prefix (eg: qa_)"
                       v-model="prefixUpdate.newPrefix"
                       style="flex: 1"
                     />
