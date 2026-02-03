@@ -28,7 +28,7 @@
     "darkreader": "^4.9.119",
     "lodash": "^4.17.23",
     "vue": "^3.5.27",
-    "vue-router": "^5.0.1"
+    "vue-router": "^5.0.2"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.15.0",
