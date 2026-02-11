@@ -25,7 +25,7 @@
     "bootstrap": "5.3.8",
     "bootstrap-icons": "^1.13.1",
     "codemirror": "^6.0.2",
-    "darkreader": "^4.9.119",
+    "darkreader": "^4.9.120",
     "lodash": "^4.17.23",
     "vue": "^3.5.28",
     "vue-router": "^5.0.2"
