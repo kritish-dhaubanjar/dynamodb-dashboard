@@ -1,6 +1,11 @@
 import { Router } from "express";
 import * as TableController from "../controllers/table.controller";
-import { validateCreate, validateUpdate, validateUpdateTimeToLive } from "../validators/table.validators";
+import {
+  validateCreate,
+  validateUpdate,
+  validateUpdateTimeToLive,
+  validateUpdateStreamSpecification,
+} from "../validators/table.validators";
 
 const router = Router();
 
@@ -9,6 +14,7 @@ router.get("/:tableName/describe", TableController.describe);
 
 router.get("/:tableName/time-to-live", TableController.describeTimeToLive);
 router.put("/:tableName/time-to-live", [validateUpdateTimeToLive], TableController.updateTimeToLive);
+router.put("/:tableName/stream", [validateUpdateStreamSpecification], TableController.updateStreamSpecification);
 
 router.delete("/:tableName", TableController.destroy);
 router.post("/", [validateCreate], TableController.create);

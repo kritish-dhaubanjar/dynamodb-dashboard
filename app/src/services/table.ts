@@ -28,6 +28,13 @@ export async function updateTableTTL(tableName: string, body: object) {
   return data.TimeToLiveDescription;
 }
 
+export async function updateTableStream(tableName: string, body: object) {
+  const url = interpolate(ROUTES.TABLE.STREAM, { tableName });
+  const { data } = await axios.put(url, body);
+
+  return data;
+}
+
 export async function createTable(body: object) {
   const url = ROUTES.TABLE.CREATE;
   const { data } = await axios.post(url, body);

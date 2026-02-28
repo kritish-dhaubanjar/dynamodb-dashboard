@@ -93,6 +93,22 @@ export default class TableServiceProvider {
 
   /**
    * @param {string} tableName
+   *
+   * @returns {Promise<object>}
+   */
+  async disableStream(tableName) {
+    const response = await this.AWS.dynamodb.updateTable({
+      TableName: tableName,
+      StreamSpecification: {
+        StreamEnabled: false,
+      },
+    });
+
+    return response;
+  }
+
+  /**
+   * @param {string} tableName
    * @param {object} params
    *
    * @returns {Promise<object>}

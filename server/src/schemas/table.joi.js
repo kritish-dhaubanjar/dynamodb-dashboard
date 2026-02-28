@@ -2,6 +2,7 @@ import Joi from "joi";
 import {
   KeySchemaSchema,
   ProjectionSchema,
+  StreamViewTypeSchema,
   AttributeDefinitionsSchema,
   ProvisionedThroughputSchema,
 } from "./common/table.common.joi";
@@ -57,4 +58,15 @@ export const updateTimeToLive = Joi.object({
       otherwise: Joi.required().allow(""),
     }),
   }).required(),
+});
+
+export const updateStreamSpecification = Joi.object({
+  StreamSpecification: Joi.object({
+    StreamEnabled: Joi.boolean().required(),
+    StreamViewType: Joi.when("StreamEnabled", {
+      is: true,
+      then: StreamViewTypeSchema.required(),
+      otherwise: Joi.forbidden(),
+    }).required(),
+  }),
 });

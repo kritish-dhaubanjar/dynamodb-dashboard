@@ -7,6 +7,7 @@ import TableSchema from "@/views/table/TableSchema.vue";
 import CreateTable from "@/views/table/CreateTable.vue";
 import RestoreTables from "@/views/table/RestoreTables.vue";
 import TableTTL from "@/views/table/TableTTL.vue";
+import TableStreams from "@/views/table/TableStreams.vue";
 
 import { createRouter, createWebHistory } from "vue-router";
 
@@ -65,6 +66,14 @@ const router = createRouter({
       path: "/table/:tableName/ttl",
       name: "table-ttl",
       component: TableTTL,
+      meta: {
+        name: "Tables",
+      },
+    },
+    {
+      path: "/table/:tableName/streams",
+      name: "table-streams",
+      component: TableStreams,
       meta: {
         name: "Tables",
       },

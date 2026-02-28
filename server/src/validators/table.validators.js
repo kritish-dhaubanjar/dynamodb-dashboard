@@ -1,4 +1,4 @@
-import { create, update, updateTimeToLive } from "../schemas/table.joi";
+import { create, update, updateTimeToLive, updateStreamSpecification } from "../schemas/table.joi";
 
 export function validateCreate(req, _res, next) {
   const { error } = create.validate(req.body);
@@ -26,6 +26,18 @@ export function validateUpdate(req, _res, next) {
 
 export function validateUpdateTimeToLive(req, _res, next) {
   const { error } = updateTimeToLive.validate(req.body);
+
+  if (error) {
+    next(error);
+
+    return;
+  }
+
+  next();
+}
+
+export function validateUpdateStreamSpecification(req, _res, next) {
+  const { error } = updateStreamSpecification.validate(req.body);
 
   if (error) {
     next(error);

@@ -8,6 +8,7 @@ const routes = {
     TRUNCATE: "/tables/:tableName/truncate",
     DESCRIBE: "/tables/:tableName/describe",
     TTL: "/tables/:tableName/time-to-live",
+    STREAM: "/tables/:tableName/stream",
   },
   DATABASE: {
     ALL: "/database/tables",

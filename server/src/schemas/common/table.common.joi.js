@@ -38,3 +38,5 @@ export const AttributeDefinitionsSchema = Joi.array()
   )
   .required()
   .min(1);
+
+export const StreamViewTypeSchema = Joi.string().valid("KEYS_ONLY", "NEW_IMAGE", "OLD_IMAGE", "NEW_AND_OLD_IMAGES");

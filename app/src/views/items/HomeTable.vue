@@ -71,6 +71,17 @@
               >
                 Time to Live (TTL)
               </RouterLink>
+
+              <RouterLink
+                v-if="activeTableName"
+                class="dropdown-item"
+                :to="{
+                  name: 'table-streams',
+                  params: { tableName: activeTableName },
+                }"
+              >
+                Manage Streams
+              </RouterLink>
             </li>
           </ul>
 

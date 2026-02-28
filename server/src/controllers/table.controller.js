@@ -66,6 +66,33 @@ export async function updateTimeToLive(req, res, next) {
   }
 }
 
+export async function updateStreamSpecification(req, res, next) {
+  try {
+    const { tableName } = req.params;
+
+    const table = await TableService.describe(tableName);
+
+    const { StreamSpecification: TargetStreamSpecification } = req.body;
+    const { StreamSpecification: SourceStreamSpecification } = table.Table;
+
+    const isDisable = [
+      TargetStreamSpecification.StreamEnabled,
+      SourceStreamSpecification?.StreamEnabled,
+      SourceStreamSpecification?.StreamViewType !== TargetStreamSpecification?.StreamViewType,
+    ].every(Boolean);
+
+    if (isDisable) {
+      await TableService.disableStream(tableName);
+    }
+
+    const data = await TableService.update(tableName, req.body);
+
+    res.json(data);
+  } catch (error) {
+    next(error);
+  }
+}
+
 export async function destroy(req, res, next) {
   try {
     const { tableName } = req.params;
