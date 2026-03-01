@@ -9,6 +9,7 @@ import compression from "compression";
 import errorHandler from "./errors/handler";
 
 AWS.initialize();
+AWS.initializeStreams();
 
 const app = express();
 app.use(compression());

@@ -8,6 +8,7 @@ import AWS from "../config/aws";
 import errorHandler from "../errors/handler";
 
 AWS.initialize();
+AWS.initializeStreams();
 
 export default ({ port, host, debug, prefix }) => {
   const root = `http://${host}:${port}`;

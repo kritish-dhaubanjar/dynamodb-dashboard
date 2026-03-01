@@ -22,6 +22,7 @@ export default class DatabaseServiceProvider {
     this.SOURCE = {};
     this.SOURCE.AWS = new AWS();
     this.SOURCE.AWS.initialize(credentials);
+    this.SOURCE.AWS.initializeStreams();
     this.SOURCE.ItemService = new ItemServiceProvider(this.SOURCE.AWS);
     this.SOURCE.TableService = new TableServiceProvider(this.SOURCE.AWS);
   }
@@ -32,11 +33,13 @@ export default class DatabaseServiceProvider {
   async update(credentials) {
     const { default: AWS } = await import("../config/aws");
     AWS.initialize(credentials);
+    AWS.initializeStreams();
   }
 
   async reset() {
     const { default: AWS } = await import("../config/aws");
     AWS.initialize();
+    AWS.initializeStreams();
   }
 
   /**
