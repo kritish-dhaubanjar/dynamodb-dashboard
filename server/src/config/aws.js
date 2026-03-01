@@ -1,10 +1,14 @@
+import path from "path";
 import http from "http";
 import https from "https";
+import { Worker } from "worker_threads";
+
 import { DynamoDB } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocument } from "@aws-sdk/lib-dynamodb";
 import { NodeHttpHandler } from "@smithy/node-http-handler";
 
 import config from "../constants/config";
+import { DynamoDBStreams } from "@aws-sdk/client-dynamodb-streams";
 
 export class AWS {
   /**
@@ -78,8 +82,23 @@ export class AWS {
     const configuration = this.configuration();
 
     this.dynamodb = new DynamoDB(configuration);
+    this.dynamodbStreams = new DynamoDBStreams(configuration);
 
     this.document = DynamoDBDocument.from(this.dynamodb);
+  }
+
+  initializeStreams() {
+    const configuration = this.configuration();
+
+    const workerjs = path.resolve(__dirname, "../workers/stream/index.js");
+
+    new Worker(workerjs, {
+      workerData: {
+        region: configuration.region,
+        endpoint: configuration.endpoint,
+        credentials: configuration.credentials,
+      },
+    });
   }
 }
 
