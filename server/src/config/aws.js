@@ -98,6 +98,7 @@ export class AWS {
         endpoint: configuration.endpoint,
         credentials: configuration.credentials,
       },
+      execArgv: process.env.NODE_ENV === "development" ? ["-r", "@babel/register"] : [],
     });
   }
 }
