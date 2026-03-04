@@ -1,4 +1,5 @@
 import { workerData } from "worker_threads";
+import { TrimmedDataAccessException } from "@aws-sdk/client-dynamodb-streams";
 
 import { AWS } from "../../config/aws.js";
 import TableServiceProvider from "../../services/table.service.js";
@@ -43,6 +44,10 @@ class Stream {
       } = await this.AWS.dynamodbStreams.describeStream({ StreamArn });
 
       for (const Shard of Shards) {
+        if (Boolean(Shard.SequenceNumberRange.EndingSequenceNumber)) {
+          continue;
+        }
+
         if (this.ShardIds.has(Shard.ShardId)) {
           continue;
         }
@@ -50,7 +55,7 @@ class Stream {
         this.ShardIds.set(Shard.ShardId, this.pollShard(StreamArn, Shard.ShardId));
       }
 
-      this.sleep(10_000);
+      await this.sleep(10_000);
     }
   }
 
@@ -65,15 +70,23 @@ class Stream {
       let NextShardIterator = ShardIterator;
 
       while (NextShardIterator) {
-        const response = await this.AWS.dynamodbStreams.getRecords({ ShardIterator: NextShardIterator, Limit: 100 });
+        try {
+          const response = await this.AWS.dynamodbStreams.getRecords({ ShardIterator: NextShardIterator, Limit: 100 });
 
-        if (response.Records.length) {
-          // TODO: handler
+          if (response.Records.length) {
+            // TODO: handler
+          }
+
+          NextShardIterator = response.NextShardIterator;
+
+          await this.sleep(1_000);
+        } catch (error) {
+          if (error.name === TrimmedDataAccessException.name) {
+            break;
+          }
+
+          throw error;
         }
-
-        NextShardIterator = response.NextShardIterator;
-
-        await this.sleep(1_000);
       }
     } finally {
       this.ShardIds.delete(ShardId);
