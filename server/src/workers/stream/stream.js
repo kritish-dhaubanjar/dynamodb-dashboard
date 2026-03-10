@@ -52,7 +52,7 @@ class Stream {
           continue;
         }
 
-        this.ShardIds.set(Shard.ShardId, this.pollShard(StreamArn, Shard.ShardId));
+        this.ShardIds.set(Shard.ShardId, this.pollShard(StreamArn, Shard.ShardId).catch(console.error));
       }
 
       await this.sleep(10_000);
@@ -94,9 +94,13 @@ class Stream {
   }
 
   async initialize() {
-    const streamArns = await this.getLatestStreamArns();
+    try {
+      const streamArns = await this.getLatestStreamArns();
 
-    streamArns.forEach((StreamArn) => this.discoverShards(StreamArn));
+      await Promise.all(streamArns.map((StreamArn) => this.discoverShards(StreamArn)));
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   async sleep(milliseconds) {
