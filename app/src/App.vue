@@ -5,7 +5,7 @@
     <RouterView />
     <div class="position-fixed bottom-0 end-0 z-3">
       <h6>
-        <span class="badge text-bg-secondary m-4">v1.25.3</span>
+        <span class="badge text-bg-secondary m-4">v1.25.4</span>
       </h6>
     </div>
   </div>
