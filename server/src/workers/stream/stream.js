@@ -11,9 +11,9 @@ class Stream {
     this.AWS.initialize({
       AWS_REGION: configuration.region,
       AWS_ENDPOINT: configuration.endpoint,
-      AWS_ACCESS_KEY_ID: configuration.credentials.accessKeyId,
-      AWS_SESSION_TOKEN: configuration.credentials.sessionToken,
-      AWS_SECRET_ACCESS_KEY: configuration.credentials.secretAccessKey,
+      AWS_ACCESS_KEY_ID: configuration.credentials?.accessKeyId,
+      AWS_SESSION_TOKEN: configuration.credentials?.sessionToken,
+      AWS_SECRET_ACCESS_KEY: configuration.credentials?.secretAccessKey,
     });
 
     this.TableService = new TableServiceProvider(this.AWS);
