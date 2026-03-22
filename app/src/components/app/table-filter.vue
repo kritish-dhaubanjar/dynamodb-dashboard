@@ -336,7 +336,6 @@
           <button
             type="submit"
             class="btn btn-primary rounded-0 px-4 mb-2"
-            @click="run"
           >
             RUN
           </button>
