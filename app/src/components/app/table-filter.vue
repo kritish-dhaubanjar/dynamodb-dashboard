@@ -1,5 +1,6 @@
 <template>
-  <div
+  <form
+    @submit.stop.prevent="run"
     class="accordion shadow-sm"
     id="scan-query"
   >
@@ -33,6 +34,7 @@
               role="group"
             >
               <button
+                type="button"
                 @click="setOperation('SCAN')"
                 class="btn btn-outline-secondary rounded-0 px-4"
                 :class="{ active: operation === 'SCAN' }"
@@ -40,6 +42,7 @@
                 SCAN
               </button>
               <button
+                type="button"
                 @click="setOperation('QUERY')"
                 class="btn btn-outline-secondary rounded-0 px-4"
                 :class="{ active: operation === 'QUERY' }"
@@ -292,6 +295,7 @@
                         </div>
                         <div class="ms-3 d-none d-xl-block">
                           <button
+                            type="button"
                             @click="removeFilter(i)"
                             class="btn btn-outline-secondary rounded-0 d-none d-xl-block"
                           >
@@ -302,6 +306,7 @@
                     </div>
                     <div class="col-12 col-xl-2">
                       <button
+                        type="button"
                         @click="removeFilter(i)"
                         class="btn btn-outline-secondary rounded-0 mt-1 d-block d-xl-none mt-2 float-end"
                       >
@@ -311,6 +316,7 @@
                   </div>
 
                   <button
+                    type="button"
                     class="btn btn-outline-secondary rounded-0 mt-1 mt-2"
                     @click="addFilter"
                   >
@@ -328,7 +334,7 @@
           </code>
 
           <button
-            type="button"
+            type="submit"
             class="btn btn-primary rounded-0 px-4 mb-2"
             @click="run"
           >
@@ -345,7 +351,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </form>
 </template>
 
 <script setup lang="ts">
