@@ -47,4 +47,3 @@ COPY --from=app-builder /usr/src/app/dist ./build/public
 
 EXPOSE $PORT
 CMD ["sh", "-c", "node build/bin/cli.js start --prefix=$PREFIX --port=$PORT --host=$HOST -d"]
-
