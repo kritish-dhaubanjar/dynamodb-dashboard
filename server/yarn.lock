@@ -4185,9 +4185,9 @@ jackspeak@^4.2.3:
     "@isaacs/cliui" "^9.0.0"
 
 joi@^18.0.0:
-  version "18.1.1"
-  resolved "https://registry.yarnpkg.com/joi/-/joi-18.1.1.tgz#d9e2526271c07109065307002b3db4364d6be5ea"
-  integrity sha512-pJkBiPtNo+o0h19LfSvUN46Y5zY+ck99AtHwch9n2HqVLNRgP0ZMyIH8FRMoP+HV8hy/+AG99dXFfwpf83iZfQ==
+  version "18.1.2"
+  resolved "https://registry.yarnpkg.com/joi/-/joi-18.1.2.tgz#4735a384d7721fcda7a551d128862cf816541924"
+  integrity sha512-rF5MAmps5esSlhCA+N1b6IYHDw9j/btzGaqfgie522jS02Ju/HXBxamlXVlKEHAxoMKQL77HWI8jlqWsFuekZA==
   dependencies:
     "@hapi/address" "^5.1.1"
     "@hapi/formula" "^3.0.2"
