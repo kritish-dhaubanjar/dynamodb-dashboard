@@ -1,4 +1,4 @@
-import { get, set, pick } from "lodash";
+import { get, set, pick } from "lodash-es";
 import { NumberValue } from "@aws-sdk/lib-dynamodb";
 import { BillingMode } from "@aws-sdk/client-dynamodb";
 import { create as TableSchema } from "../schemas/table.joi";

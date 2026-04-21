@@ -1,4 +1,4 @@
-import { chunk, fromPairs, pick } from "lodash";
+import { chunk, fromPairs, pick } from "lodash-es";
 
 import AWS from "../config/aws";
 import { deserialize, serialize } from "../utils/dynamodb";
