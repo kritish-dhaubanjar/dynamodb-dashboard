@@ -1,4 +1,7 @@
 .env
+.babelrc
+.eslintrc.json
+.prettierrc.json
 
 src
 
