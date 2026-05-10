@@ -1,5 +1,5 @@
 import axios from "axios";
-import { isNil } from "lodash";
+import { isNil } from "lodash-es";
 import ROUTES from "../constants/routes";
 import { interpolate } from "../utils/string";
 

@@ -443,7 +443,7 @@
 
 <script lang="ts" setup>
   import axios from "axios";
-  import { find } from "lodash";
+  import { find } from "lodash-es";
   import * as bootstrap from "bootstrap";
   import { useRouter } from "vue-router";
   import ROUTES from "@/constants/routes";

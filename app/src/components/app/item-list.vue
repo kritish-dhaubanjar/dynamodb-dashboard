@@ -334,7 +334,7 @@
 </template>
 
 <script setup lang="ts">
-  import { throttle } from "lodash";
+  import { throttle } from "lodash-es";
   import * as bootstrap from "bootstrap";
   import { useRouter } from "vue-router";
   import { destroyItems, truncateItems } from "@/services/item";
