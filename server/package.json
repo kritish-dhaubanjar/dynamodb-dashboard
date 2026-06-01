@@ -42,7 +42,7 @@
     "@aws-sdk/client-dynamodb": "^3.154.0",
     "@aws-sdk/client-dynamodb-streams": "^3.1000.0",
     "@aws-sdk/lib-dynamodb": "^3.154.0",
-    "commander": "^14.0.0",
+    "commander": "^15.0.0",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
     "dotenv": "^17.0.0",
