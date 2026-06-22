@@ -35,7 +35,7 @@
     "@tsconfig/node22": "^22.0.5",
     "@types/bootstrap": "^5.2.11",
     "@types/lodash": "^4.17.24",
-    "@types/node": "25",
+    "@types/node": "26",
     "@typescript-eslint/eslint-plugin": "^7.0.0",
     "@typescript-eslint/parser": "^6.21.0",
     "@vitejs/plugin-vue": "^6.0.7",
