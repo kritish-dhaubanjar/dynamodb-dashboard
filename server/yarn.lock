@@ -41,9 +41,9 @@
     tslib "^2.6.2"
 
 "@aws-sdk/client-dynamodb-streams@^3.1000.0":
-  version "3.1083.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb-streams/-/client-dynamodb-streams-3.1083.0.tgz#1303d8ac1fba089d1deb2b571124e55fd5a1022b"
-  integrity sha512-euqLhTZFGZ0mydE7RuVgSZn6eJzkRN/Elu6lNcRInUlKFXHZbjfAvMmmIZCw4JZG+nCM/CqSaGAtOBVQTFCkHQ==
+  version "3.1084.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb-streams/-/client-dynamodb-streams-3.1084.0.tgz#7d805d640ee7009e06010b935e70398d50a17617"
+  integrity sha512-krbQtU51lXNba5G2/whltohGw9yoSK7YiKAM3qnptW61iyEcMUtjJsve71kFO9Bs3jMLNRPjRYEY1MArvGuTwA==
   dependencies:
     "@aws-sdk/core" "^3.975.1"
     "@aws-sdk/credential-provider-node" "^3.972.66"
