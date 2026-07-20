@@ -67,7 +67,7 @@ export async function validateTruncate(req, _res, next) {
   }
 }
 
-export function validateDelete(req, _res, next) {
+export async function validateDelete(req, _res, next) {
   const { error } = destroy.validate(req.body);
 
   if (error) {
@@ -76,7 +76,16 @@ export function validateDelete(req, _res, next) {
     return;
   }
 
-  next();
+  const { tableName } = req.params;
+
+  try {
+    const { Table } = await TableService.describe(tableName);
+    req.attributeDefinitions = Table.AttributeDefinitions;
+
+    next();
+  } catch (err) {
+    next(err);
+  }
 }
 
 export async function validateCreate(req, _res, next) {
@@ -100,6 +109,7 @@ export async function validateCreate(req, _res, next) {
     }
 
     req.schema = Object.keys(schema);
+    req.attributeDefinitions = Table.AttributeDefinitions;
 
     next();
   } catch (error) {
@@ -132,6 +142,7 @@ export async function validateUpdate(req, _res, next) {
     }
 
     req.schema = Object.keys(schema);
+    req.attributeDefinitions = Table.AttributeDefinitions;
 
     next();
   } catch (error) {
