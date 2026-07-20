@@ -108,3 +108,62 @@ export function deserialize(source = {}, object = {}) {
 
   return object;
 }
+
+function isBinaryLikeObject(value) {
+  if (value === null || typeof value !== "object" || Array.isArray(value)) {
+    return false;
+  }
+
+  const keys = Object.keys(value);
+
+  if (keys.length === 0) {
+    return false;
+  }
+
+  return keys.every((key) => /^\d+$/.test(key) && Number.isInteger(value[key]) && value[key] >= 0 && value[key] <= 255);
+}
+
+function toBinary(value) {
+  if (value instanceof Uint8Array) {
+    return value;
+  }
+
+  if (typeof Buffer !== "undefined" && Buffer.isBuffer(value)) {
+    return new Uint8Array(value);
+  }
+
+  if (typeof value === "string") {
+    return new Uint8Array(Buffer.from(value, "base64"));
+  }
+
+  if (isBinaryLikeObject(value)) {
+    const bytes = Object.keys(value)
+      .map(Number)
+      .sort((a, b) => a - b)
+      .map((index) => value[String(index)]);
+
+    return new Uint8Array(bytes);
+  }
+
+  return value;
+}
+
+export function normalizeKeys(keys = {}, attributeDefinitions = []) {
+  const output = { ...keys };
+
+  attributeDefinitions.forEach(({ AttributeName, AttributeType }) => {
+    if (!Object.hasOwn(output, AttributeName)) {
+      return;
+    }
+
+    if (AttributeType === "B") {
+      output[AttributeName] = toBinary(output[AttributeName]);
+    }
+
+    if (AttributeType === "N") {
+      output[AttributeName] = Number(output[AttributeName]);
+    }
+  });
+
+  return output;
+}

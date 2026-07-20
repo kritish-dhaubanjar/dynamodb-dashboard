@@ -168,15 +168,14 @@
                 data-bs-toggle="tooltip"
                 data-bs-placement="top"
                 data-bs-title="Copy to clipboard"
-                @click="copy(item[headers[0]])"
+                @click.stop="copy(formatCellDisplay(item[headers[0]]))"
               ></i>
 
-              <!--  -->
               <RouterLink
                 :to="handleItem(item)"
                 class="card-link text-decoration-none"
               >
-                {{ item[headers[0]] }}
+                {{ formatCellDisplay(item[headers[0]]) }}
               </RouterLink>
             </td>
 
@@ -239,7 +238,7 @@
               v-for="(key, index) in headers.slice(1)"
               :key="key"
             >
-              <div>{{ item[key] }}</div>
+              <div>{{ formatCellDisplay(item[key]) }}</div>
             </td>
           </tr>
         </tbody>
@@ -338,6 +337,7 @@
   import * as bootstrap from "bootstrap";
   import { useRouter } from "vue-router";
   import { destroyItems, truncateItems } from "@/services/item";
+  import { formatCellDisplay, serializeKeyForQuery } from "@/utils/binary";
   import { openSearchPanel } from "@codemirror/search";
   import codeMirrorConfig from "@/views/items/codeMirrorConfig";
   import { computed, inject, onMounted, ref, watch, watchEffect, reactive, nextTick } from "vue";
@@ -521,10 +521,10 @@
       params: { tableName },
       query: {
         ...(pk.value && {
-          [pk.value.AttributeName]: item[pk.value.AttributeName],
+          [pk.value.AttributeName]: serializeKeyForQuery(item[pk.value.AttributeName]),
         }),
         ...(sk.value && {
-          [sk.value.AttributeName]: item[sk.value.AttributeName],
+          [sk.value.AttributeName]: serializeKeyForQuery(item[sk.value.AttributeName]),
         }),
       },
     };
@@ -595,8 +595,17 @@
       const payload = [];
 
       selectedItems.value.forEach((item) => {
-        const { query } = handleItem(item);
-        payload.push(query);
+        const key: Record<string, unknown> = {};
+
+        if (pk.value) {
+          key[pk.value.AttributeName] = item[pk.value.AttributeName];
+        }
+
+        if (sk.value) {
+          key[sk.value.AttributeName] = item[sk.value.AttributeName];
+        }
+
+        payload.push(key);
       });
 
       await destroyItems(tableName, payload);
@@ -612,8 +621,8 @@
     modal.value.hide();
   };
 
-  const copy = (partitionKey) => {
-    navigator.clipboard.writeText(partitionKey);
+  const copy = (value: string) => {
+    navigator.clipboard.writeText(value);
   };
 
   const offcanvas = (item) => {
