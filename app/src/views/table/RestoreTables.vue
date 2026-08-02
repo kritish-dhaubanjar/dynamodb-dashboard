@@ -387,6 +387,26 @@
                 </div>
               </div>
 
+              <div class="row mt-3">
+                <div class="col-6">
+                  <div class="d-flex gap-2">
+                    <input
+                      class="form-check-input mt-1"
+                      type="checkbox"
+                      id="schema"
+                      v-model="isSchemaOnly"
+                    />
+
+                    <label
+                      class="form-check-label"
+                      for="schema"
+                    >
+                      Restore database schema only
+                    </label>
+                  </div>
+                </div>
+              </div>
+
               <div class="d-flex justify-content-end mt-5">
                 <button
                   type="button"
@@ -460,6 +480,7 @@
     store.table.setters.setTable({ TableName: "Restore Table" });
   });
 
+  const isSchemaOnly = ref(false);
   const remoteTableSearch = ref("");
   const localTableSearch = ref("");
   const remoteTables = ref([]);
@@ -514,7 +535,7 @@
 
       (async () => {
         try {
-          await restoreTables(uid, { credentials, tables: localTables.value });
+          await restoreTables(uid, { credentials, tables: localTables.value, isSchemaOnly: isSchemaOnly.value });
         } catch (error) {
           toast.className = "text-bg-danger";
           toast.message = error.response?.data?.message ?? error.message;
