@@ -32,7 +32,7 @@
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.16.1",
-    "@tsconfig/node22": "^22.0.5",
+    "@tsconfig/node22": "^22.0.6",
     "@types/bootstrap": "^5.2.11",
     "@types/lodash": "^4.17.25",
     "@types/node": "26",
