@@ -22,6 +22,14 @@ const Theme = CodeMirror.EditorView.theme({
   "&": { maxHeight: "100%", height: "100%" },
   ".cm-gutter,.cm-content": { minHeight: "100%" },
   ".cm-scroller": { overflow: "auto" },
+  ".cm-content": {
+    caretColor: "#fff",
+  },
+
+  ".cm-cursor, .cm-dropCursor": {
+    borderLeftWidth: "3px",
+    borderLeftColor: "#fff",
+  },
 });
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
