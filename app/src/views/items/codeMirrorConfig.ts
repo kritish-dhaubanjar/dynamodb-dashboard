@@ -23,12 +23,12 @@ const Theme = CodeMirror.EditorView.theme({
   ".cm-gutter,.cm-content": { minHeight: "100%" },
   ".cm-scroller": { overflow: "auto" },
   ".cm-content": {
-    caretColor: "#dee2e6",
+    caretColor: "#ffffff",
   },
 
   ".cm-cursor, .cm-dropCursor": {
     borderLeftWidth: "3px",
-    borderLeftColor: "#dee2e6",
+    borderLeftColor: "#ffffff",
   },
 });
 
