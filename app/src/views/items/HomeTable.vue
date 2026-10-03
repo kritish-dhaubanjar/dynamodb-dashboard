@@ -198,6 +198,22 @@
               class="btn btn-danger rounded-0"
               type="button"
               :disabled="store.ui.state.isLoading"
+              @click="dropAndCreate"
+            >
+              <span
+                v-if="store.ui.state.isLoading"
+                class="spinner-grow spinner-grow-sm"
+                role="status"
+                aria-hidden="true"
+              ></span>
+              <span class="visually-hidden">Loading...</span>
+              Drop/Create Table
+            </button>
+
+            <button
+              class="btn btn-danger rounded-0"
+              type="button"
+              :disabled="store.ui.state.isLoading"
               @click="truncate"
             >
               <span
@@ -297,6 +313,7 @@
   import { useRoute, useRouter } from "vue-router";
   import { computed, inject, onBeforeMount, onMounted, reactive, ref, watch } from "vue";
 
+  import { truncateItems } from "@/services/item";
   import { deleteTable, truncateTable, getTable, getTables } from "@/services/table";
   import { scanItems, queryItems, countItems } from "@/services/item";
   import { generateDynamodbParameters } from "@/utils/table";
@@ -540,9 +557,33 @@
     }
   };
 
-  const truncate = async () => {
+  const dropAndCreate = async () => {
     try {
       await truncateTable(activeTableName.value);
+
+      const table = await getTable(activeTableName.value);
+      store.table.setters.setTable(table);
+      store.ui.setters.setTable({}, []); // Clear the current table data
+
+      // Reset pagination and fetch new data
+      store.ui.setters.setPage(1);
+      store.dynamodb.setters.setExclusiveStartKey(null);
+      await fetchHandler();
+
+      truncateModal.value?.hide();
+    } catch (error) {
+      toast.className = "text-bg-danger";
+      toast.message = error.response.data.message ?? error.message;
+      const toastEl = new bootstrap.Toast(toastRef.value, { delay: 5000 });
+      setTimeout(() => toastEl.show(), 0);
+    }
+  };
+
+  const truncate = async () => {
+    try {
+      const dynamodb = store.dynamodb.state;
+
+      await truncateItems(activeTableName.value, dynamodb);
 
       const table = await getTable(activeTableName.value);
       store.table.setters.setTable(table);
