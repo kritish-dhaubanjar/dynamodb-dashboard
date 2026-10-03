@@ -1,4 +1,5 @@
 import Joi from "joi";
+import multer from "multer";
 import { scan, destroy, query, count } from "../schemas/item.joi";
 import TableServiceProvider from "../services/table.service";
 
@@ -148,4 +149,42 @@ export async function validateUpdate(req, _res, next) {
   } catch (error) {
     next(error);
   }
+}
+
+export const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { files: 1 },
+  fileFilter: (_req, file, cb) => {
+    if (file.mimetype === "application/json" || file.originalname.toLowerCase().endsWith(".json")) {
+      return cb(null, true);
+    }
+
+    return cb(new multer.MulterError("LIMIT_UNEXPECTED_FILE", "file"));
+  },
+});
+
+export async function validateUpload(req, res, next) {
+  upload.single("file")(req, res, async (error) => {
+    if (error) {
+      return next(error);
+    }
+
+    const { tableName } = req.params;
+
+    try {
+      const { Table } = await TableService.describe(tableName);
+
+      const schema = {};
+
+      Table.KeySchema.forEach(({ AttributeName }) => {
+        schema[AttributeName] = Joi.any().required();
+      });
+
+      req.schema = Object.keys(schema);
+
+      next();
+    } catch (error) {
+      next(error);
+    }
+  });
 }

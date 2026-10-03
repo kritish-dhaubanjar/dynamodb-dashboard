@@ -143,3 +143,11 @@ export async function createItem(tableName: string, body: any) {
 
   return { data, body };
 }
+
+export async function uploadItems(tableName: string, body: FormData) {
+  const url = interpolate(ROUTES.ITEM.UPLOAD, { tableName });
+
+  const { data } = await axios.post(url, body);
+
+  return data;
+}

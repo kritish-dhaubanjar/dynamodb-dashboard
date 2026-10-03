@@ -114,6 +114,20 @@ export default class ItemServiceProvider {
     return response;
   }
 
+  async batchCreate(tableName, items) {
+    const chunks = chunk(items, 25);
+
+    const requests = chunks.map((chunkedItem) => ({
+      RequestItems: {
+        [tableName]: chunkedItem,
+      },
+    }));
+
+    const response = await Promise.all(requests.map(this.AWS.document.batchWrite.bind(this.AWS.document)));
+
+    return response;
+  }
+
   /**
    * @param {string} tableName
    * @param {object} conditions

@@ -8,6 +8,7 @@ import {
   validateUpdate,
   validateCount,
   validateTruncate,
+  validateUpload,
 } from "../validators/item.validators";
 
 const router = Router();
@@ -21,5 +22,6 @@ router.post("/:tableName/items/query", [validateQuery], ItemController.query);
 router.post("/:tableName/items/delete", [validateDelete], ItemController.destroy);
 router.post("/:tableName/items/count", [validateCount], ItemController.count);
 router.put("/:tableName/items/truncate", [validateTruncate], ItemController.truncate);
+router.post("/:tableName/items/upload", [validateUpload], ItemController.upload);
 
 export default router;

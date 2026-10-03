@@ -2,8 +2,11 @@ import { OPERATIONS } from "../constants/dynamodb";
 import { isPartialMatchWith } from "../utils/object";
 import { normalizeKeys } from "../utils/dynamodb";
 import ItemServiceProvider from "../services/item.service";
+import FileServiceProvider from "../services/file.service";
+import { pick } from "lodash-es";
 
 const ItemService = new ItemServiceProvider();
+const FileService = new FileServiceProvider();
 
 export async function get(req, res, next) {
   try {
@@ -106,6 +109,31 @@ export async function update(req, res, next) {
     }
 
     res.json(data);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function upload(req, res, next) {
+  try {
+    const file = req.file;
+    const tableName = req.params.tableName;
+
+    const items = await FileService.parse(file);
+
+    const [deleteItems, putItems] = items.reduce(
+      ([deleteItems, putItems], item) => {
+        deleteItems.push({ DeleteRequest: { Key: pick(item, req.schema) } });
+        putItems.push({ PutRequest: { Item: item } });
+        return [deleteItems, putItems];
+      },
+      [[], []],
+    );
+
+    await Promise.allSettled([ItemService.destroy(tableName, deleteItems)]);
+    await ItemService.batchCreate(tableName, putItems);
+
+    res.sendStatus(200);
   } catch (error) {
     next(error);
   }

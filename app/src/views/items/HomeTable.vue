@@ -82,6 +82,16 @@
               >
                 Manage Streams
               </RouterLink>
+
+              <a
+                href="#"
+                class="dropdown-item"
+                @click.prevent
+                data-bs-toggle="modal"
+                data-bs-target="#import-items-modal"
+              >
+                Import Items
+              </a>
             </li>
           </ul>
 
@@ -284,6 +294,78 @@
       </div>
     </div>
 
+    <div
+      id="import-items-modal"
+      class="modal"
+      tabindex="-1"
+      ref="importModalRef"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Import Items</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+              @click="
+                fileInput.value = '';
+                file = null;
+              "
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label
+                for="formFile"
+                class="form-label"
+              >
+                Select a file
+              </label>
+              <input
+                ref="fileInput"
+                @change="(event) => (file = event.target.files[0] ?? null)"
+                class="form-control"
+                type="file"
+                id="formFile"
+                accept=".json"
+              />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary rounded-0"
+              data-bs-dismiss="modal"
+              @click="
+                fileInput.value = '';
+                file = null;
+              "
+            >
+              Cancel
+            </button>
+
+            <button
+              class="btn btn-primary rounded-0"
+              type="button"
+              :disabled="store.ui.state.isLoading || !file"
+              @click="importFile"
+            >
+              <span
+                v-if="store.ui.state.isLoading"
+                class="spinner-grow spinner-grow-sm"
+                role="status"
+                aria-hidden="true"
+              ></span>
+              <span class="visually-hidden">Loading...</span>
+              Import Items
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Toast -->
     <div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3">
       <div
@@ -313,7 +395,7 @@
   import { useRoute, useRouter } from "vue-router";
   import { computed, inject, onBeforeMount, onMounted, reactive, ref, watch } from "vue";
 
-  import { truncateItems } from "@/services/item";
+  import { truncateItems, uploadItems } from "@/services/item";
   import { deleteTable, truncateTable, getTable, getTables } from "@/services/table";
   import { scanItems, queryItems, countItems } from "@/services/item";
   import { generateDynamodbParameters } from "@/utils/table";
@@ -538,11 +620,16 @@
   //
   const action = ref("");
 
+  const importModal = ref(null);
   const deleteModal = ref(null);
   const truncateModal = ref(null);
 
+  const importModalRef = ref(null);
   const deleteModalRef = ref(null);
   const truncateModalRef = ref(null);
+
+  const file = ref(null);
+  const fileInput = ref(null);
 
   const destroy = async () => {
     try {
@@ -603,6 +690,35 @@
     }
   };
 
+  const importFile = async () => {
+    try {
+      const formData = new FormData();
+
+      formData.append("file", file.value);
+
+      await uploadItems(activeTableName.value, formData);
+
+      file.value = null;
+      fileInput.value.value = "";
+
+      const table = await getTable(activeTableName.value);
+      store.table.setters.setTable(table);
+      store.ui.setters.setTable({}, []); // Clear the current table data
+
+      // Reset pagination and fetch new data
+      store.ui.setters.setPage(1);
+      store.dynamodb.setters.setExclusiveStartKey(null);
+      await fetchHandler();
+
+      importModal.value?.hide();
+    } catch (error) {
+      toast.className = "text-bg-danger";
+      toast.message = error.response.data.message ?? error.message;
+      const toastEl = new bootstrap.Toast(toastRef.value, { delay: 5000 });
+      setTimeout(() => toastEl.show(), 0);
+    }
+  };
+
   const selectAll = async () => {
     if (selection.isSelected) {
       selection.count = 0;
@@ -631,6 +747,7 @@
   onMounted(() => {
     deleteModal.value = new bootstrap.Modal(deleteModalRef.value, {});
     truncateModal.value = new bootstrap.Modal(truncateModalRef.value, {});
+    importModal.value = new bootstrap.Modal(importModalRef.value, {});
   });
 </script>
 
