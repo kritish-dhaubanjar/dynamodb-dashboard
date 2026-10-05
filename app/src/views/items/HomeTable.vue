@@ -332,6 +332,15 @@
                 accept=".json"
               />
             </div>
+
+            <div class="rounded-0 alert alert-warning">
+              <b>This action will modify existing data</b>
+              <br />
+              <small>
+                The import will upsert records. Any existing records with matching keys may be overwritten by the
+                imported data.
+              </small>
+            </div>
           </div>
           <div class="modal-footer">
             <button
