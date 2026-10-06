@@ -37,19 +37,15 @@ export async function validateCount(req, _res, next) {
 
     const { Table } = await TableService.describe(tableName);
 
-    const schema = {};
-
-    Table.KeySchema.forEach(({ AttributeName }) => {
-      schema[AttributeName] = Joi.any().required();
-    });
-
-    req.schema = Object.keys(schema);
+    const schema = Table.KeySchema.map(({ AttributeName }) => AttributeName);
 
     if (error) {
       next(error);
 
       return;
     }
+
+    req.schema = schema;
 
     next();
   } catch (error) {
@@ -63,11 +59,7 @@ export async function validateTruncate(req, _res, next) {
   try {
     const { Table } = await TableService.describe(tableName);
 
-    const schema = {};
-
-    Table.KeySchema.forEach(({ AttributeName }) => {
-      schema[AttributeName] = Joi.any().required();
-    });
+    const schema = Table.KeySchema.map(({ AttributeName }) => AttributeName);
 
     const { error } = count.validate(req.body);
 
@@ -76,7 +68,7 @@ export async function validateTruncate(req, _res, next) {
       return;
     }
 
-    req.schema = Object.keys(schema);
+    req.schema = schema;
 
     next();
   } catch (error) {
@@ -190,13 +182,9 @@ export async function validateUpload(req, res, next) {
     try {
       const { Table } = await TableService.describe(tableName);
 
-      const schema = {};
+      const schema = Table.KeySchema.map(({ AttributeName }) => AttributeName);
 
-      Table.KeySchema.forEach(({ AttributeName }) => {
-        schema[AttributeName] = Joi.any().required();
-      });
-
-      req.schema = Object.keys(schema);
+      req.schema = schema;
 
       next();
     } catch (error) {
