@@ -176,6 +176,7 @@
       class="modal"
       tabindex="-1"
       ref="truncateModalRef"
+      data-bs-backdrop="static"
     >
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -299,6 +300,7 @@
       class="modal"
       tabindex="-1"
       ref="importModalRef"
+      data-bs-backdrop="static"
     >
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
