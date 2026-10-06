@@ -29,16 +29,32 @@ export function validateQuery(req, _res, next) {
   next();
 }
 
-export function validateCount(req, _res, next) {
-  const { error } = count.validate(req.body);
+export async function validateCount(req, _res, next) {
+  const { tableName } = req.params;
 
-  if (error) {
+  try {
+    const { error } = count.validate(req.body);
+
+    const { Table } = await TableService.describe(tableName);
+
+    const schema = {};
+
+    Table.KeySchema.forEach(({ AttributeName }) => {
+      schema[AttributeName] = Joi.any().required();
+    });
+
+    req.schema = Object.keys(schema);
+
+    if (error) {
+      next(error);
+
+      return;
+    }
+
+    next();
+  } catch (error) {
     next(error);
-
-    return;
   }
-
-  next();
 }
 
 export async function validateTruncate(req, _res, next) {

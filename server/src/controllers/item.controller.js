@@ -47,7 +47,7 @@ export async function query(req, res, next) {
 export async function count(req, res, next) {
   try {
     const { tableName } = req.params;
-    const data = await ItemService.count(tableName, req.body);
+    const data = await ItemService.count(tableName, req.schema, req.body);
     res.json(data);
   } catch (error) {
     next(error);

@@ -245,13 +245,18 @@ export default class ItemServiceProvider {
 
   /**
    * @param {string} tableName
+   * @param {Array<string>} schema
    * @param {object} conditions
    *
    * @returns {Promise<{ Count: number, ScannedCount: number }>}
    */
-  async count(tableName, conditions) {
-    const response = await this.all(tableName, conditions);
+  async count(tableName, schema, conditions) {
+    const expressions = {
+      ...conditions,
+      ProjectionExpression: schema.join(", "),
+    };
 
+    const response = await this.all(tableName, expressions);
     return response;
   }
 
@@ -262,6 +267,11 @@ export default class ItemServiceProvider {
    * @returns {Promise<{ Count: number, ScannedCount: number }>}
    */
   async truncate(tableName, schema, conditions) {
+    const expressions = {
+      ...conditions,
+      ProjectionExpression: schema.join(", "),
+    };
+
     const destroyer = async (tableName, items) => {
       const requests = items.map((item) => ({ DeleteRequest: { Key: pick(item, schema) } }));
       const response = await this.destroy(tableName, requests);
@@ -269,7 +279,7 @@ export default class ItemServiceProvider {
       return response;
     };
 
-    const response = await this.all(tableName, conditions, destroyer);
+    const response = await this.all(tableName, expressions, destroyer);
 
     return response;
   }
