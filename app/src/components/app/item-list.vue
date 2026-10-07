@@ -27,7 +27,7 @@
 
               <th
                 scope="col"
-                :key="key"
+                :key="sort.key"
                 @click="setSort(headers[0])"
                 :style="`min-width: ${widths[1]}px`"
               >
