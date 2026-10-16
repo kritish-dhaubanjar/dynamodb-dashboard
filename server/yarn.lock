@@ -41,12 +41,12 @@
     tslib "^2.6.2"
 
 "@aws-sdk/client-dynamodb-streams@^3.1000.0":
-  version "3.1149.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb-streams/-/client-dynamodb-streams-3.1149.0.tgz#6b140ee11ce15c5b0059a282e3f65d6c700c2044"
-  integrity sha512-oKwNWc6CNmrLe96Yg/WsBlwI7TU4jTwW/a6rBwmTgXyXy7fqLZsxZomp8T/tp6K4HU8FiI12L68KTFdblktE6g==
+  version "3.1150.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb-streams/-/client-dynamodb-streams-3.1150.0.tgz#cef3d5fe638527490bbd8027469c6eb72ac498c4"
+  integrity sha512-81bfd+fYdgl4udDvEJE+NOzMqYC53TtKHPbXKMtpGgUsn5kN4MQjOth2eEITunaAVMCpr7LpdiCdnWSTL+Hs5Q==
   dependencies:
-    "@aws-sdk/core" "^3.978.2"
-    "@aws-sdk/credential-provider-node" "^3.972.85"
+    "@aws-sdk/core" "^3.978.3"
+    "@aws-sdk/credential-provider-node" "^3.972.86"
     "@aws-sdk/types" "^3.974.6"
     "@smithy/core" "^3.35.2"
     "@smithy/fetch-http-handler" "^5.8.0"
@@ -165,7 +165,7 @@
     "@smithy/util-utf8" "^4.2.0"
     tslib "^2.6.2"
 
-"@aws-sdk/core@^3.978.2", "@aws-sdk/core@^3.978.3":
+"@aws-sdk/core@^3.978.3":
   version "3.978.3"
   resolved "https://registry.yarnpkg.com/@aws-sdk/core/-/core-3.978.3.tgz#6dba678894657cbc644f799c5889272f526e327f"
   integrity sha512-nslpzUCTI9b2IQMWSd6mSAXldBexPc8rr0d3dXUutXYFLFaTdsHa2GD7sJdsn3PhyjK0O5K8ypd6zi+RXXPVlg==
@@ -313,7 +313,7 @@
     "@smithy/types" "^4.11.0"
     tslib "^2.6.2"
 
-"@aws-sdk/credential-provider-node@^3.972.85":
+"@aws-sdk/credential-provider-node@^3.972.86":
   version "3.972.86"
   resolved "https://registry.yarnpkg.com/@aws-sdk/credential-provider-node/-/credential-provider-node-3.972.86.tgz#a90360977d5ebdd13d0e98a8f79d943f9eb7d263"
   integrity sha512-WNttSyr6e8innPtBSty//CdnqJcgZN6eAbtw3v/CR2IObz6MYZEo8eusdtuCHJ2ujwFqC2bSPHVyhXGHx8HruQ==
