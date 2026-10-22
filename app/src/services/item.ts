@@ -1,5 +1,5 @@
 import axios from "axios";
-import { isNil } from "lodash";
+import { isNil } from "lodash-es";
 import ROUTES from "../constants/routes";
 import { interpolate } from "../utils/string";
 
@@ -142,4 +142,12 @@ export async function createItem(tableName: string, body: any) {
   const { data } = await axios.post(url, body);
 
   return { data, body };
+}
+
+export async function uploadItems(tableName: string, body: FormData) {
+  const url = interpolate(ROUTES.ITEM.UPLOAD, { tableName });
+
+  const { data } = await axios.post(url, body);
+
+  return data;
 }

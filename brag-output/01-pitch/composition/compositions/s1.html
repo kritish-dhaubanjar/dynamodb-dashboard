@@ -1,0 +1,34 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; background: #f2f3f3; overflow: hidden; font-family: "Roboto", sans-serif; }
+    #s1-stage { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    #s1-mark { position: relative; width: 243px; height: 238px; margin-bottom: 36px; }
+    #s1-mark svg { position: absolute; inset: 0; width: 243px; height: 238px; overflow: visible; }
+    #s1-word { font-size: 76px; font-weight: 500; color: #212529; letter-spacing: -0.01em; line-height: 1.1; white-space: pre; }
+    #s1-word span { display: inline-block; }
+    #s1-tag { margin-top: 28px; font-size: 35px; font-weight: 400; color: #495057; line-height: 1.3; }
+  </style>
+  <div id="root" data-composition-id="s1" data-width="1920" data-height="1080">
+    <div id="s1-stage">
+      <div id="s1-mark" aria-label="DynamoDB Dashboard logo">
+        <svg id="s1-d-rear" viewBox="0 0 41.27887 40.443741" xmlns="http://www.w3.org/2000/svg"><g transform="translate(-0.44355545,-0.28622647)"><path d="M 7.7458156,28.758897 H 27.485996 c 7.82879,0 14.23643,-6.40684 14.23643,-14.23612 v -6.2e-4 c 0,-7.8287903 -6.40614,-14.23593053 -14.23643,-14.23593053 H 7.7458156 V 28.758777" fill="#76c0e5"/></g></svg>
+        <svg id="s1-d-front" viewBox="0 0 41.27887 40.443741" xmlns="http://www.w3.org/2000/svg"><g transform="translate(-0.44355545,-0.28622647)"><path d="M 0.44355545,40.729857 H 20.183846 c 7.82858,0 14.23622,-6.4068 14.23622,-14.23608 v -3.1e-4 c 0,-7.82873 -6.40614,-14.23587 -14.23622,-14.23587 H 0.44355545 v 28.47237" fill="#7393f7"/></g></svg>
+      </div>
+      <div id="s1-word"><span>D</span><span>y</span><span>n</span><span>a</span><span>m</span><span>o</span><span>D</span><span>B</span><span> </span><span>D</span><span>a</span><span>s</span><span>h</span><span>b</span><span>o</span><span>a</span><span>r</span><span>d</span></div>
+      <div id="s1-tag">A web GUI to browse and manage DynamoDB, local or remote.</div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    // rear D is on screen from frame 0 and slides home; front D arrives and they meet at ~0.75 s
+    tl.fromTo("#s1-d-rear", { x: 150, opacity: 1 }, { x: 0, opacity: 1, duration: 0.8, ease: "expo.out" }, 0);
+    tl.fromTo("#s1-d-front", { x: -170, opacity: 0 }, { x: 0, opacity: 1, duration: 0.7, ease: "expo.out" }, 0.15);
+    // wordmark sets letter by letter
+    tl.fromTo("#s1-word span", { opacity: 0.25, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.12, ease: "power2.out", stagger: 0.06 }, 0.8);
+    // tagline blurs in as one line
+    tl.fromTo("#s1-tag", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power4.out" }, 2.0);
+    // hand off to the UI
+    tl.fromTo("#s1-stage", { opacity: 1, filter: "blur(0px)" }, { opacity: 0, filter: "blur(8px)", duration: 0.4, ease: "power3.in" }, 4.91);
+    window.__timelines["s1"] = tl;
+  </script>
+</template>

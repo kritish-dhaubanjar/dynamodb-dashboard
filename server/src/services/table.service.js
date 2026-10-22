@@ -170,11 +170,18 @@ export default class TableServiceProvider {
   /**
    * @param {string} sourceTableName
    * @param {string} targetTableName
+   * @param {boolean} [isSchemaOnly=false]
    * @param {DatabaseServiceProvider} DatabaseServiceProvider
    *
    * @returns {Promise}
    */
-  static async *restore(sourceTableName, targetTableName, DatabaseServiceProvider, AbortController) {
+  static async *restore(
+    sourceTableName,
+    targetTableName,
+    isSchemaOnly = false,
+    DatabaseServiceProvider,
+    AbortController,
+  ) {
     const abortSignal = AbortController.signal;
 
     const { Table } = await DatabaseServiceProvider.SOURCE.TableService.describe(sourceTableName, { abortSignal });
@@ -203,6 +210,11 @@ export default class TableServiceProvider {
         { TableName: targetTableName },
       ),
     ]);
+
+    if (isSchemaOnly) {
+      yield [0, 0];
+      return;
+    }
 
     const params = { Limit: 500 };
     const schema = Table.KeySchema.map(({ AttributeName }) => AttributeName);

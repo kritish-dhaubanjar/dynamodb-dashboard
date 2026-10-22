@@ -1,5 +1,5 @@
 import { reactive } from "vue";
-import { isEmpty } from "lodash";
+import { isEmpty } from "lodash-es";
 import { generateTableHeaders } from "@/utils/table";
 
 const state = reactive({

@@ -1,0 +1,11 @@
+[
+  {"name": "home", "path": "/"},
+  {"name": "home-orders", "path": "/?table=orders"},
+  {"name": "create-table", "path": "/table/create-table"},
+  {"name": "schema-orders", "path": "/table/orders/table-schema"},
+  {"name": "ttl-sessions", "path": "/table/sessions/ttl"},
+  {"name": "streams-sessions", "path": "/table/sessions/streams"},
+  {"name": "restore", "path": "/table/restore-tables"},
+  {"name": "create-item-orders", "path": "/orders/create-item"},
+  {"name": "edit-table-orders", "path": "/table/orders/edit-table"}
+]

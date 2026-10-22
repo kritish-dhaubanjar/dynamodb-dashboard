@@ -27,6 +27,7 @@ const routes = {
     COUNT: "/tables/:tableName/items/count",
     TRUNCATE: "/tables/:tableName/items/truncate",
     DELETE: "/tables/:tableName/items/delete",
+    UPLOAD: "/tables/:tableName/items/upload",
   },
 };
 

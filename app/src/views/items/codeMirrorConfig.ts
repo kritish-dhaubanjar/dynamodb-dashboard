@@ -16,12 +16,20 @@ const Theme = CodeMirror.EditorView.theme({
     "font-family": "'JetBrains Mono', monospace !important",
   },
   ".cm-tooltip": {
-    "background-color": "#fafafa",
+    "background-color": "#3b82f6",
   },
   // https://discuss.codemirror.net/t/code-editor-with-automatic-height-that-has-a-minimum-and-maximum-height/4015/5
   "&": { maxHeight: "100%", height: "100%" },
   ".cm-gutter,.cm-content": { minHeight: "100%" },
   ".cm-scroller": { overflow: "auto" },
+  ".cm-content": {
+    caretColor: "#ffffff",
+  },
+
+  ".cm-cursor, .cm-dropCursor": {
+    borderLeftWidth: "3px",
+    borderLeftColor: "#ffffff",
+  },
 });
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

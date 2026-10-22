@@ -1,0 +1,9 @@
+[
+  {"name": "save-toast-250", "path": "/orders/edit-item?orderId=ord_7f387cf3", "wait": 2500,
+   "steps": [{"eval": "const b=[...document.querySelectorAll('button')].find(b=>b.textContent.trim()==='Save Changes'); b.dispatchEvent(new MouseEvent('click',{bubbles:true,cancelable:true}));", "wait": 250}]},
+  {"name": "save-toast-450", "path": "/orders/edit-item?orderId=ord_7f387cf3", "wait": 2500,
+   "steps": [{"eval": "const b=[...document.querySelectorAll('button')].find(b=>b.textContent.trim()==='Save Changes'); b.dispatchEvent(new MouseEvent('click',{bubbles:true,cancelable:true}));", "wait": 450}]},
+  {"name": "save-toast-dom", "path": "/orders/edit-item?orderId=ord_7f387cf3", "wait": 2500,
+   "steps": [{"eval": "const b=[...document.querySelectorAll('button')].find(b=>b.textContent.trim()==='Save Changes'); b.click();", "wait": 350},
+             {"eval": "window.__toast = document.querySelector('.toast') ? document.querySelector('.toast').className + ' | ' + document.querySelector('.toast').textContent.trim() : 'no toast'", "wait": 50}]}
+]

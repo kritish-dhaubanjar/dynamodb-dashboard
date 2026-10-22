@@ -71,12 +71,12 @@ export async function stream(req, res, _next) {
 export async function restore(req, res, next) {
   try {
     const { uid } = req.params;
-    const { credentials, tables } = req.body;
+    const { credentials, tables, isSchemaOnly } = req.body;
 
     abortController = new AbortController();
 
     const DatabaseService = new DatabaseServiceProvider(AWS, credentials);
-    const data = DatabaseService.restore(tables, uid, eventEmitter, abortController);
+    const data = DatabaseService.restore(tables, uid, isSchemaOnly, eventEmitter, abortController);
 
     res.json(data);
   } catch (error) {

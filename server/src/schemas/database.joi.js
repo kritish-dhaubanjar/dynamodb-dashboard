@@ -7,6 +7,7 @@ export const all = Joi.object({
 
 export const restore = Joi.object({
   credentials: AWSCredentialsSchema,
+  isSchemaOnly: Joi.bool().required(),
   tables: Joi.array().items(
     Joi.object({
       source: Joi.string().required(),

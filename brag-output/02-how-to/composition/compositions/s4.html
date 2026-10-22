@@ -1,0 +1,22 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; background: #f2f3f3; overflow: hidden; font-family: "Roboto", sans-serif; }
+    #s4-cam { position: absolute; left: 0; top: 0; width: 1600px; height: 1000px; transform-origin: 0 0; }
+    #s4-cam img { display: block; width: 1600px; height: 1000px; }
+    #s4-cap { position: absolute; left: 192px; bottom: 108px; display: flex; align-items: center; gap: 18px; background: #ffffff; border: 1px solid #e3e3e3; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08); padding: 18px 28px 18px 22px; font-size: 32px; font-weight: 400; color: #212529; line-height: 1.2; }
+    #s4-cap i { display: block; width: 8px; height: 36px; background: #7393f7; }
+  </style>
+  <div id="root" data-composition-id="s4" data-width="1920" data-height="1080">
+    <div id="s4-cam" data-layout-allow-overflow><img src="assets/img/save-toast.png" alt="Edit item screen with the success toast: The item has been saved successfully." /></div>
+    <div id="s4-cap"><i></i><span>Changes saved to the table.</span></div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    // after the click: top of the page, the toast landed
+    tl.fromTo("#s4-cam", { scale: 1.75, x: -24, y: 40 }, { scale: 1.7, x: 8, y: 64, duration: 0.45, ease: "power3.out" }, 0);
+    tl.fromTo("#s4-cap", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.25, ease: "power3.out" }, 0.38);
+    // soft fade under the end card
+    tl.fromTo("#root", { opacity: 1 }, { opacity: 0, duration: 0.45, ease: "power2.in" }, 2.9);
+    window.__timelines["s4"] = tl;
+  </script>
+</template>

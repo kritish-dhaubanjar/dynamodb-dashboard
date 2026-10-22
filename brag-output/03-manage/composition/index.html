@@ -1,0 +1,45 @@
+<!doctype html>
+<html
+  lang="en"
+  data-resolution="landscape"
+  data-composition-variables='[{"id":"color-ground","type":"color","label":"Background","default":"#f2f3f3"},{"id":"color-ink","type":"color","label":"Text","default":"#212529"},{"id":"color-accent","type":"color","label":"Accent","default":"#7393f7"},{"id":"color-accent-2","type":"color","label":"Accent 2","default":"#76c0e5"}]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      :root { --ground: #f2f3f3; --ink: #212529; --accent: #7393f7; --accent-2: #76c0e5; --font-display: "Roboto", sans-serif; --font-mono: "JetBrains Mono", monospace; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--ground); }
+      #root { position: relative; width: 1920px; height: 1080px; background: var(--ground); }
+      #bg { position: absolute; inset: 0; background: var(--ground); }
+      .scene { position: absolute; inset: 0; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="24.8" data-width="1920" data-height="1080">
+      <div id="bg"></div>
+      <div id="s1" class="scene clip" data-composition-id="s1" data-composition-src="compositions/s1.html" data-start="0" data-duration="5.28" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080" style="z-index: 1"></div>
+      <div id="s2" class="scene clip" data-composition-id="s2" data-composition-src="compositions/s2.html" data-start="5.28" data-duration="16.71" data-track-index="2" data-track-kind="graphics" data-width="1920" data-height="1080" style="z-index: 2"></div>
+      <div id="s3" class="scene clip" data-composition-id="s3" data-composition-src="compositions/s3.html" data-start="21.59" data-duration="3.21" data-track-index="3" data-track-kind="graphics" data-width="1920" data-height="1080" style="z-index: 3"></div>
+
+      <audio id="bg-music" class="clip" data-start="0" data-duration="24.8" data-track-index="10" data-volume="0.32" data-fade-in="0.4" data-fade-out="1.5" src="assets/music/happy-beats-business-moves-vol-9-by-ende-dot-app.mp3"></audio>
+      <!-- beat-locked (vol-9 preset): montage 5.28, cuts 7.92 / 10.54 / 12.65 / 15.28 / 17.91, end card 21.59 -->
+      <audio id="sfx-click" class="clip" data-start="0.2" data-duration="0.01" data-track-index="11" data-volume="0.5" src="assets/sfx/interface/click_003.ogg"></audio>
+      <audio id="sfx-cut-1" class="clip" data-start="5.28" data-duration="0.11" data-track-index="12" data-volume="0.55" src="assets/sfx/interface/drop_001.ogg"></audio>
+      <audio id="sfx-cut-2" class="clip" data-start="7.92" data-duration="0.19" data-track-index="13" data-volume="0.5" src="assets/sfx/interface/drop_002.ogg"></audio>
+      <audio id="sfx-cut-3" class="clip" data-start="10.54" data-duration="0.19" data-track-index="14" data-volume="0.5" src="assets/sfx/interface/drop_003.ogg"></audio>
+      <audio id="sfx-cut-4" class="clip" data-start="12.65" data-duration="0.11" data-track-index="15" data-volume="0.55" src="assets/sfx/interface/drop_001.ogg"></audio>
+      <audio id="sfx-cut-5" class="clip" data-start="15.28" data-duration="0.19" data-track-index="16" data-volume="0.5" src="assets/sfx/interface/drop_002.ogg"></audio>
+      <audio id="sfx-cut-6" class="clip" data-start="17.91" data-duration="0.19" data-track-index="17" data-volume="0.5" src="assets/sfx/interface/drop_003.ogg"></audio>
+      <audio id="sfx-click-url" class="clip" data-start="19.58" data-duration="0.01" data-track-index="19" data-volume="0.5" src="assets/sfx/interface/click_003.ogg"></audio>
+      <audio id="sfx-mark" class="clip" data-start="21.59" data-duration="1.48" data-track-index="18" data-volume="0.4" src="assets/sfx/impact/impactBell_heavy_000.ogg"></audio>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

@@ -54,11 +54,12 @@ export default class DatabaseServiceProvider {
   /**
    * @param {Array<{source: string, target: string}>} tables
    * @param {string} uid
+   * @param {boolean} [isSchemaOnly=false]
    * @param {EventEmitter} eventEmitter
    *
    * @returns {Array<string>}
    */
-  restore(tables = [], uid, eventEmitter, abortController) {
+  restore(tables = [], uid, isSchemaOnly = false, eventEmitter, abortController) {
     const queue = [...tables];
     const jobs = queue.splice(0, POOL_SIZE);
     let counter = jobs.length;
@@ -81,7 +82,7 @@ export default class DatabaseServiceProvider {
       try {
         eventEmitter.emit(EVENTS.BEGIN, uid, { tableName });
 
-        const restore = TableServiceProvider.restore(source, target, this, abortController);
+        const restore = TableServiceProvider.restore(source, target, isSchemaOnly, this, abortController);
 
         for await (const [ItemCount, TotalItemCount] of restore) {
           eventEmitter.emit(EVENTS.PROGRESS, uid, { tableName, data: [ItemCount, TotalItemCount] });

@@ -1,0 +1,66 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; background: #f2f3f3; overflow: hidden; font-family: "Roboto", sans-serif; }
+    .s2-cam { position: absolute; left: 0; top: 0; width: 1600px; height: 1000px; transform-origin: 0 0; }
+    .s2-cam img { display: block; width: 1600px; height: 1000px; }
+    .s2-label { position: absolute; left: 192px; bottom: 108px; display: flex; align-items: center; gap: 18px; background: #ffffff; border: 1px solid #e3e3e3; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08); padding: 16px 28px 16px 22px; font-size: 36px; font-weight: 500; color: #212529; line-height: 1.2; }
+    .s2-label i { display: block; width: 8px; height: 38px; background: #7393f7; }
+    #s2-url { position: absolute; left: 96px; top: 108px; display: flex; align-items: center; gap: 16px; background: #ffffff; border: 1px solid #e3e3e3; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08); padding: 14px 26px; font-family: "JetBrains Mono", monospace; font-size: 28px; font-weight: 500; color: #212529; line-height: 1.3; white-space: nowrap; }
+    #s2-url u { text-decoration: none; border-bottom: 4px solid #7393f7; padding-bottom: 2px; }
+    #s2-url b { display: block; width: 14px; height: 14px; border: 2px solid #495057; border-radius: 50%; }
+    #s2-url em { font-style: normal; background: rgba(115, 147, 247, 0); }
+    #s2-cursor { position: absolute; left: 0; top: 0; width: 48px; height: 64px; filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.25)); }
+  </style>
+  <div id="root" data-composition-id="s2" data-width="1920" data-height="1080">
+    <div id="s2-cam-idx" class="s2-cam" data-layout-allow-overflow><img src="assets/img/edit-table-orders.png" alt="Secondary indexes screen for the orders table" /></div>
+    <div id="s2-cam-ttl" class="s2-cam" data-layout-allow-overflow><img src="assets/img/ttl-sessions.png" alt="Time to Live screen" /></div>
+    <div id="s2-cam-streams" class="s2-cam" data-layout-allow-overflow><img src="assets/img/streams-sessions.png" alt="Streams screen" /></div>
+    <div id="s2-cam-schema" class="s2-cam" data-layout-allow-overflow><img src="assets/img/schema-orders.png" alt="Table schema for orders" /></div>
+    <div id="s2-cam-copy" class="s2-cam" data-layout-allow-overflow><img src="assets/img/restore-populated.png" alt="Copy tables between environments" /></div>
+    <div id="s2-cam-url" class="s2-cam" data-layout-allow-overflow><img src="assets/img/orders-scan.png" alt="Scan of the orders table" /></div>
+    <div id="s2-label-idx" class="s2-label"><i></i><span>Create and delete indexes</span></div>
+    <div id="s2-label-ttl" class="s2-label"><i></i><span>Time to Live (TTL)</span></div>
+    <div id="s2-label-streams" class="s2-label"><i></i><span>Manage streams</span></div>
+    <div id="s2-label-schema" class="s2-label"><i></i><span>View table schema</span></div>
+    <div id="s2-label-copy" class="s2-label"><i></i><span>Copy tables between environments</span></div>
+    <div id="s2-label-url" class="s2-label"><i></i><span>Every scan and query is a URL.</span></div>
+    <div id="s2-url" data-layout-ignore><b></b><span><em id="s2-url-sel">http://127.0.0.1:4567/dynamodb/?page=1&amp;limit=50&amp;<u>tableName=orders</u>&amp;indexName=orders&amp;<u>operation=SCAN</u></em></span></div>
+    <svg id="s2-cursor" data-layout-allow-occlusion viewBox="0 0 24 32" xmlns="http://www.w3.org/2000/svg"><path d="M2 2 L2 24 L8 18.5 L12.5 29 L16.5 27.3 L12 17 L20 17 Z" fill="#1b1b1b" stroke="#ffffff" stroke-width="1.6" stroke-linejoin="round"/></svg>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    // beat-locked cuts (vol-9): local 0, 2.64, 5.26, 7.37, 10.0, 12.63 = abs 5.28, 7.92, 10.54, 12.65, 15.28, 17.91
+    const shots = [
+      { cam: "#s2-cam-idx", label: "#s2-label-idx", at: 0, s: 1.5, x: 60, y: 165 },
+      { cam: "#s2-cam-ttl", label: "#s2-label-ttl", at: 2.64, s: 1.7, x: 144, y: 115 },
+      { cam: "#s2-cam-streams", label: "#s2-label-streams", at: 5.26, s: 1.7, x: 144, y: 115 },
+      { cam: "#s2-cam-schema", label: "#s2-label-schema", at: 7.37, s: 1.6, x: 128, y: -100 },
+      { cam: "#s2-cam-copy", label: "#s2-label-copy", at: 10.0, s: 1.5, x: -615, y: -105 },
+      { cam: "#s2-cam-url", label: "#s2-label-url", at: 12.63, s: 1.3, x: -2, y: 20 },
+    ];
+    shots.forEach((sh, i) => {
+      const prev = shots[i - 1];
+      // earliest tween per target is the "show" from hidden: it sets the resting state at authoring time
+      tl.fromTo(sh.cam, { opacity: 0 }, { opacity: 1, duration: 0.02 }, sh.at);
+      tl.fromTo(sh.label, { opacity: 0 }, { opacity: 1, duration: 0.02 }, sh.at);
+      if (prev) {
+        tl.fromTo(prev.cam, { opacity: 1 }, { opacity: 0, duration: 0.02, immediateRender: false }, sh.at);
+        tl.fromTo(prev.label, { opacity: 1 }, { opacity: 0, duration: 0.02, immediateRender: false }, sh.at);
+      }
+      // each screen arrives slightly large and settles
+      tl.fromTo(sh.cam, { scale: sh.s * 1.035, x: sh.x - 30, y: sh.y - 18 }, { scale: sh.s, x: sh.x, y: sh.y, duration: 0.45, ease: "power3.out", immediateRender: false }, sh.at);
+      tl.fromTo(sh.label + " span", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.2, ease: "power3.out" }, sh.at + 0.05);
+    });
+    // the address chip slides into place over the scan screen
+    tl.fromTo("#s2-url", { opacity: 0, y: -24 }, { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" }, 12.93);
+    // the cursor comes in, clicks into the address bar and the URL is selected (abs 18.88 to 19.65)
+    tl.fromTo("#s2-cursor", { x: 1900, y: 1120, opacity: 0 }, { x: 1900, y: 1120, opacity: 1, duration: 0.01 }, 13.6);
+    tl.fromTo("#s2-cursor", { x: 1900, y: 1120 }, { x: 1610, y: 150, duration: 0.6, ease: "power2.inOut", immediateRender: false }, 13.61);
+    tl.fromTo("#s2-cursor", { scale: 1 }, { scale: 0.86, duration: 0.07, ease: "power2.in", immediateRender: false }, 14.3);
+    tl.fromTo("#s2-cursor", { scale: 0.86 }, { scale: 1, duration: 0.09, ease: "power2.out", immediateRender: false }, 14.37);
+    tl.fromTo("#s2-url-sel", { backgroundColor: "rgba(115, 147, 247, 0)" }, { backgroundColor: "rgba(115, 147, 247, 0.28)", duration: 0.12, ease: "power2.out" }, 14.37);
+    // fade under the end card
+    tl.fromTo("#root", { opacity: 1 }, { opacity: 0, duration: 0.4, ease: "power2.in" }, 16.31);
+    window.__timelines["s2"] = tl;
+  </script>
+</template>

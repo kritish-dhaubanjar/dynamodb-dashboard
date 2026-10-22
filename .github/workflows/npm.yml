@@ -5,21 +5,25 @@ on:
     types: [published]
 
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: '22.x'
           registry-url: 'https://registry.npmjs.org'
+
+      - name: Update npm
+        run: npm i -g npm@latest
 
       - name: Publish
         run: |
           make publish
           cd server
           npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

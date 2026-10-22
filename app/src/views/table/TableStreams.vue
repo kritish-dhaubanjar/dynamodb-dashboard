@@ -183,7 +183,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { cloneDeep } from "lodash";
+  import { cloneDeep } from "lodash-es";
   import * as bootstrap from "bootstrap";
   import { TTL } from "@/constants/dynamodb";
   import { useRoute, useRouter } from "vue-router";

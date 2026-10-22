@@ -1,0 +1,26 @@
+[
+  {"name": "connection-filled", "path": "/?page=1&limit=50&tableName=orders&indexName=orders&operation=SCAN", "wait": 2000,
+   "steps": [
+     {"eval": "(document.querySelector('.bi-gear')||document.querySelector('[class*=gear]'))?.click()", "wait": 1000},
+     {"type": {"sel": ".modal input[placeholder^='eg: us-west']", "text": "us-west-2"}, "wait": 400},
+     {"eval": "const s=[...document.querySelectorAll('.modal .dropdown-item, .modal li, .modal a, .modal div')].find(e=>e.children.length===0 && e.textContent.trim()==='us-west-2' && e.tagName!=='INPUT'); if(s) s.click(); else document.activeElement.blur();", "wait": 400},
+     {"type": {"sel": ".modal input[placeholder^='eg: https://dynamodb']", "text": "http://localhost:8001"}, "wait": 200},
+     {"type": {"sel": ".modal input[placeholder^='eg: AKIA']", "text": "fakeMyKeyId"}, "wait": 200},
+     {"type": {"sel": ".modal input[placeholder^='eg: wJal']", "text": "fakeSecretAccessKey"}, "wait": 300},
+     {"eval": "document.activeElement && document.activeElement.blur()", "wait": 600}
+   ]},
+  {"name": "restore-populated", "path": "/table/restore-tables", "wait": 2000,
+   "steps": [
+     {"type": {"sel": "input[placeholder^='eg: us-west']", "text": "us-west-2"}, "wait": 400},
+     {"eval": "const s=[...document.querySelectorAll('.dropdown-item, li, a, div')].find(e=>e.children.length===0 && e.textContent.trim()==='us-west-2' && e.tagName!=='INPUT'); if(s) s.click(); else document.activeElement.blur();", "wait": 400},
+     {"type": {"sel": "input[placeholder^='eg: https://dynamodb']", "text": "http://localhost:8001"}, "wait": 150},
+     {"type": {"sel": "input[placeholder^='eg: AKIA']", "text": "fakeMyKeyId"}, "wait": 150},
+     {"type": {"sel": "input[placeholder^='eg: wJal']", "text": "fakeSecretAccessKey"}, "wait": 300},
+     {"eval": "[...document.querySelectorAll('button')].find(b=>b.textContent.trim()==='Explore Tables')?.click()", "wait": 5000},
+     {"eval": "window.__rows=[...document.querySelectorAll('tr')].filter(r=>/dev_/.test(r.textContent)).length", "wait": 100},
+     {"eval": "[...document.querySelectorAll('tr')].filter(r=>/dev_/.test(r.textContent)).forEach(r=>r.querySelector('input[type=checkbox]')?.click())", "wait": 700},
+     {"type": {"sel": "input[placeholder^='Source Prefix']", "text": "dev_"}, "wait": 150},
+     {"type": {"sel": "input[placeholder^='Target prefix']", "text": "qa_"}, "wait": 300},
+     {"eval": "document.activeElement && document.activeElement.blur()", "wait": 900}
+   ]}
+]

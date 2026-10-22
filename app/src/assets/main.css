@@ -36,3 +36,7 @@ a {
 .bg-codemirror {
   background-color: #282c34;
 }
+
+:root {
+  --darkreader-border-ffffff: #ffff !important;
+}

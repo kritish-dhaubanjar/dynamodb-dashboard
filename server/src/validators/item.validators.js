@@ -1,4 +1,5 @@
 import Joi from "joi";
+import multer from "multer";
 import { scan, destroy, query, count } from "../schemas/item.joi";
 import TableServiceProvider from "../services/table.service";
 
@@ -28,16 +29,28 @@ export function validateQuery(req, _res, next) {
   next();
 }
 
-export function validateCount(req, _res, next) {
-  const { error } = count.validate(req.body);
+export async function validateCount(req, _res, next) {
+  const { tableName } = req.params;
 
-  if (error) {
+  try {
+    const { error } = count.validate(req.body);
+
+    const { Table } = await TableService.describe(tableName);
+
+    const schema = Table.KeySchema.map(({ AttributeName }) => AttributeName);
+
+    if (error) {
+      next(error);
+
+      return;
+    }
+
+    req.schema = schema;
+
+    next();
+  } catch (error) {
     next(error);
-
-    return;
   }
-
-  next();
 }
 
 export async function validateTruncate(req, _res, next) {
@@ -46,11 +59,7 @@ export async function validateTruncate(req, _res, next) {
   try {
     const { Table } = await TableService.describe(tableName);
 
-    const schema = {};
-
-    Table.KeySchema.forEach(({ AttributeName }) => {
-      schema[AttributeName] = Joi.any().required();
-    });
+    const schema = Table.KeySchema.map(({ AttributeName }) => AttributeName);
 
     const { error } = count.validate(req.body);
 
@@ -59,7 +68,7 @@ export async function validateTruncate(req, _res, next) {
       return;
     }
 
-    req.schema = Object.keys(schema);
+    req.schema = schema;
 
     next();
   } catch (error) {
@@ -67,7 +76,7 @@ export async function validateTruncate(req, _res, next) {
   }
 }
 
-export function validateDelete(req, _res, next) {
+export async function validateDelete(req, _res, next) {
   const { error } = destroy.validate(req.body);
 
   if (error) {
@@ -76,7 +85,16 @@ export function validateDelete(req, _res, next) {
     return;
   }
 
-  next();
+  const { tableName } = req.params;
+
+  try {
+    const { Table } = await TableService.describe(tableName);
+    req.attributeDefinitions = Table.AttributeDefinitions;
+
+    next();
+  } catch (err) {
+    next(err);
+  }
 }
 
 export async function validateCreate(req, _res, next) {
@@ -100,6 +118,7 @@ export async function validateCreate(req, _res, next) {
     }
 
     req.schema = Object.keys(schema);
+    req.attributeDefinitions = Table.AttributeDefinitions;
 
     next();
   } catch (error) {
@@ -132,9 +151,44 @@ export async function validateUpdate(req, _res, next) {
     }
 
     req.schema = Object.keys(schema);
+    req.attributeDefinitions = Table.AttributeDefinitions;
 
     next();
   } catch (error) {
     next(error);
   }
+}
+
+export const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { files: 1 },
+  fileFilter: (_req, file, cb) => {
+    if (file.mimetype === "application/json" || file.originalname.toLowerCase().endsWith(".json")) {
+      return cb(null, true);
+    }
+
+    return cb(new multer.MulterError("LIMIT_UNEXPECTED_FILE", "file"));
+  },
+});
+
+export async function validateUpload(req, res, next) {
+  upload.single("file")(req, res, async (error) => {
+    if (error) {
+      return next(error);
+    }
+
+    const { tableName } = req.params;
+
+    try {
+      const { Table } = await TableService.describe(tableName);
+
+      const schema = Table.KeySchema.map(({ AttributeName }) => AttributeName);
+
+      req.schema = schema;
+
+      next();
+    } catch (error) {
+      next(error);
+    }
+  });
 }
