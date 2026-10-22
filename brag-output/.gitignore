@@ -1,0 +1,6 @@
+# scratch produced by the brag video pipeline; keep sources, plans, renders, posters
+**/.hyperframes/
+**/node_modules/
+**/renders/
+_work/out/
+03-manage/_work/

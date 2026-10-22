@@ -1,0 +1,2 @@
+DynamoDB Dashboard is more than a table viewer: indexes, TTL, streams, table schema, JSON import and export, and table copies between environments, from the browser.
+Every scan and query is a URL. npm or Docker. MIT. Not affiliated with Amazon Web Services.

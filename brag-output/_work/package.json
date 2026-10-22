@@ -1,0 +1,10 @@
+{
+  "name": "brag-work",
+  "private": true,
+  "description": "Screenshot and seed helpers for the brag videos. Local only; never add to the repo root.",
+  "devDependencies": {
+    "puppeteer-core": "22.15.0",
+    "@aws-sdk/client-dynamodb": "^3.154.0",
+    "@aws-sdk/lib-dynamodb": "^3.154.0"
+  }
+}
