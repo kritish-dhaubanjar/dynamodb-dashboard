@@ -2,9 +2,10 @@ import "dotenv/config";
 import path from "path";
 import morgan from "morgan";
 import express from "express";
-import compression from "compression";
 import routes from "../routes";
 import AWS from "../config/aws";
+import mcpHandler from "../mcp";
+import compression from "compression";
 import errorHandler from "../errors/handler";
 
 AWS.initialize();
@@ -26,9 +27,12 @@ export default ({ port, host, debug, prefix }) => {
   const SPA = `/${prefix}/{*file}`;
   const ASSETS = `/${prefix}`;
   const API = `/${prefix}/api`;
+  const MCP = `/mcp`;
 
   // api
   app.use(API, routes);
+
+  app.all(MCP, mcpHandler);
 
   // assets
   app.use(ASSETS, express.static(path.join(__dirname, "..", "public")));

@@ -5,6 +5,8 @@ import { version } from "../../package.json";
 
 const program = new Command();
 
+import { initialize } from "../constants/config";
+
 program.name("dynamodb-dashboard").description("GUI Dashboard for local or remote DynamoDB").version(version);
 
 program
@@ -13,6 +15,9 @@ program
   .option("-p, --port <port>", "port to run app", 4567)
   .option("-h, --host <host>", "host to run app", "0.0.0.0")
   .option("--prefix <prefix>", "prefix of route URIs (depends on 'app' build arg)", "dynamodb")
-  .action(server);
+  .action((args) => {
+    initialize(args);
+    server(args);
+  });
 
 program.parse();

@@ -42,6 +42,9 @@
     "@aws-sdk/client-dynamodb": "^3.154.0",
     "@aws-sdk/client-dynamodb-streams": "^3.1000.0",
     "@aws-sdk/lib-dynamodb": "^3.154.0",
+    "@modelcontextprotocol/node": "^2.1.2",
+    "@modelcontextprotocol/server": "^2.4.0",
+    "axios": "^1.20.0",
     "commander": "^15.0.0",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
@@ -50,7 +53,8 @@
     "joi": "^18.0.0",
     "lodash-es": "^4.18.1",
     "morgan": "^1.10.0",
-    "multer": "^2.4.0"
+    "multer": "^2.4.0",
+    "zod": "^4.6.7"
   },
   "repository": {
     "type": "git",

@@ -5,6 +5,7 @@ import morgan from "morgan";
 import express from "express";
 import routes from "./routes";
 import AWS from "./config/aws";
+import mcpHandler from "./mcp";
 import compression from "compression";
 import errorHandler from "./errors/handler";
 
@@ -20,6 +21,9 @@ app.use(express.json());
 
 // api
 app.use("/dynamodb/api", routes);
+
+// mcp
+app.all("/mcp", mcpHandler);
 
 // assets
 app.use("/dynamodb", express.static(path.join(__dirname, "..", "public")));

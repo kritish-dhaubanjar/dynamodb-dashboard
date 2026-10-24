@@ -1,4 +1,10 @@
 const config = {
+  app: {
+    port: 4567,
+    debug: true,
+    host: "127.0.0.1",
+    prefix: "dynamodb",
+  },
   aws: {
     region: process.env.AWS_REGION,
     endpoint: process.env.AWS_ENDPOINT,
@@ -9,5 +15,12 @@ const config = {
     },
   },
 };
+
+export function initialize({ port = 4567, host = "127.0.0.1", debug = true, prefix = "dynamodb" }) {
+  config.app.port = port;
+  config.app.host = host;
+  config.app.debug = debug;
+  config.app.prefix = prefix;
+}
 
 export default config;
