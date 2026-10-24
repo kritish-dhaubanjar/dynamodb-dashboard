@@ -84,6 +84,27 @@ Most MCP clients use a configuration file (such as `claude_desktop_config.json` 
 }
 ```
 
+
+```json
+{
+   "mcpServers": {
+      "dynamodb-dashboard": {
+         "args": [
+            "mcp-remote",
+            "https://dynamodb-dashboard.example.com/mcp",
+            "--header",
+            "Authorization:${AUTH_TOKEN}"
+         ],
+         "command": "npx",
+         "env": {
+            "AUTH_TOKEN": "Basic YWRtaW46YWRtaW4=",
+            "NODE_TLS_REJECT_UNAUTHORIZED": "0"
+         }
+      }
+   }
+}
+```
+
 <img width="1320" height="1425" alt="claude-example" src="https://github.com/user-attachments/assets/845e4168-d3c1-4013-bc75-626a33e84de4" />
 
 ### Development Setup
