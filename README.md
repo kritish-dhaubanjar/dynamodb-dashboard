@@ -62,6 +62,30 @@ export AWS_SECRET_ACCESS_KEY=fakeSecretAccessKey
 dynamodb-dashboard start
 ```
 
+## Model Context Protocol (MCP) Support
+
+`dynamodb-dashboard` provides a Model Context Protocol (MCP) server, allowing you to connect it directly to any MCP-compatible AI client.
+
+### Client Configuration Sample
+
+Most MCP clients use a configuration file (such as `claude_desktop_config.json` for Claude or equivalent settings for other clients) structured like this:
+
+```json
+{
+  "mcpServers": {
+    "dynamodb-dashboard": {
+      "command": "npx",
+      "args": [
+        "mcp-remote",
+        "http://localhost:4567/mcp"
+      ]
+    }
+  }
+}
+```
+
+<img width="1320" height="1425" alt="claude-example" src="https://github.com/user-attachments/assets/845e4168-d3c1-4013-bc75-626a33e84de4" />
+
 ### Development Setup
 1. [Setup Vue.js App](https://github.com/kritish-dhaubanjar/dynamodb-dashboard/tree/main/app)
 2. [Setup Node Express Server](https://github.com/kritish-dhaubanjar/dynamodb-dashboard/tree/main/server)
