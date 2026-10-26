@@ -129,26 +129,23 @@ server
 }
 ```
 
-### Preview:
-![dynamodb-dashboard](https://user-images.githubusercontent.com/25634165/213922274-d70cde00-4d70-47ac-ab84-68b6f0933d58.png)
-
-![image](https://user-images.githubusercontent.com/25634165/215118400-fe18ea87-5562-4e7d-be7b-ccf61a3fbe99.png)
-
 ### Demo:
 
-[▶ Watch the overview](docs/media/videos/overview.mp4) — a web GUI to browse and manage DynamoDB, local or remote. npm or Docker. MIT.
+[▶ Watch the overview](https://github.com/user-attachments/assets/6fe7f078-5ecf-4d07-ae9b-b15108d095a0) — a web GUI to browse and manage DynamoDB, local or remote. npm or Docker. MIT.
 
-[![DynamoDB Dashboard overview](docs/media/videos/overview.jpg)](docs/media/videos/overview.mp4)
+[![DynamoDB Dashboard overview](docs/media/videos/overview.jpg)](https://github.com/user-attachments/assets/6fe7f078-5ecf-4d07-ae9b-b15108d095a0)
 
-[▶ Getting started](docs/media/videos/getting-started.mp4) — connect to DynamoDB Local or AWS, scan a table, and edit an item as JSON.
+[▶ Getting started](https://github.com/user-attachments/assets/8e609038-8752-459a-ac65-e7925e3011a9) — connect to DynamoDB Local or AWS, scan a table, and edit an item as JSON.
 
-[![Getting started with DynamoDB Dashboard](docs/media/videos/getting-started.jpg)](docs/media/videos/getting-started.mp4)
+[![Getting started with DynamoDB Dashboard](docs/media/videos/getting-started.jpg)](https://github.com/user-attachments/assets/8e609038-8752-459a-ac65-e7925e3011a9)
 
-[▶ Managing tables](docs/media/videos/managing-tables.mp4) — create tables, manage TTL and streams, and restore data.
+[▶ Managing tables](https://github.com/user-attachments/assets/cf4d13ea-0672-4702-8eb7-b57d34444691) — create tables, manage TTL and streams, and restore data.
 
-[![Managing tables in DynamoDB Dashboard](docs/media/videos/managing-tables.jpg)](docs/media/videos/managing-tables.mp4)
+[![Managing tables in DynamoDB Dashboard](docs/media/videos/managing-tables.jpg)](https://github.com/user-attachments/assets/cf4d13ea-0672-4702-8eb7-b57d34444691)
 
-https://user-images.githubusercontent.com/25634165/192109458-a621bc06-788d-4d54-9dc2-9064380ee837.mp4
+[▶ Full Flow of using DynamoDB Dashboard](https://user-images.githubusercontent.com/25634165/192109458-a621bc06-788d-4d54-9dc2-9064380ee837.mp4) — full flow of using DynamoDB Dashboard
+
+[![Full Flow of using DynamoDB Dashboard](https://github.com/user-attachments/assets/2d236911-32bb-4fc1-9af5-ee494da076e8)](https://user-images.githubusercontent.com/25634165/192109458-a621bc06-788d-4d54-9dc2-9064380ee837.mp4)
 
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20me%20a%20coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/kritishdhaubanjar)
 
