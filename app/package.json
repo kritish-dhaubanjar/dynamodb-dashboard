@@ -34,7 +34,7 @@
     "@rushstack/eslint-patch": "^1.16.1",
     "@tsconfig/node22": "^22.0.6",
     "@types/bootstrap": "^5.2.11",
-    "@types/lodash": "^4.17.26",
+    "@types/lodash": "^4.17.27",
     "@types/node": "26",
     "@typescript-eslint/eslint-plugin": "^7.0.0",
     "@typescript-eslint/parser": "^6.21.0",
