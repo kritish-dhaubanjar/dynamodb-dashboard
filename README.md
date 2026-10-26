@@ -140,6 +140,14 @@ server
 
 [![DynamoDB Dashboard overview](docs/media/videos/overview.jpg)](docs/media/videos/overview.mp4)
 
+[▶ Getting started](docs/media/videos/getting-started.mp4) — connect to DynamoDB Local or AWS, scan a table, and edit an item as JSON.
+
+[![Getting started with DynamoDB Dashboard](docs/media/videos/getting-started.jpg)](docs/media/videos/getting-started.mp4)
+
+[▶ Managing tables](docs/media/videos/managing-tables.mp4) — create tables, manage TTL and streams, and restore data.
+
+[![Managing tables in DynamoDB Dashboard](docs/media/videos/managing-tables.jpg)](docs/media/videos/managing-tables.mp4)
+
 https://user-images.githubusercontent.com/25634165/192109458-a621bc06-788d-4d54-9dc2-9064380ee837.mp4
 
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20me%20a%20coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/kritishdhaubanjar)
