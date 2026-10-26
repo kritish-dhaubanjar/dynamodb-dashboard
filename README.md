@@ -180,7 +180,20 @@ server
 ![image](https://user-images.githubusercontent.com/25634165/215118400-fe18ea87-5562-4e7d-be7b-ccf61a3fbe99.png)
 
 ### Demo:
-https://user-images.githubusercontent.com/25634165/192109458-a621bc06-788d-4d54-9dc2-9064380ee837.mp4
+
+[▶ Watch the overview](https://github.com/user-attachments/assets/6fe7f078-5ecf-4d07-ae9b-b15108d095a0) — a web GUI to browse and manage DynamoDB, local or remote. npm or Docker. MIT.
+
+[![DynamoDB Dashboard overview](docs/media/videos/overview.jpg)](https://github.com/user-attachments/assets/6fe7f078-5ecf-4d07-ae9b-b15108d095a0)
+
+[▶ Getting started](https://github.com/user-attachments/assets/8e609038-8752-459a-ac65-e7925e3011a9) — connect to DynamoDB Local or AWS, scan a table, and edit an item as JSON.
+
+[![Getting started with DynamoDB Dashboard](docs/media/videos/getting-started.jpg)](https://github.com/user-attachments/assets/8e609038-8752-459a-ac65-e7925e3011a9)
+
+[▶ Managing tables](https://github.com/user-attachments/assets/cf4d13ea-0672-4702-8eb7-b57d34444691) — create tables, manage TTL and streams, and restore data.
+
+[![Managing tables in DynamoDB Dashboard](docs/media/videos/managing-tables.jpg)](https://github.com/user-attachments/assets/cf4d13ea-0672-4702-8eb7-b57d34444691)
+
+[▶ Full flow of using DynamoDB Dashboard](https://user-images.githubusercontent.com/25634165/192109458-a621bc06-788d-4d54-9dc2-9064380ee837.mp4)
 
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20me%20a%20coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/kritishdhaubanjar)
 
