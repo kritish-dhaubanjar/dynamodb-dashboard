@@ -135,6 +135,11 @@ server
 ![image](https://user-images.githubusercontent.com/25634165/215118400-fe18ea87-5562-4e7d-be7b-ccf61a3fbe99.png)
 
 ### Demo:
+
+[▶ Watch the overview](docs/media/videos/overview.mp4) — a web GUI to browse and manage DynamoDB, local or remote. npm or Docker. MIT.
+
+[![DynamoDB Dashboard overview](docs/media/videos/overview.jpg)](docs/media/videos/overview.mp4)
+
 https://user-images.githubusercontent.com/25634165/192109458-a621bc06-788d-4d54-9dc2-9064380ee837.mp4
 
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20me%20a%20coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/kritishdhaubanjar)

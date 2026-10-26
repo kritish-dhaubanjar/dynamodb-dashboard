@@ -1,2 +1,0 @@
-Introducing DynamoDB Dashboard: a web GUI to browse and manage DynamoDB, local or remote.
-npm or Docker. MIT. Not affiliated with Amazon Web Services.

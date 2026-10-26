@@ -1,6 +1,0 @@
-[
-  {"name": "save-toast", "path": "/orders/edit-item?orderId=ord_7f387cf3", "wait": 2500,
-   "steps": [{"eval": "[...document.querySelectorAll('button')].find(b=>b.textContent.trim()==='Save Changes')?.click()", "wait": 700}]},
-  {"name": "save-toast-late", "path": "/orders/edit-item?orderId=ord_7f387cf3", "wait": 2500,
-   "steps": [{"eval": "[...document.querySelectorAll('button')].find(b=>b.textContent.trim()==='Save Changes')?.click()", "wait": 1600}]}
-]

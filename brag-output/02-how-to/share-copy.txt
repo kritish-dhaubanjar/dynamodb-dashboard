@@ -1,2 +1,0 @@
-DynamoDB Dashboard is now live.
-Install from npm or Docker, pick a table, scan or query it, and edit items as JSON, all in the browser.
