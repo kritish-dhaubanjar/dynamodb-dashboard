@@ -887,15 +887,15 @@
   resolved "https://registry.yarnpkg.com/@rolldown/pluginutils/-/pluginutils-1.0.1.tgz#e3fcee093fbb5ce765e1ad088ff4de2889f6f9be"
   integrity sha512-2j9bGt5Jh8hj+vPtgzPtl72j0yRxHAyumoo6TNfAjsLB04UtpSvPbPcDcBMxz7n+9CYB0c1GxQFxYRg2jimqGw==
 
-"@rollup/rollup-linux-x64-gnu@4.63.1":
-  version "4.63.1"
-  resolved "https://registry.yarnpkg.com/@rollup/rollup-linux-x64-gnu/-/rollup-linux-x64-gnu-4.63.1.tgz#f6e5c5c51f96ae298617fa26da54675acd60e3bc"
-  integrity sha512-gfI5T24WLLuFfSKw7Go/zDXjAAV0fny0swTaDv+WjK7vqcw4cRhFfdsyKL1n+ukI+ooBxn3bVQnyrn06WpI50w==
+"@rollup/rollup-linux-x64-gnu@4.63.5":
+  version "4.63.5"
+  resolved "https://registry.yarnpkg.com/@rollup/rollup-linux-x64-gnu/-/rollup-linux-x64-gnu-4.63.5.tgz#246449b1aa0ba3b9dda84e236547a814f87123cc"
+  integrity sha512-3W9bTFcQNJn71cSJVM9RKIiZOy8DO/XLDii8Uv/Pm6WKqDRj7JV3ZfuXIEfyuy5LXpIzAbB/1M4Ukp9GKNa7nA==
 
-"@rollup/rollup-win32-x64-msvc@4.63.1":
-  version "4.63.1"
-  resolved "https://registry.yarnpkg.com/@rollup/rollup-win32-x64-msvc/-/rollup-win32-x64-msvc-4.63.1.tgz#cd19d691330cbd52ebb13620acb6cf7140b95e80"
-  integrity sha512-at8QVep6S3h5Y6gSbdGU06bRY5WJkf6WUduM9YtvYMbYhB1MOFfUgc6kehitQXzOtMSaT70q7f9ydPhpqu821w==
+"@rollup/rollup-win32-x64-msvc@4.63.5":
+  version "4.63.5"
+  resolved "https://registry.yarnpkg.com/@rollup/rollup-win32-x64-msvc/-/rollup-win32-x64-msvc-4.63.5.tgz#66e1eb4e47e993314699bfd03eaa54e36790e8d9"
+  integrity sha512-ypfC34F3RKXvCXBglGqGMsUSMKlgwd1HX9AOAlx9RoZZ6GaI42YHVeKpzg3JG+wpBUJYTG+NNZhqbDWL8tBZkw==
 
 "@rushstack/eslint-patch@^1.16.1":
   version "1.16.1"
@@ -1756,15 +1756,15 @@ csstype@^3.2.3:
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.2.3.tgz#ec48c0f3e993e50648c86da559e2610995cf989a"
   integrity sha512-z1HGKcYy2xA8AGQfwrn0PAy+PB7X/GSj3UVJW9qKyn43xWa+gl5nXmU4qqLMRzWVLFC8KusUX8T/0kCiOYpAIQ==
 
-darkreader@^4.9.133:
-  version "4.9.133"
-  resolved "https://registry.yarnpkg.com/darkreader/-/darkreader-4.9.133.tgz#9cb297f4f49f09456411d5123c94d2942bc8d52e"
-  integrity sha512-d3dRGpVgoBnMXl9qfnTuRvrdtO/9e6puFbsDwxfycTwbRNFI+sNX+093h6qnNo4VosyHHUaIXyunDWvbEudTRQ==
+darkreader@^4.9.134:
+  version "4.9.134"
+  resolved "https://registry.yarnpkg.com/darkreader/-/darkreader-4.9.134.tgz#a523d9699690ff6732e5867f19aa298a3d6e48a3"
+  integrity sha512-HAyEz97vK/UFLO6kcjxojji5OKr0+pwgGLrBzyg67xD2p6ySrSyCBvNxb+0KTSMYk9qNz9Hq85JR3TaKyqEV1w==
   dependencies:
     malevic "0.20.3"
   optionalDependencies:
-    "@rollup/rollup-linux-x64-gnu" "4.63.1"
-    "@rollup/rollup-win32-x64-msvc" "4.63.1"
+    "@rollup/rollup-linux-x64-gnu" "4.63.5"
+    "@rollup/rollup-win32-x64-msvc" "4.63.5"
 
 data-view-buffer@^1.0.1:
   version "1.0.1"
