@@ -3005,10 +3005,10 @@ mlly@^1.7.4, mlly@^1.8.2:
     pkg-types "^1.3.1"
     ufo "^1.6.3"
 
-module-alias@^2.3.4:
-  version "2.3.4"
-  resolved "https://registry.yarnpkg.com/module-alias/-/module-alias-2.3.4.tgz#7c2b0442ba1114744e97288963db637859db4094"
-  integrity sha512-bOclZt8hkpuGgSSoG07PKmvzTizROilUTvLNyrMqvlC9snhs7y7GzjNWAVbISIOlhCP1T14rH1PDAV9iNyBq/w==
+module-alias@^2.3.5:
+  version "2.3.5"
+  resolved "https://registry.yarnpkg.com/module-alias/-/module-alias-2.3.5.tgz#bf4bf6227937bec9e8eda245dfd59d4a8e29ec84"
+  integrity sha512-hbei6S1tXkg/P+ZJTyUqqL66LOeg/40WGcZYPFzIeBltTCRm+O4IZ/KRtR9hGanXaJxuvPj9q9ldl/cmbV6Osw==
 
 ms@^2.1.3:
   version "2.1.3"
