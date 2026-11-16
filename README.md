@@ -211,6 +211,7 @@ Thanks goes to these wonderful people:
     <td align="center"><a href="https://github.com/yyyoichi"><img src="https://avatars.githubusercontent.com/u/67273105?v=4" width="100px;" alt=""/><br /><sub><b>yyyoichi</b></sub></a><br /><a href="https://github.com/kritish-dhaubanjar/dynamodb-dashboard/commits?author=yyyoichi" title="Commits">📖</a></td>
     <td align="center"><a href="https://github.com/akhilputhiry"><img src="https://avatars.githubusercontent.com/u/747410?v=4" width="100px;" alt=""/><br /><sub><b>Akhil Lawrence </b></sub></a><br /><a href="https://github.com/kritish-dhaubanjar/dynamodb-dashboard/pulls?q=is%3Apr+author%3Aakhilputhiry+is%3Aclosed" title="Commits">📖</a></td>
     <td align="center"><a href="https://github.com/milan-trayt"><img src="https://avatars.githubusercontent.com/u/173245297?v=4" width="100px;" alt=""/><br /><sub><b>Milan Pokhrel</b></sub></a><br /><a href="https://github.com/kritish-dhaubanjar/dynamodb-dashboard/commits?author=milan-trayt" title="Commits">📖</a></td>
+    <td align="center"><a href="https://github.com/rururunu"><img src="https://avatars.githubusercontent.com/u/191542284?v=4" width="100px;" alt=""/><br /><sub><b>runu</b></sub></a><br /><a href="https://github.com/kritish-dhaubanjar/dynamodb-dashboard/pulls?q=is%3Apr+state%3Aclosed+author%3Arururunu" title="Commits">📖</a></td>
   </tr>
 </table>
 
