@@ -3900,10 +3900,10 @@ vue-eslint-parser@^9.4.3:
     lodash "^4.17.21"
     semver "^7.3.6"
 
-vue-router@^5.4.0:
-  version "5.4.0"
-  resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-5.4.0.tgz#77205289f898a8b2bae23b69d0a4c49aaecd1b83"
-  integrity sha512-pFvcYcxinDHjZUlf7AzFBrT8r8Xqvv4uMHoJnjc+EqPawXQvHTkF8S4tfSmQLpriVHUGfkaKlI7Et0KRjTMTdw==
+vue-router@^5.5.0:
+  version "5.5.0"
+  resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-5.5.0.tgz#cdc39ab40904ebcbed1c2e31a98dfd32aedaa4e6"
+  integrity sha512-nYhG+YzLcrO5Z7KbH1H/xvBeBzhCWhQG0z5DYNLuaJULhavZBmEgoQ5xVHGxwe65c5hnJQHZpBxWdQhnOBzHmw==
   dependencies:
     "@vue-macros/common" "^3.1.3"
     "@vue/devtools-api" "^8.1.5"
