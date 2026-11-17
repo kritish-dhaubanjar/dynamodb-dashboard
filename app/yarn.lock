@@ -945,10 +945,10 @@
   resolved "https://registry.yarnpkg.com/@rushstack/eslint-patch/-/eslint-patch-1.16.1.tgz#4f97581e114fc79f246cee3723a5c4edd3b62415"
   integrity sha512-TvZbIpeKqGQQ7X0zSCvPH9riMSFQFSggnfBjFZ1mEoILW+UuXCKwOoPcgjMwiUtRqFZ8jWhPJc4um14vC6I4ag==
 
-"@tsconfig/node22@^22.0.6":
-  version "22.0.6"
-  resolved "https://registry.yarnpkg.com/@tsconfig/node22/-/node22-22.0.6.tgz#43d46cfd2f492d19aa4f2fe75ecb81635c018aeb"
-  integrity sha512-/5thavHAnWDZwH2H6eEn/T8pBEBhtuKaWGMslsj82kJfvzQgOgEMK7X4goBbIUjgVtAzPTtM9Ml64LA0uxO6Iw==
+"@tsconfig/node22@^22.0.7":
+  version "22.0.7"
+  resolved "https://registry.yarnpkg.com/@tsconfig/node22/-/node22-22.0.7.tgz#de779f23acf5c96f336b317e9ac654e94b09dcc6"
+  integrity sha512-xnYM5q+HTeLm+jRBIB7Mu61OyOmNpgzPmJuhwPODSyITDPIWVK2TXxn/+O5fJ4n/P0u/gPsgSyPw/Dl3Cz/L4g==
 
 "@tybys/wasm-util@^0.10.3":
   version "0.10.4"
